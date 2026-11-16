@@ -1,0 +1,62 @@
+<% content_for :title, t("products.page_title") %>
+
+<section class="settings-hero">
+  <div><span class="eyebrow"><%= t("products.eyebrow") %></span><h1><%= t("products.title") %></h1><p><%= t("products.subtitle") %></p></div>
+  <%= link_to t("products.back_to_cashier"), root_path, class: "button secondary" %>
+</section>
+
+<section class="settings-grid">
+  <% @products.each do |product| %>
+    <article class="settings-card" id="<%= dom_id(product) %>">
+      <header>
+        <div class="settings-icon <%= product.code %>"><%= product.code == "brownie" ? "▦" : product.code == "hot_chocolate" ? "♨" : "◇" %></div>
+        <div><span class="product-badge"><%= t("products.codes.#{product.code}") %></span><h2><%= product.localized_name %></h2></div>
+        <span class="status-pill <%= product.active? ? 'on' : 'off' %>"><%= t(product.active? ? "products.active" : "products.inactive") %></span>
+      </header>
+
+      <%= form_with model: product, class: "settings-form" do |form| %>
+        <div class="field-pair">
+          <label><span><%= t("products.name_pt") %></span><%= form.text_field :name_pt, required: true %></label>
+          <label><span><%= t("products.name_en") %></span><%= form.text_field :name_en, required: true %></label>
+        </div>
+        <div class="field-pair">
+          <label><span><%= t("products.price") %></span><div class="input-prefix"><b>R$</b><%= form.text_field :price_brl, inputmode: "decimal", required: true %></div></label>
+          <% if product.hot_chocolate? %>
+            <label><span><%= t("products.cup_size") %></span><div class="input-suffix"><%= form.number_field :serving_size, min: 1, required: true %><b>ml</b></div></label>
+          <% end %>
+        </div>
+        <% if product.hot_chocolate? %>
+          <label><span><%= t("products.capacity") %></span><div class="input-suffix"><%= form.number_field :capacity_quantity, min: product.stock_quantity, required: true %><b>ml</b></div></label>
+        <% end %>
+        <label class="checkbox-field"><%= form.check_box :active %><span><%= t("products.show_at_cashier") %></span></label>
+        <%= form.submit t("products.save"), class: "button primary" %>
+      <% end %>
+
+      <div class="inventory-box">
+        <div class="inventory-summary">
+          <div><span><%= t("products.current_stock") %></span><strong><%= stock_label(product) %></strong></div>
+          <div><span><%= t("products.sellable") %></span><strong><%= product.available_servings %></strong></div>
+        </div>
+
+        <%= form_with url: product_stock_movements_path(product), class: "stock-form" do |form| %>
+          <label><span><%= t("products.operation") %></span><%= form.select :direction, [[t("products.add_stock"), "add"], [t("products.remove_stock"), "remove"]] %></label>
+          <label><span><%= t("products.reason") %></span><%= form.select :movement_type, StockMovement::TYPES.reject { |type| type == "sale" }.map { |type| [t("inventory.types.#{type}"), type] } %></label>
+          <label><span><%= t("products.quantity") %></span><div class="input-suffix"><%= form.number_field :amount, min: 1, required: true %><b><%= product.stock_unit %></b></div></label>
+          <label class="wide"><span><%= t("products.note") %></span><%= form.text_field :note, maxlength: 140, placeholder: t("products.note_placeholder") %></label>
+          <%= form.submit t("products.apply"), class: "button inventory-button" %>
+        <% end %>
+
+        <% if product.stock_movements.any? %>
+          <details class="movement-history">
+            <summary><%= t("products.history") %></summary>
+            <ol>
+              <% product.stock_movements.order(created_at: :desc).limit(6).each do |movement| %>
+                <li><span class="movement-delta <%= movement.quantity_delta.positive? ? 'positive' : 'negative' %>"><%= movement.quantity_delta.positive? ? "+" : "" %><%= movement.quantity_delta %></span><span><%= t("inventory.types.#{movement.movement_type}") %><small><%= l(movement.created_at, format: :short) %> · <%= t("products.balance") %>: <%= movement.stock_after %></small></span></li>
+              <% end %>
+            </ol>
+          </details>
+        <% end %>
+      </div>
+    </article>
+  <% end %>
+</section>

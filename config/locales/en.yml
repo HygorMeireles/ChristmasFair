@@ -1,0 +1,88 @@
+en:
+  navigation:
+    label: Main navigation
+    cashier: Cashier
+    settings: Stock setup
+    language: Language
+  footer:
+    date: December 5, 2026
+  dashboard:
+    page_title: Mister Wiz Christmas Fair
+    eyebrow: A magical Christmas experience
+    title: Christmas Fair
+    subtitle: Pick the treats, follow the animated stock and prepare the customer's order.
+    no_products: Products are not ready yet
+    run_seeds: Run the database seeds to create the initial catalog.
+    products: Products
+    step_one: Step 1
+    choose_products: Build the order
+    clear: Clear order
+    in_stock: In stock
+    cups_available:
+      one: 1 cup of %{size} ml available
+      other: "%{count} cups of %{size} ml available"
+    available_to_sell:
+      one: 1 available to sell
+      other: "%{count} available to sell"
+    units:
+      one: 1 unit
+      other: "%{count} units"
+    remove_one: Remove one %{product}
+    add_one: Add one %{product}
+    step_two: Step 2
+    payment: Payment preview
+    phone_locked: Waiting for the order
+    select_to_unlock: Add a product to unlock the payment preview.
+    order_summary: Order summary
+    total: Total
+    pix_next_step: The Pix QR Code will appear here in the payment integration stage.
+    preview_note: This screen previews the order only. It does not charge or reduce the real stock yet.
+  products:
+    page_title: Stock setup — Christmas Fair
+    eyebrow: Control center
+    title: Products and stock
+    subtitle: Set prices, measurements and quantities without changing the source code.
+    back_to_cashier: Back to cashier
+    codes:
+      brownie: Sweet
+      hot_chocolate: Drink
+      fishing: Game
+    active: Active
+    inactive: Hidden
+    name_pt: Name in Portuguese
+    name_en: Name in English
+    price: Selling price
+    cup_size: Cup size
+    capacity: Bottle capacity
+    show_at_cashier: Show this product at the cashier
+    save: Save settings
+    current_stock: Current stock
+    sellable: Available sales
+    operation: Operation
+    add_stock: Add stock
+    remove_stock: Remove stock
+    reason: Reason
+    quantity: Quantity
+    note: Note
+    note_placeholder: "Example: first batch"
+    apply: Apply movement
+    history: Recent movements
+    balance: Balance
+    updated: Product settings saved.
+  inventory:
+    updated: Stock updated.
+    invalid_quantity: Enter a valid quantity.
+    zero_quantity: Quantity must be greater than zero.
+    invalid_type: Select a valid movement type.
+    insufficient_stock: There is not enough stock for this removal.
+    over_capacity: The hot chocolate volume exceeds the bottle capacity.
+    types:
+      initial: Initial stock
+      restock: Restock
+      loss: Loss
+      correction: Correction
+      sale: Sale
+  activerecord:
+    attributes:
+      product:
+        stock_quantity: Stock

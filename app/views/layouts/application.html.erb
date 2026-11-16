@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Mister Wiz Christmas Fair" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Christmas Fair">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="christmas-shell">
+    <div class="ambient-snow" aria-hidden="true"></div>
+    <header class="site-header">
+      <%= link_to root_path, class: "brand-lockup", aria: { label: "Mister Wiz Christmas Fair" } do %>
+        <%= image_tag "branding/originals/mister-wiz-logo.png", class: "brand-logo", alt: "Mister Wiz" %>
+        <span class="brand-divider" aria-hidden="true"></span>
+        <span class="brand-event">Christmas Fair</span>
+      <% end %>
+
+      <nav class="header-actions" aria-label="<%= t('navigation.label') %>">
+        <%= link_to t("navigation.cashier"), root_path, class: "nav-link #{'active' if controller_name == 'dashboard'}" %>
+        <%= link_to t("navigation.settings"), products_path, class: "nav-link #{'active' if controller_name == 'products'}" %>
+        <div class="locale-switch" aria-label="<%= t('navigation.language') %>">
+          <%= link_to "PT", locale_switch_path("pt-BR"), class: current_locale == "pt-BR" ? "selected" : nil %>
+          <%= link_to "EN", locale_switch_path("en"), class: current_locale == "en" ? "selected" : nil %>
+        </div>
+      </nav>
+    </header>
+
+    <% if notice.present? %><div class="flash notice"><%= notice %></div><% end %>
+    <% if alert.present? %><div class="flash alert"><%= alert %></div><% end %>
+
+    <main><%= yield %></main>
+
+    <footer class="site-footer">
+      <span>✦ Mister Wiz</span>
+      <span><%= t("footer.date") %></span>
+    </footer>
+  </body>
+</html>

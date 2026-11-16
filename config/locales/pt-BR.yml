@@ -1,0 +1,95 @@
+pt-BR:
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d/%m"
+  time:
+    formats:
+      short: "%d/%m às %H:%M"
+  navigation:
+    label: Navegação principal
+    cashier: Caixa
+    settings: Configurar estoque
+    language: Idioma
+  footer:
+    date: 5 de dezembro de 2026
+  dashboard:
+    page_title: Mister Wiz Christmas Fair
+    eyebrow: Uma experiência mágica de Natal
+    title: Christmas Fair
+    subtitle: Escolha as delícias, acompanhe o estoque animado e prepare o pedido do cliente.
+    no_products: Os produtos ainda não foram preparados
+    run_seeds: Execute a carga inicial do banco para criar o catálogo.
+    products: Produtos
+    step_one: Passo 1
+    choose_products: Monte o pedido
+    clear: Limpar pedido
+    in_stock: Em estoque
+    cups_available:
+      one: 1 copo de %{size} ml disponível
+      other: "%{count} copos de %{size} ml disponíveis"
+    available_to_sell:
+      one: 1 disponível para venda
+      other: "%{count} disponíveis para venda"
+    units:
+      one: 1 unidade
+      other: "%{count} unidades"
+    remove_one: Remover um %{product}
+    add_one: Adicionar um %{product}
+    step_two: Passo 2
+    payment: Prévia do pagamento
+    phone_locked: Aguardando o pedido
+    select_to_unlock: Adicione um produto para desbloquear a prévia do pagamento.
+    order_summary: Resumo do pedido
+    total: Total
+    pix_next_step: O QR Code Pix aparecerá aqui na etapa de integração do pagamento.
+    preview_note: Esta tela apenas simula o pedido. Nenhuma cobrança ou baixa real de estoque é feita ainda.
+  products:
+    page_title: Configuração de estoque — Christmas Fair
+    eyebrow: Central de controle
+    title: Produtos e estoque
+    subtitle: Defina preços, medidas e quantidades sem alterar o código-fonte.
+    back_to_cashier: Voltar ao caixa
+    codes:
+      brownie: Doce
+      hot_chocolate: Bebida
+      fishing: Brincadeira
+    active: Ativo
+    inactive: Oculto
+    name_pt: Nome em português
+    name_en: Nome em inglês
+    price: Preço de venda
+    cup_size: Tamanho do copo
+    capacity: Capacidade da garrafa
+    show_at_cashier: Mostrar este produto no caixa
+    save: Salvar configurações
+    current_stock: Estoque atual
+    sellable: Vendas disponíveis
+    operation: Operação
+    add_stock: Adicionar estoque
+    remove_stock: Remover estoque
+    reason: Motivo
+    quantity: Quantidade
+    note: Observação
+    note_placeholder: "Exemplo: primeiro lote"
+    apply: Aplicar movimentação
+    history: Movimentações recentes
+    balance: Saldo
+    updated: Configurações do produto salvas.
+  inventory:
+    updated: Estoque atualizado.
+    invalid_quantity: Informe uma quantidade válida.
+    zero_quantity: A quantidade deve ser maior que zero.
+    invalid_type: Selecione um tipo de movimentação válido.
+    insufficient_stock: Não há estoque suficiente para essa retirada.
+    over_capacity: O volume de chocolate quente ultrapassa a capacidade da garrafa.
+    types:
+      initial: Estoque inicial
+      restock: Reposição
+      loss: Perda
+      correction: Correção
+      sale: Venda
+  activerecord:
+    attributes:
+      product:
+        stock_quantity: Estoque

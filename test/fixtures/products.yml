@@ -1,0 +1,35 @@
+brownie:
+  code: brownie
+  name_pt: Brownie
+  name_en: Brownie
+  price_cents: 500
+  stock_unit: unit
+  stock_quantity: 20
+  capacity_quantity: 0
+  serving_size: 1
+  active: true
+  lock_version: 0
+
+hot_chocolate:
+  code: hot_chocolate
+  name_pt: Chocolate quente
+  name_en: Hot chocolate
+  price_cents: 700
+  stock_unit: ml
+  stock_quantity: 5000
+  capacity_quantity: 5000
+  serving_size: 250
+  active: true
+  lock_version: 0
+
+fishing:
+  code: fishing
+  name_pt: Pescaria
+  name_en: Fishing game
+  price_cents: 1000
+  stock_unit: unit
+  stock_quantity: 15
+  capacity_quantity: 0
+  serving_size: 1
+  active: true
+  lock_version: 0

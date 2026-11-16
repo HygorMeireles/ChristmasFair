@@ -1,0 +1,6 @@
+brownie_initial:
+  product: brownie
+  movement_type: initial
+  quantity_delta: 20
+  stock_after: 20
+  note: Initial batch

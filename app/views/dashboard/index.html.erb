@@ -1,0 +1,110 @@
+<% content_for :title, t("dashboard.page_title") %>
+
+<section class="hero-banner">
+  <div class="hero-copy">
+    <span class="eyebrow"><%= t("dashboard.eyebrow") %></span>
+    <h1><%= t("dashboard.title") %></h1>
+    <p><%= t("dashboard.subtitle") %></p>
+  </div>
+  <div class="hero-scene" aria-hidden="true">
+    <div class="santa-hat"><i></i></div>
+    <div class="christmas-tree small-tree"><span>★</span></div>
+    <div class="christmas-tree large-tree"><span>★</span></div>
+    <div class="gift gift-red"></div>
+    <div class="gift gift-purple"></div>
+  </div>
+</section>
+
+<% if @products.none? %>
+  <section class="empty-state">
+    <h2><%= t("dashboard.no_products") %></h2>
+    <p><%= t("dashboard.run_seeds") %></p>
+  </section>
+<% else %>
+  <div class="cashier-layout" data-controller="cart" data-cart-locale-value="<%= current_locale %>" data-cart-currency-value="BRL">
+    <section class="product-stage" aria-label="<%= t('dashboard.products') %>">
+      <div class="section-heading">
+        <div><span class="eyebrow"><%= t("dashboard.step_one") %></span><h2><%= t("dashboard.choose_products") %></h2></div>
+        <button class="text-button" type="button" data-action="cart#clear"><%= t("dashboard.clear") %></button>
+      </div>
+
+      <div class="product-grid">
+        <% @products.each do |product| %>
+          <article class="product-card product-<%= product.code.dasherize %>"
+                   data-cart-target="product"
+                   data-code="<%= product.code %>"
+                   data-name="<%= product.localized_name %>"
+                   data-price="<%= product.price_cents %>"
+                   data-stock="<%= product.stock_quantity %>"
+                   data-capacity="<%= product.capacity_quantity %>"
+                   data-serving="<%= product.serving_size %>"
+                   data-available="<%= product.available_servings %>">
+            <div class="product-card-top">
+              <span class="product-badge"><%= t("products.codes.#{product.code}") %></span>
+              <strong><%= money(product.price_cents) %></strong>
+            </div>
+
+            <div class="product-visual" aria-hidden="true">
+              <% case product.code %>
+              <% when "hot_chocolate" %>
+                <div class="thermos">
+                  <div class="thermos-cap"></div><div class="thermos-handle"></div>
+                  <div class="thermos-body">
+                    <div class="chocolate-fill" data-cart-fill style="height: <%= product.stock_percentage %>%"></div>
+                    <span class="thermos-shine"></span>
+                  </div>
+                </div>
+                <div class="steam"><i></i><i></i><i></i></div>
+              <% when "brownie" %>
+                <div class="brownie-tray" data-cart-pieces>
+                  <% product.available_servings.times do %><span class="brownie-piece stock-piece"><i></i></span><% end %>
+                  <% if product.available_servings.zero? %><span class="visual-empty">0</span><% end %>
+                </div>
+              <% else %>
+                <div class="fishing-pond" data-cart-pieces>
+                  <% product.available_servings.times do |index| %><span class="prize-fish stock-piece fish-<%= index % 3 %>"><i></i></span><% end %>
+                  <% if product.available_servings.zero? %><span class="visual-empty">0</span><% end %>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="product-info">
+              <h3><%= product.localized_name %></h3>
+              <p class="stock-copy"><span><%= t("dashboard.in_stock") %></span><strong data-cart-stock-label><%= stock_label(product) %></strong></p>
+              <% if product.hot_chocolate? %>
+                <small><%= t("dashboard.cups_available", count: product.available_servings, size: product.serving_size) %></small>
+              <% else %>
+                <small><%= t("dashboard.available_to_sell", count: product.available_servings) %></small>
+              <% end %>
+            </div>
+
+            <div class="quantity-picker">
+              <button type="button" data-action="cart#remove" data-code="<%= product.code %>" aria-label="<%= t('dashboard.remove_one', product: product.localized_name) %>">−</button>
+              <output data-cart-target="quantity" data-code="<%= product.code %>">0</output>
+              <button type="button" data-action="cart#add" data-code="<%= product.code %>" <%= "disabled" if product.available_servings.zero? %> aria-label="<%= t('dashboard.add_one', product: product.localized_name) %>">+</button>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    </section>
+
+    <aside class="checkout-panel">
+      <div class="section-heading compact"><div><span class="eyebrow"><%= t("dashboard.step_two") %></span><h2><%= t("dashboard.payment") %></h2></div></div>
+      <div class="phone-frame is-locked" data-cart-target="phone">
+        <div class="phone-speaker"></div>
+        <div class="phone-screen">
+          <div class="phone-status"><span>Christmas Fair</span><span>● ● ●</span></div>
+          <div class="phone-lock" data-cart-target="lockState"><span class="lock-icon">⌁</span><strong><%= t("dashboard.phone_locked") %></strong><p><%= t("dashboard.select_to_unlock") %></p></div>
+          <div class="phone-ready" data-cart-target="readyState" hidden>
+            <span class="phone-brand">MISTER WIZ</span><h3><%= t("dashboard.order_summary") %></h3>
+            <div class="cart-lines" data-cart-target="cartLines"></div>
+            <div class="phone-total"><span><%= t("dashboard.total") %></span><strong data-cart-target="total">R$ 0,00</strong></div>
+            <div class="pix-placeholder"><span class="pix-diamond">◇</span><p><%= t("dashboard.pix_next_step") %></p></div>
+          </div>
+        </div>
+        <div class="phone-home"></div>
+      </div>
+      <div class="payment-note"><span>✦</span><p><%= t("dashboard.preview_note") %></p></div>
+    </aside>
+  </div>
+<% end %>
