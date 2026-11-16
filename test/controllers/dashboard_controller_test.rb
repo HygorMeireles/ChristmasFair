@@ -6,6 +6,8 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "[data-controller='cart']"
     assert_select ".product-card", 3
+    assert_select "img.event-logo[alt='Mister Wiz Christmas Fair']", 1
+    assert_select "link[rel='icon'][href*='mister-wiz-symbol']", 1
     assert_select "h2", text: "Monte o pedido"
   end
 
