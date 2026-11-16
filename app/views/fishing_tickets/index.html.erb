@@ -1,0 +1,37 @@
+<% content_for :title, t("fishing_tickets.page_title") %>
+
+<section class="settings-hero fishing-hero">
+  <div><span class="eyebrow"><%= t("fishing_tickets.eyebrow") %></span><h1><%= t("fishing_tickets.title") %></h1><p><%= t("fishing_tickets.subtitle") %></p></div>
+  <%= link_to t("fishing_tickets.back_to_cashier"), root_path, class: "button secondary" %>
+</section>
+
+<section class="ticket-stats" aria-label="<%= t('fishing_tickets.summary') %>">
+  <article><span><%= t("fishing_tickets.total") %></span><strong><%= @tickets.size %></strong></article>
+  <article class="pending"><span><%= t("fishing_tickets.pending") %></span><strong><%= @pending_count %></strong></article>
+  <article class="redeemed"><span><%= t("fishing_tickets.delivered") %></span><strong><%= @redeemed_count %></strong></article>
+</section>
+
+<section class="ticket-list">
+  <% if @tickets.empty? %>
+    <div class="empty-state"><h2><%= t("fishing_tickets.empty_title") %></h2><p><%= t("fishing_tickets.empty_text") %></p></div>
+  <% else %>
+    <% @tickets.each do |ticket| %>
+      <article class="fishing-ticket <%= ticket.status %>">
+        <div class="ticket-fish" aria-hidden="true">◆</div>
+        <div class="ticket-identity">
+          <span><%= t("fishing_tickets.ticket") %></span>
+          <strong><%= ticket.code %></strong>
+          <small><%= t("fishing_tickets.order", number: ticket.order.number) %> · <%= l(ticket.created_at, format: :short) %></small>
+        </div>
+        <div class="ticket-state">
+          <span class="status-pill <%= ticket.pending? ? 'waiting' : 'done' %>"><%= t("fishing_tickets.statuses.#{ticket.status}") %></span>
+          <% if ticket.pending? %>
+            <%= button_to t("fishing_tickets.mark_delivered"), redeem_fishing_ticket_path(ticket), method: :patch, class: "button redeem-button", form: { data: { turbo_confirm: t("fishing_tickets.confirm_redeem", code: ticket.code) } } %>
+          <% else %>
+            <small><%= t("fishing_tickets.redeemed_at", time: l(ticket.redeemed_at, format: :short)) %></small>
+          <% end %>
+        </div>
+      </article>
+    <% end %>
+  <% end %>
+</section>

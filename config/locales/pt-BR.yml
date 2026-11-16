@@ -9,6 +9,7 @@ pt-BR:
   navigation:
     label: Navegação principal
     cashier: Caixa
+    fishing: Pescaria
     settings: Configurar estoque
     language: Idioma
   footer:
@@ -37,13 +38,54 @@ pt-BR:
     remove_one: Remover um %{product}
     add_one: Adicionar um %{product}
     step_two: Passo 2
-    payment: Prévia do pagamento
+    payment: Pagamento
     phone_locked: Aguardando o pedido
     select_to_unlock: Adicione um produto para desbloquear a prévia do pagamento.
     order_summary: Resumo do pedido
     total: Total
-    pix_next_step: O QR Code Pix aparecerá aqui na etapa de integração do pagamento.
-    preview_note: Esta tela apenas simula o pedido. Nenhuma cobrança ou baixa real de estoque é feita ainda.
+    payment_method: Forma de pagamento
+    cash: Dinheiro
+    pix_soon: Pix em breve
+    amount_received: Valor recebido
+    change: Troco
+    enter_received: Informe um valor suficiente para habilitar a confirmação.
+    ready_to_confirm: Valor conferido. A venda já pode ser confirmada.
+    confirm_cash: Confirmar recebimento
+    confirming: Confirmando...
+    payment_note: Ao confirmar o dinheiro, a venda será registrada e o estoque será atualizado imediatamente.
+  checkout:
+    completed: "Venda #%{number} concluída. Troco: %{change}."
+    empty_cart: Adicione pelo menos um produto ao pedido.
+    invalid_request: Este pedido expirou. Atualize a página e tente novamente.
+    invalid_quantity: Uma das quantidades informadas é inválida.
+    unavailable_product: Um dos produtos não está mais disponível.
+    insufficient_stock: "Estoque insuficiente para %{product}."
+    invalid_total: O pedido precisa ter um valor maior que zero.
+    invalid_payment: Informe um valor recebido válido.
+    insufficient_payment: O valor recebido é menor que o total do pedido.
+    stock_note: "Venda #%{number}"
+  fishing_tickets:
+    page_title: Ingressos da pescaria — Christmas Fair
+    eyebrow: Controle de prêmios
+    title: Ingressos da pescaria
+    subtitle: Cada ingresso pago garante um prêmio e só pode ser utilizado uma vez.
+    back_to_cashier: Voltar ao caixa
+    summary: Resumo dos ingressos
+    total: Ingressos vendidos
+    pending: Aguardando retirada
+    delivered: Prêmios entregues
+    empty_title: Nenhum ingresso vendido
+    empty_text: Os ingressos aparecerão aqui depois que uma venda da pescaria for confirmada.
+    ticket: Ingresso
+    order: "Pedido #%{number}"
+    mark_delivered: Entregar prêmio
+    confirm_redeem: "Confirmar a entrega do prêmio para %{code}?"
+    redeemed: "Prêmio do ingresso %{code} entregue."
+    already_redeemed: Este ingresso já foi utilizado.
+    redeemed_at: "Entregue em %{time}"
+    statuses:
+      pending: Aguardando retirada
+      redeemed: Entregue
   products:
     page_title: Configuração de estoque — Christmas Fair
     eyebrow: Central de controle

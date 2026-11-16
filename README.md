@@ -2,16 +2,20 @@
 
 Caixa e controle de estoque para a Christmas Fair de 5 de dezembro de 2026. A aplicação acompanha brownie, chocolate quente e ingressos da pescaria, com uma interface natalina bilíngue em português e inglês.
 
-Esta primeira etapa contém:
+O estado atual contém:
 
 - catálogo configurável, sem preços ou quantidades fixados no código;
 - estoque em unidades e mililitros, com histórico de movimentações;
 - capacidade da garrafa e tamanho do copo configuráveis;
 - tela de caixa com carrinho local e animações de estoque projetado;
+- pedidos persistidos com itens e valores históricos;
+- recebimento em dinheiro, cálculo de troco e baixa transacional do estoque;
+- proteção contra confirmação repetida e venda acima do saldo disponível;
+- ingressos individuais da pescaria, com controle de retirada e bloqueio de resgate duplicado;
 - identidade Mister Wiz combinada com elementos de Natal;
 - estrutura Rails preparada para pedidos e Mercado Pago em uma etapa posterior.
 
-O carrinho atual é uma prévia: ele não cria cobranças nem reduz o estoque persistido.
+Ao confirmar um recebimento em dinheiro, a venda é registrada e o estoque persistido é reduzido. O Pix continua identificado como indisponível até a integração segura com o Mercado Pago.
 
 ## Tecnologias
 

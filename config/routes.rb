@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   root "dashboard#index"
+  resources :cash_checkouts, only: :create
+  resources :fishing_tickets, only: :index do
+    patch :redeem, on: :member
+  end
   resources :products, only: %i[index update] do
     resources :stock_movements, only: :create
   end

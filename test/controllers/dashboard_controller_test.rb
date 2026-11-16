@@ -9,6 +9,9 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_select "img.event-logo[alt='Mister Wiz Christmas Fair']", 1
     assert_select "link[rel='icon'][href*='mister-wiz-symbol']", 1
     assert_select "h2", text: "Monte o pedido"
+    assert_select "form.cash-checkout-form[action=?]", cash_checkouts_path(locale: "pt-BR")
+    assert_select "input[data-cart-target='checkoutButton'][disabled]", 1
+    assert_select "a[href=?]", fishing_tickets_path(locale: "pt-BR"), text: "Pescaria"
   end
 
   test "renders the English interface" do

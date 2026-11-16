@@ -10,9 +10,61 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_044425) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_120002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "fishing_tickets", force: :cascade do |t|
+    t.bigint "order_item_id", null: false
+    t.string "code", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "redeemed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_fishing_tickets_on_code", unique: true
+    t.index ["order_item_id"], name: "index_fishing_tickets_on_order_item_id"
+    t.index ["status"], name: "index_fishing_tickets_on_status"
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "product_id", null: false
+    t.string "product_code", null: false
+    t.string "product_name_pt", null: false
+    t.string "product_name_en", null: false
+    t.string "stock_unit", null: false
+    t.integer "unit_price_cents", null: false
+    t.integer "quantity", null: false
+    t.integer "stock_quantity_per_item", null: false
+    t.integer "line_total_cents", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id", "product_id"], name: "index_order_items_on_order_id_and_product_id", unique: true
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
+    t.check_constraint "line_total_cents >= 0", name: "order_items_total_nonnegative"
+    t.check_constraint "quantity > 0", name: "order_items_quantity_positive"
+    t.check_constraint "stock_quantity_per_item > 0", name: "order_items_stock_usage_positive"
+    t.check_constraint "unit_price_cents >= 0", name: "order_items_price_nonnegative"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "number", null: false
+    t.string "checkout_token", null: false
+    t.string "status", null: false
+    t.string "payment_method", null: false
+    t.integer "total_cents", null: false
+    t.integer "amount_received_cents", null: false
+    t.integer "change_cents", null: false
+    t.datetime "paid_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["checkout_token"], name: "index_orders_on_checkout_token", unique: true
+    t.index ["number"], name: "index_orders_on_number", unique: true
+    t.check_constraint "amount_received_cents >= total_cents", name: "orders_received_covers_total"
+    t.check_constraint "change_cents >= 0", name: "orders_change_nonnegative"
+    t.check_constraint "total_cents > 0", name: "orders_total_positive"
+  end
 
   create_table "products", force: :cascade do |t|
     t.string "code", null: false
@@ -47,5 +99,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_044425) do
     t.check_constraint "stock_after >= 0", name: "stock_movements_result_nonnegative"
   end
 
+  add_foreign_key "fishing_tickets", "order_items"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products", on_delete: :restrict
   add_foreign_key "stock_movements", "products"
 end

@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   STOCK_UNITS = %w[unit ml].freeze
 
   has_many :stock_movements, dependent: :restrict_with_error
+  has_many :order_items, dependent: :restrict_with_error
 
   validates :code, inclusion: { in: CODES }, uniqueness: true
   validates :name_pt, :name_en, presence: true

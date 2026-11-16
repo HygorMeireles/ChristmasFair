@@ -1,11 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total"]
+  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total", "quantityInput", "cashReceived", "change", "cashHint", "checkoutButton"]
   static values = { locale: String, currency: String }
 
   connect() {
     this.cart = new Map()
+    this.totalCents = 0
+    this.itemCount = 0
     this.render()
   }
 
@@ -33,7 +35,22 @@ export default class extends Controller {
 
   clear() {
     this.cart.clear()
+    this.cashReceivedTarget.value = ""
     this.render()
+  }
+
+  cashChanged() {
+    this.updateCashState()
+  }
+
+  submitCash(event) {
+    if (this.checkoutButtonTarget.disabled) {
+      event.preventDefault()
+      return
+    }
+
+    this.checkoutButtonTarget.disabled = true
+    this.checkoutButtonTarget.value = this.checkoutButtonTarget.dataset.submittingLabel
   }
 
   render() {
@@ -54,11 +71,28 @@ export default class extends Controller {
       if (quantity > 0) this.appendLine(product, quantity)
     })
 
+    this.totalCents = total
+    this.itemCount = itemCount
+    this.quantityInputTargets.forEach((input) => { input.value = this.cart.get(input.dataset.code) || 0 })
+
     const unlocked = itemCount > 0
     this.phoneTarget.classList.toggle("is-locked", !unlocked)
     this.lockStateTarget.hidden = unlocked
     this.readyStateTarget.hidden = !unlocked
     this.totalTarget.textContent = this.money(total)
+    this.updateCashState()
+  }
+
+  updateCashState() {
+    const normalized = this.cashReceivedTarget.value.replace(",", ".")
+    const receivedCents = Math.round((Number(normalized) || 0) * 100)
+    const enough = this.itemCount > 0 && receivedCents >= this.totalCents
+    const change = enough ? receivedCents - this.totalCents : 0
+
+    this.changeTarget.textContent = this.money(change)
+    this.checkoutButtonTarget.disabled = !enough
+    this.cashHintTarget.textContent = enough ? this.cashHintTarget.dataset.ready : this.cashHintTarget.dataset.waiting
+    this.cashHintTarget.classList.toggle("is-ready", enough)
   }
 
   renderProductStock(product, projectedStock, quantity) {

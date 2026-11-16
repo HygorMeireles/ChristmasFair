@@ -33,6 +33,7 @@
 
       <nav class="header-actions" aria-label="<%= t('navigation.label') %>">
         <%= link_to t("navigation.cashier"), root_path, class: "nav-link #{'active' if controller_name == 'dashboard'}" %>
+        <%= link_to t("navigation.fishing"), fishing_tickets_path, class: "nav-link #{'active' if controller_name == 'fishing_tickets'}" %>
         <%= link_to t("navigation.settings"), products_path, class: "nav-link #{'active' if controller_name == 'products'}" %>
         <div class="locale-switch" aria-label="<%= t('navigation.language') %>">
           <%= link_to "PT", locale_switch_path("pt-BR"), class: current_locale == "pt-BR" ? "selected" : nil %>

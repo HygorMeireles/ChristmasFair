@@ -2,6 +2,7 @@ en:
   navigation:
     label: Main navigation
     cashier: Cashier
+    fishing: Fishing game
     settings: Stock setup
     language: Language
   footer:
@@ -30,13 +31,54 @@ en:
     remove_one: Remove one %{product}
     add_one: Add one %{product}
     step_two: Step 2
-    payment: Payment preview
+    payment: Payment
     phone_locked: Waiting for the order
     select_to_unlock: Add a product to unlock the payment preview.
     order_summary: Order summary
     total: Total
-    pix_next_step: The Pix QR Code will appear here in the payment integration stage.
-    preview_note: This screen previews the order only. It does not charge or reduce the real stock yet.
+    payment_method: Payment method
+    cash: Cash
+    pix_soon: Pix coming soon
+    amount_received: Amount received
+    change: Change
+    enter_received: Enter enough cash to enable confirmation.
+    ready_to_confirm: Amount checked. The sale can now be confirmed.
+    confirm_cash: Confirm payment
+    confirming: Confirming...
+    payment_note: Confirming the cash payment records the sale and updates stock immediately.
+  checkout:
+    completed: "Sale #%{number} completed. Change: %{change}."
+    empty_cart: Add at least one product to the order.
+    invalid_request: This order has expired. Refresh the page and try again.
+    invalid_quantity: One of the quantities is invalid.
+    unavailable_product: One of the products is no longer available.
+    insufficient_stock: "There is not enough stock for %{product}."
+    invalid_total: The order total must be greater than zero.
+    invalid_payment: Enter a valid amount received.
+    insufficient_payment: The amount received is lower than the order total.
+    stock_note: "Sale #%{number}"
+  fishing_tickets:
+    page_title: Fishing tickets — Christmas Fair
+    eyebrow: Prize control
+    title: Fishing tickets
+    subtitle: Each paid ticket guarantees one prize and can only be redeemed once.
+    back_to_cashier: Back to cashier
+    summary: Ticket summary
+    total: Tickets sold
+    pending: Awaiting pickup
+    delivered: Prizes delivered
+    empty_title: No tickets sold
+    empty_text: Tickets will appear here after a fishing game sale is confirmed.
+    ticket: Ticket
+    order: "Order #%{number}"
+    mark_delivered: Deliver prize
+    confirm_redeem: "Confirm prize delivery for %{code}?"
+    redeemed: "Prize for ticket %{code} delivered."
+    already_redeemed: This ticket has already been redeemed.
+    redeemed_at: "Delivered at %{time}"
+    statuses:
+      pending: Awaiting pickup
+      redeemed: Delivered
   products:
     page_title: Stock setup — Christmas Fair
     eyebrow: Control center
