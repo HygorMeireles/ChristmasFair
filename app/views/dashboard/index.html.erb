@@ -91,7 +91,7 @@
         <% end %>
       </div>
 
-      <%= form_with url: cash_checkouts_path, scope: :checkout, class: "cash-checkout-form order-checkout-card", data: { cart_target: "checkoutForm", action: "submit->cart#submitCash" } do |form| %>
+      <%= form_with url: cash_checkouts_path, scope: :checkout, class: "cash-checkout-form order-checkout-card", data: { cart_target: "checkoutForm", action: "submit->cart#submitCheckout" } do |form| %>
         <%= form.hidden_field :checkout_token, value: @checkout_token %>
         <% @products.each do |product| %>
           <%= hidden_field_tag "checkout[quantities][#{product.code}]", 0, data: { cart_target: "quantityInput", code: product.code } %>
@@ -111,10 +111,10 @@
         <div class="payment-step" data-cart-target="paymentState" hidden>
           <div class="confirmed-order"><span>✓ <%= t("dashboard.order_confirmed") %></span><button type="button" data-action="cart#editOrder"><%= t("dashboard.edit_order") %></button></div>
           <div class="payment-methods" aria-label="<%= t('dashboard.payment_method') %>">
-            <button type="button" class="selected" data-cart-target="cashMethod" data-action="cart#selectCash"><%= t("dashboard.cash") %></button>
-            <button type="button" data-cart-target="pixMethod" data-action="cart#selectPix"><%= t("dashboard.pix") %></button>
+            <button type="button" data-cart-target="cashMethod" data-action="cart#selectCash"><%= t("dashboard.cash") %></button>
+            <button type="button" class="selected" data-cart-target="pixMethod" data-action="cart#selectPix"><%= t("dashboard.pix") %></button>
           </div>
-          <div class="cash-payment-grid" data-cart-target="cashPayment">
+          <div class="cash-payment-grid" data-cart-target="cashPayment" hidden>
             <label class="cash-field">
               <span><%= t("dashboard.amount_received") %></span>
               <div class="cash-input"><b>R$</b><%= form.number_field :amount_received_brl, min: 0, step: "0.01", inputmode: "decimal", data: { cart_target: "cashReceived", action: "input->cart#cashChanged" } %></div>
@@ -123,9 +123,9 @@
             <p class="cash-hint" data-cart-target="cashHint" data-waiting="<%= t('dashboard.enter_received') %>" data-ready="<%= t('dashboard.ready_to_confirm') %>"><%= t("dashboard.enter_received") %></p>
             <%= form.submit t("dashboard.confirm_cash"), class: "confirm-sale-button", disabled: true, data: { cart_target: "checkoutButton", submitting_label: t("dashboard.confirming") } %>
           </div>
-          <div class="pix-payment-choice" data-cart-target="pixPayment" hidden>
+          <div class="pix-payment-choice" data-cart-target="pixPayment">
             <p><%= t("dashboard.pix_ready") %></p>
-            <%= button_tag t("dashboard.generate_pix"), type: "submit", formaction: pix_checkouts_path, formmethod: "post", class: "generate-pix-button", data: { cart_target: "pixButton", action: "cart#submitPix", submitting_label: t("dashboard.generating_pix") } %>
+            <%= button_tag t("dashboard.generate_pix"), type: "submit", formaction: pix_checkouts_path, formmethod: "post", class: "generate-pix-button", data: { cart_target: "pixButton", submitting_label: t("dashboard.generating_pix") } %>
           </div>
         </div>
       <% end %>

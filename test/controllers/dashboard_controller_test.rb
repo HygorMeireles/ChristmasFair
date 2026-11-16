@@ -16,6 +16,8 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_select "input[data-cart-target='checkoutButton'][disabled]", 1
     assert_select "button[data-action='cart#confirmOrder']", text: "Confirmar pedido"
     assert_select "button[formaction=?]", pix_checkouts_path(locale: "pt-BR"), text: "Gerar QR Pix"
+    assert_select "button[data-cart-target='pixMethod'].selected", text: "Pix"
+    assert_select "form[data-action='submit->cart#submitCheckout']", 1
     assert_select "[data-cart-target='paymentState'][hidden]", 1
     assert_select "a[href=?]", fishing_tickets_path(locale: "pt-BR"), text: "Pescaria"
     assert_select "a[href=?]", financial_path(locale: "pt-BR"), text: "Financeiro"

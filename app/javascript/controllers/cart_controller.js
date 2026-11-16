@@ -9,7 +9,8 @@ export default class extends Controller {
     this.totalCents = 0
     this.itemCount = 0
     this.orderConfirmed = false
-    this.paymentMethod = "cash"
+    this.paymentMethod = "pix"
+    this.submitting = false
     this.render()
   }
 
@@ -56,27 +57,37 @@ export default class extends Controller {
 
     this.orderConfirmed = true
     this.renderConfirmationState()
-    this.cashReceivedTarget.focus()
+    if (this.paymentMethod === "cash") this.cashReceivedTarget.focus()
   }
 
   editOrder() {
     this.orderConfirmed = false
     this.cashReceivedTarget.value = ""
-    this.paymentMethod = "cash"
+    this.paymentMethod = "pix"
+    this.submitting = false
     this.renderConfirmationState()
     this.updateCashState()
   }
 
-  submitCash(event) {
-    // The Pix button belongs to the same form. Let its own handler submit to
-    // pix_checkouts instead of applying the cash validation to that request.
-    if (event.submitter === this.pixButtonTarget) return
-
-    if (!this.orderConfirmed || this.checkoutButtonTarget.disabled) {
+  submitCheckout(event) {
+    if (!this.orderConfirmed || this.submitting) {
       event.preventDefault()
       return
     }
 
+    if (this.paymentMethod === "pix") {
+      this.submitting = true
+      this.pixButtonTarget.textContent = this.pixButtonTarget.dataset.submittingLabel
+      this.pixButtonTarget.setAttribute("aria-disabled", "true")
+      return
+    }
+
+    if (this.checkoutButtonTarget.disabled) {
+      event.preventDefault()
+      return
+    }
+
+    this.submitting = true
     this.checkoutButtonTarget.disabled = true
     this.checkoutButtonTarget.value = this.checkoutButtonTarget.dataset.submittingLabel
   }
@@ -84,21 +95,12 @@ export default class extends Controller {
   selectCash() {
     this.paymentMethod = "cash"
     this.renderPaymentMethod()
+    this.cashReceivedTarget.focus()
   }
 
   selectPix() {
     this.paymentMethod = "pix"
     this.renderPaymentMethod()
-  }
-
-  submitPix(event) {
-    if (!this.orderConfirmed) {
-      event.preventDefault()
-      return
-    }
-
-    this.pixButtonTarget.disabled = true
-    this.pixButtonTarget.textContent = this.pixButtonTarget.dataset.submittingLabel
   }
 
   render() {
