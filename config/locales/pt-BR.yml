@@ -13,6 +13,19 @@ pt-BR:
     financial: Financeiro
     settings: Configurar estoque
     language: Idioma
+    logout: Sair
+  authentication:
+    page_title: Acesso restrito — Christmas Fair
+    restricted: Área da equipe
+    title: Entrar no caixa
+    subtitle: Informe a senha da equipe para acessar vendas, estoque e financeiro.
+    password: Senha
+    sign_in: Entrar
+    required: Faça login para acessar o sistema.
+    invalid: Senha incorreta.
+    signed_in: Acesso liberado.
+    signed_out: Você saiu do sistema.
+    too_many_attempts: Muitas tentativas. Aguarde alguns minutos e tente novamente.
   footer:
     date: 5 de dezembro de 2026
   dashboard:
@@ -84,6 +97,19 @@ pt-BR:
     order_instructions: Escaneie o QR Code no smartphone ao lado. O estoque só será baixado depois da confirmação do Mercado Pago.
     reservation_note: Os itens estão reservados enquanto este pagamento estiver pendente.
     cancel_back: Voltar ao caixa
+    cancel_order: Cancelar cobrança e voltar ao caixa
+    confirm_cancel: Deseja cancelar esta cobrança Pix e liberar os produtos reservados?
+    cancelled: Cobrança Pix cancelada e estoque liberado.
+    already_paid: O pagamento foi confirmado antes do cancelamento. A venda foi registrada.
+    cannot_cancel: O Mercado Pago ainda não permite cancelar esta cobrança. Tente novamente em alguns segundos.
+    cannot_cancel_recovering: A cobrança está sendo recuperada e ainda não pode ser cancelada com segurança.
+    new_order: Montar novo pedido
+    terminal_instructions: Esta cobrança foi encerrada e não pode mais ser paga.
+    terminal_note: Os itens reservados foram liberados. Volte ao caixa para montar um novo pedido.
+    statuses:
+      cancelled: Cobrança cancelada
+      expired: Cobrança expirada
+      failed: Não foi possível gerar a cobrança
     scan: Escaneie com o aplicativo do seu banco ou carteira digital.
     copy_code: Mostrar Pix Copia e Cola
     recovering: Verificando a cobrança
@@ -130,10 +156,18 @@ pt-BR:
     summary: Resumo financeiro
     gross_sales: Vendas brutas
     confirmed_sales_only: Somente pedidos com pagamento confirmado
+    pix_sales: Vendas por Pix
+    pix_sales_note: "Taxas descontadas: %{fees}"
+    pix_balance: Saldo líquido Pix
+    pix_balance_note: Vendas Pix menos a taxa do Mercado Pago
+    cash_sales: Vendas em dinheiro
+    cash_sales_note: Total recebido fisicamente
     paid_expenses: Despesas pagas
     paid_expenses_note: Saídas já efetivadas
     cash_result: Saldo de caixa
     cash_result_note: Vendas em dinheiro menos despesas pagas
+    overall_balance: Saldo geral líquido
+    overall_balance_note: Pix líquido e dinheiro menos despesas pagas
     pending_expenses: Despesas pendentes
     pending_expenses_note: Ainda não descontadas do saldo de caixa
     known_margin: Margem bruta apurada
@@ -159,6 +193,8 @@ pt-BR:
     items: Itens
     payment: Pagamento
     total: Total
+    fee_line: "Taxa: %{fee}"
+    net_value: Valor líquido
     expense_history: Histórico de despesas
     no_expenses: Nenhuma despesa cadastrada.
     mark_paid: Marcar como paga
@@ -209,6 +245,13 @@ pt-BR:
     history: Movimentações recentes
     balance: Saldo
     updated: Configurações do produto salvas.
+  event_settings:
+    eyebrow: Pagamentos
+    title: Taxa do Mercado Pago
+    fee_explanation: A taxa é registrada em cada nova venda Pix e preservada no histórico, mesmo se esta configuração mudar depois.
+    mercado_pago_fee: Taxa por venda Pix
+    save: Salvar taxa
+    updated: Taxa do Mercado Pago atualizada.
   inventory:
     updated: Estoque atualizado.
     invalid_quantity: Informe uma quantidade válida.

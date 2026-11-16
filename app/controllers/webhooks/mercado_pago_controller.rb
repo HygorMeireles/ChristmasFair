@@ -1,5 +1,6 @@
 class Webhooks::MercadoPagoController < ApplicationController
   skip_forgery_protection
+  skip_before_action :require_authentication
   before_action :verify_signature!
 
   def create

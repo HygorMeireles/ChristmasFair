@@ -1,0 +1,14 @@
+<% content_for :title, t("authentication.page_title") %>
+
+<section class="login-page">
+  <div class="login-card">
+    <%= image_tag "branding/originals/christmas-fair.jpeg", class: "login-event-logo", alt: "Mister Wiz Christmas Fair" %>
+    <span class="eyebrow"><%= t("authentication.restricted") %></span>
+    <h1><%= t("authentication.title") %></h1>
+    <p><%= t("authentication.subtitle") %></p>
+    <%= form_with url: login_path, class: "login-form" do |form| %>
+      <label><span><%= t("authentication.password") %></span><%= form.password_field :password, required: true, autofocus: true, autocomplete: "current-password" %></label>
+      <%= form.submit t("authentication.sign_in"), class: "button primary" %>
+    <% end %>
+  </div>
+</section>

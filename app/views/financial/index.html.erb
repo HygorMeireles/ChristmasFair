@@ -7,8 +7,12 @@
 
 <section class="financial-metrics" aria-label="<%= t('financial.summary') %>">
   <article><span><%= t("financial.gross_sales") %></span><strong><%= money(@gross_sales_cents) %></strong><small><%= t("financial.confirmed_sales_only") %></small></article>
+  <article><span><%= t("financial.pix_sales") %></span><strong><%= money(@pix_sales_cents) %></strong><small><%= t("financial.pix_sales_note", fees: money(@pix_fees_cents)) %></small></article>
+  <article class="positive"><span><%= t("financial.pix_balance") %></span><strong><%= money(@pix_net_cents) %></strong><small><%= t("financial.pix_balance_note") %></small></article>
+  <article><span><%= t("financial.cash_sales") %></span><strong><%= money(@cash_sales_cents) %></strong><small><%= t("financial.cash_sales_note") %></small></article>
   <article><span><%= t("financial.paid_expenses") %></span><strong><%= money(@paid_expenses_cents) %></strong><small><%= t("financial.paid_expenses_note") %></small></article>
   <article class="<%= @cash_result_cents.negative? ? 'negative' : 'positive' %>"><span><%= t("financial.cash_result") %></span><strong><%= money(@cash_result_cents) %></strong><small><%= t("financial.cash_result_note") %></small></article>
+  <article class="<%= @overall_balance_cents.negative? ? 'negative' : 'positive' %>"><span><%= t("financial.overall_balance") %></span><strong><%= money(@overall_balance_cents) %></strong><small><%= t("financial.overall_balance_note") %></small></article>
   <article><span><%= t("financial.pending_expenses") %></span><strong><%= money(@pending_expenses_cents) %></strong><small><%= t("financial.pending_expenses_note") %></small></article>
   <article class="margin-metric"><span><%= t("financial.known_margin") %></span><strong><%= money(@gross_margin_cents) %></strong><small><%= t("financial.known_margin_note", revenue: money(@costed_revenue_cents), cost: money(@cost_of_goods_cents), count: @uncosted_items_count) %></small></article>
 </section>
@@ -52,7 +56,7 @@
       <p class="finance-empty"><%= t("financial.no_sales") %></p>
     <% else %>
       <div class="finance-table-wrap"><table class="finance-table"><thead><tr><th><%= t("financial.order") %></th><th><%= t("financial.items") %></th><th><%= t("financial.payment") %></th><th><%= t("financial.total") %></th></tr></thead><tbody>
-        <% @recent_orders.each do |order| %><tr><td><strong>#<%= order.number %></strong><small><%= l(order.paid_at, format: :short) %></small></td><td><%= order.order_items.sum(&:quantity) %></td><td><%= t("financial.payment_methods.#{order.payment_method}") %></td><td><strong><%= money(order.total_cents) %></strong></td></tr><% end %>
+        <% @recent_orders.each do |order| %><tr><td><strong>#<%= order.number %></strong><small><%= l(order.paid_at, format: :short) %></small></td><td><%= order.order_items.sum(&:quantity) %></td><td><%= t("financial.payment_methods.#{order.payment_method}") %><% if order.provider_fee_cents.positive? %><small><%= t("financial.fee_line", fee: money(order.provider_fee_cents)) %></small><% end %></td><td><strong><%= money(order.net_total_cents) %></strong><small><%= t("financial.net_value") if order.provider_fee_cents.positive? %></small></td></tr><% end %>
       </tbody></table></div>
     <% end %>
   </section>

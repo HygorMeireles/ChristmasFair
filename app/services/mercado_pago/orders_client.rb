@@ -29,6 +29,17 @@ module MercadoPago
       parse_json(response)
     end
 
+    def cancel_order(external_order_id, idempotency_key:)
+      response = request(
+        Net::HTTP::Post,
+        URI("#{API_URL}/#{external_order_id}/cancel"),
+        idempotency_key:
+      )
+      raise ApiError, error_message(response) unless response.code == "200"
+
+      parse_json(response)
+    end
+
     private
 
     def request(request_class, uri, body: nil, idempotency_key: nil)

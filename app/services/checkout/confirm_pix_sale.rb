@@ -41,10 +41,14 @@ module Checkout
           reservation.update!(status: "confirmed")
         end
 
+        fee_basis_points = EventSetting.current.mercado_pago_fee_basis_points
+        fee_cents = (order.total_cents * fee_basis_points / 10_000.0).round
         order.update!(
           status: "paid",
           amount_received_cents: order.total_cents,
           change_cents: 0,
+          provider_fee_basis_points: fee_basis_points,
+          provider_fee_cents: fee_cents,
           paid_at: Time.current
         )
         attempt.update!(status: "approved", raw_response: provider_data, error_message: nil)

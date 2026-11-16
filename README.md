@@ -17,6 +17,9 @@ O estado atual contém:
 - confirmação do pedido antes de liberar a etapa de pagamento;
 - lotes de estoque com custo, consumo por ordem de entrada e margem apurada somente para itens com custo conhecido;
 - pedido Pix pendente com reserva de estoque, QR dinâmico e confirmação idempotente por webhook;
+- cancelamento seguro da cobrança Pix com liberação da reserva somente após confirmação do Mercado Pago;
+- acesso protegido por senha para caixa, estoque e financeiro;
+- taxa configurável do Mercado Pago, saldo Pix líquido e saldo em dinheiro separados;
 - identidade Mister Wiz combinada com elementos de Natal;
 - estrutura Rails preparada para pedidos e Mercado Pago em uma etapa posterior.
 
@@ -62,6 +65,7 @@ O fluxo Pix usa a Orders API para QR presencial dinâmico. Configure no ambiente
 MERCADO_PAGO_ACCESS_TOKEN=
 MERCADO_PAGO_EXTERNAL_POS_ID=
 MERCADO_PAGO_WEBHOOK_SECRET=
+CHRISTMAS_FAIR_OPERATOR_PASSWORD=
 ```
 
 O `external_pos_id` precisa corresponder a um caixa criado previamente na conta Mercado Pago. Configure o webhook de **Orders** para `https://SEU_DOMINIO/webhooks/mercado_pago`. Sem essas variáveis, a aplicação falha de forma explícita e não simula uma cobrança aprovada.

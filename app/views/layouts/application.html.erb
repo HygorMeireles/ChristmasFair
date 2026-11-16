@@ -31,7 +31,7 @@
         <span class="brand-event">Christmas Fair</span>
       <% end %>
 
-      <nav class="header-actions" aria-label="<%= t('navigation.label') %>">
+      <% if authenticated? %><nav class="header-actions" aria-label="<%= t('navigation.label') %>">
         <%= link_to t("navigation.cashier"), root_path, class: "nav-link #{'active' if controller_name == 'dashboard'}" %>
         <%= link_to t("navigation.fishing"), fishing_tickets_path, class: "nav-link #{'active' if controller_name == 'fishing_tickets'}" %>
         <%= link_to t("navigation.financial"), financial_path, class: "nav-link #{'active' if controller_name.in?(%w[financial expenses])}" %>
@@ -40,7 +40,8 @@
           <%= link_to "PT", locale_switch_path("pt-BR"), class: current_locale == "pt-BR" ? "selected" : nil %>
           <%= link_to "EN", locale_switch_path("en"), class: current_locale == "en" ? "selected" : nil %>
         </div>
-      </nav>
+        <%= button_to t("navigation.logout"), logout_path, method: :delete, class: "nav-link logout-button" %>
+      </nav><% end %>
     </header>
 
     <% if notice.present? %><div class="flash notice"><%= notice %></div><% end %>

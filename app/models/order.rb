@@ -13,11 +13,17 @@ class Order < ApplicationRecord
   validates :total_cents, numericality: { only_integer: true, greater_than: 0 }
   validates :amount_received_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :change_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :provider_fee_cents, :provider_fee_basis_points,
+    numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :paid_at, presence: true, if: :paid?
   validate :received_amount_covers_paid_order
 
   def paid?
     status == "paid"
+  end
+
+  def net_total_cents
+    total_cents - provider_fee_cents
   end
 
   private

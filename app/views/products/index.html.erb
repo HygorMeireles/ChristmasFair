@@ -5,6 +5,18 @@
   <%= link_to t("products.back_to_cashier"), root_path, class: "button secondary" %>
 </section>
 
+<section class="event-settings-card">
+  <div>
+    <span class="eyebrow"><%= t("event_settings.eyebrow") %></span>
+    <h2><%= t("event_settings.title") %></h2>
+    <p><%= t("event_settings.fee_explanation") %></p>
+  </div>
+  <%= form_with model: @event_setting, url: event_setting_path, method: :patch, class: "event-settings-form" do |form| %>
+    <label><span><%= t("event_settings.mercado_pago_fee") %></span><div class="input-suffix"><%= form.text_field :mercado_pago_fee_percent, inputmode: "decimal", required: true %><b>%</b></div></label>
+    <%= form.submit t("event_settings.save"), class: "button primary" %>
+  <% end %>
+</section>
+
 <section class="settings-grid">
   <% @products.each do |product| %>
     <article class="settings-card" id="<%= dom_id(product) %>">

@@ -1,6 +1,13 @@
 ENV["RAILS_ENV"] ||= "test"
+ENV["CHRISTMAS_FAIR_OPERATOR_PASSWORD"] ||= "christmas-fair-test-password"
 require_relative "../config/environment"
 require "rails/test_help"
+
+class ActionDispatch::IntegrationTest
+  setup do
+    post login_url, params: { password: ENV.fetch("CHRISTMAS_FAIR_OPERATOR_PASSWORD") }
+  end
+end
 
 module ActiveSupport
   class TestCase

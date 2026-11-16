@@ -24,7 +24,7 @@ class PixCheckoutsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select ".real-pix-qr svg", 1
     assert_select ".pix-phone .phone-screen", 1
-    assert_select "form", 0
+    assert_select "form[action=?]", pix_checkout_path(attempt.public_token, locale: "pt-BR"), 1
   end
 
   test "fails closed when Mercado Pago is not configured" do

@@ -3,9 +3,14 @@ class FinancialController < ApplicationController
     paid_orders = Order.where(status: "paid")
     @gross_sales_cents = paid_orders.sum(:total_cents)
     @cash_sales_cents = paid_orders.where(payment_method: "cash").sum(:total_cents)
+    @pix_sales_cents = paid_orders.where(payment_method: "pix").sum(:total_cents)
+    @pix_fees_cents = paid_orders.where(payment_method: "pix").sum(:provider_fee_cents)
+    @pix_net_cents = @pix_sales_cents - @pix_fees_cents
+    @net_sales_cents = @gross_sales_cents - @pix_fees_cents
     @paid_expenses_cents = Expense.paid.sum(:amount_cents)
     @pending_expenses_cents = Expense.pending.sum(:amount_cents)
     @cash_result_cents = @cash_sales_cents - @paid_expenses_cents
+    @overall_balance_cents = @net_sales_cents - @paid_expenses_cents
     costed_items = OrderItem.joins(:order).where(orders: { status: "paid" }, cost_complete: true)
     @costed_revenue_cents = costed_items.sum(:line_total_cents)
     @cost_of_goods_cents = costed_items.sum(:cost_cents)

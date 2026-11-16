@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_160001) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_220000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,6 +26,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_160001) do
     t.index ["stock_batch_id"], name: "index_cost_allocations_on_stock_batch_id"
     t.check_constraint "cost_cents >= 0", name: "cost_allocations_cost_nonnegative"
     t.check_constraint "quantity > 0", name: "cost_allocations_quantity_positive"
+  end
+
+  create_table "event_settings", force: :cascade do |t|
+    t.integer "mercado_pago_fee_basis_points", default: 100, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.check_constraint "mercado_pago_fee_basis_points >= 0 AND mercado_pago_fee_basis_points <= 10000", name: "event_settings_mercado_pago_fee_valid"
   end
 
   create_table "expenses", force: :cascade do |t|
@@ -92,9 +99,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_160001) do
     t.datetime "paid_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "provider_fee_cents", default: 0, null: false
+    t.integer "provider_fee_basis_points", default: 0, null: false
     t.index ["checkout_token"], name: "index_orders_on_checkout_token", unique: true
     t.index ["number"], name: "index_orders_on_number", unique: true
     t.check_constraint "change_cents >= 0", name: "orders_change_nonnegative"
+    t.check_constraint "provider_fee_basis_points >= 0", name: "orders_provider_fee_rate_nonnegative"
+    t.check_constraint "provider_fee_cents >= 0", name: "orders_provider_fee_nonnegative"
     t.check_constraint "status::text <> 'paid'::text OR amount_received_cents >= total_cents", name: "orders_paid_amount_covers_total"
     t.check_constraint "total_cents > 0", name: "orders_total_positive"
   end
@@ -113,6 +124,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_160001) do
     t.text "error_message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "cancel_idempotency_key"
+    t.index ["cancel_idempotency_key"], name: "index_payment_attempts_on_cancel_idempotency_key", unique: true
     t.index ["external_order_id"], name: "index_payment_attempts_on_external_order_id", unique: true
     t.index ["idempotency_key"], name: "index_payment_attempts_on_idempotency_key", unique: true
     t.index ["order_id"], name: "index_payment_attempts_on_order_id"

@@ -25,6 +25,9 @@ class Checkout::ConfirmPixSaleTest < ActiveSupport::TestCase
     end
 
     assert_predicate @attempt.order.reload, :paid?
+    assert_equal 100, @attempt.order.provider_fee_basis_points
+    assert_equal 25, @attempt.order.provider_fee_cents
+    assert_equal 2_475, @attempt.order.net_total_cents
     assert_predicate @attempt.reload, :approved?
     assert_equal 19, products(:brownie).reload.stock_quantity
     assert_equal 13, products(:fishing).reload.stock_quantity

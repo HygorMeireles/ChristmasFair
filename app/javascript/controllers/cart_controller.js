@@ -68,6 +68,10 @@ export default class extends Controller {
   }
 
   submitCash(event) {
+    // The Pix button belongs to the same form. Let its own handler submit to
+    // pix_checkouts instead of applying the cash validation to that request.
+    if (event.submitter === this.pixButtonTarget) return
+
     if (!this.orderConfirmed || this.checkoutButtonTarget.disabled) {
       event.preventDefault()
       return

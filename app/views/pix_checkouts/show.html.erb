@@ -4,15 +4,23 @@
   <div class="pix-order-card">
     <span class="eyebrow"><%= t("pix.order_eyebrow") %></span>
     <h1><%= t("pix.order_title", number: @order.number) %></h1>
-    <p><%= t("pix.order_instructions") %></p>
+    <p><%= @attempt.pending? ? t("pix.order_instructions") : t("pix.terminal_instructions") %></p>
     <div class="pix-order-lines">
       <% @order.order_items.each do |item| %>
         <div><span><%= item.quantity %>× <%= current_locale == "en" ? item.product_name_en : item.product_name_pt %></span><strong><%= money(item.line_total_cents) %></strong></div>
       <% end %>
     </div>
     <div class="pix-order-total"><span><%= t("dashboard.total") %></span><strong><%= money(@order.total_cents) %></strong></div>
-    <p class="reservation-note"><%= t("pix.reservation_note") %></p>
-    <%= link_to t("pix.cancel_back"), root_path, class: "button secondary pix-back-button" %>
+    <% if @attempt.pending? %>
+      <p class="reservation-note"><%= t("pix.reservation_note") %></p>
+      <% if @attempt.external_order_id.present? %>
+        <%= button_to t("pix.cancel_order"), pix_checkout_path(@attempt.public_token), method: :delete, class: "button danger pix-back-button", form: { data: { turbo_confirm: t("pix.confirm_cancel") } } %>
+      <% else %>
+        <p class="reservation-note"><%= t("pix.cannot_cancel_recovering") %></p>
+      <% end %>
+    <% else %>
+      <%= link_to t("pix.new_order"), root_path, class: "button secondary pix-back-button" %>
+    <% end %>
   </div>
 
   <aside class="pix-phone-panel">
@@ -22,7 +30,9 @@
         <div class="phone-status"><span>Christmas Fair</span><span>● ● ●</span></div>
         <div class="phone-ready pix-phone-content">
           <span class="phone-brand">MISTER WIZ</span><h3><%= t("dashboard.pix_payment") %></h3>
-          <% if @attempt.qr_data.present? %>
+          <% if @attempt.status.in?(%w[cancelled expired failed]) %>
+            <div class="pix-waiting pix-terminal"><span>×</span><strong><%= t("pix.statuses.#{@attempt.status}") %></strong><p><%= t("pix.terminal_note") %></p></div>
+          <% elsif @attempt.qr_data.present? %>
             <div class="real-pix-qr"><%= pix_qr_svg(@attempt.qr_data) %></div>
             <strong class="pix-amount"><%= money(@order.total_cents) %></strong>
             <p><%= t("pix.scan") %></p>
@@ -36,6 +46,6 @@
       </div>
       <div class="phone-home"></div>
     </div>
-    <p class="pix-live-status"><span></span><%= t("pix.waiting_confirmation") %></p>
+    <% if @attempt.pending? %><p class="pix-live-status"><span></span><%= t("pix.waiting_confirmation") %></p><% end %>
   </aside>
 </section>

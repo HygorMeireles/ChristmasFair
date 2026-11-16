@@ -21,7 +21,10 @@ export default class extends Controller {
           return
         }
         if (["failed", "cancelled", "expired"].includes(data.status)) {
-          window.location.reload()
+          if (!this.terminalStatus) {
+            this.terminalStatus = data.status
+            window.location.reload()
+          }
           return
         }
       }

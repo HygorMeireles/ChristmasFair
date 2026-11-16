@@ -88,6 +88,7 @@ module Checkout
           provider: "mercado_pago",
           status: "creating",
           idempotency_key: SecureRandom.uuid,
+          cancel_idempotency_key: SecureRandom.uuid,
           expires_at:
         )
       end

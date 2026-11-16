@@ -31,6 +31,15 @@ class PixCheckoutsController < ApplicationController
     }
   end
 
+  def destroy
+    attempt = find_attempt
+    order = Checkout::CancelPixOrder.call(attempt:)
+    message = order.paid? ? t("pix.already_paid") : t("pix.cancelled")
+    redirect_to root_path, notice: message
+  rescue Checkout::CancelPixOrder::InvalidCancellation => error
+    redirect_to pix_checkout_path(params[:token]), alert: error.message
+  end
+
   private
 
   def checkout_params

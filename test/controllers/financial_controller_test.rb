@@ -38,7 +38,7 @@ class FinancialControllerTest < ActionDispatch::IntegrationTest
     get financial_url
 
     assert_response :success
-    assert_select ".financial-metrics article", 5
+    assert_select ".financial-metrics article", 9
     assert_select ".financial-metrics strong", text: "R$10,00"
     assert_select ".financial-metrics strong", text: "R$4,00"
     assert_select ".financial-metrics strong", text: "R$6,00"

@@ -6,6 +6,19 @@ en:
     financial: Financial
     settings: Stock setup
     language: Language
+    logout: Sign out
+  authentication:
+    page_title: Restricted access — Christmas Fair
+    restricted: Team area
+    title: Sign in to the cashier
+    subtitle: Enter the team password to access sales, stock and financial data.
+    password: Password
+    sign_in: Sign in
+    required: Sign in to access the system.
+    invalid: Incorrect password.
+    signed_in: Access granted.
+    signed_out: You have signed out.
+    too_many_attempts: Too many attempts. Wait a few minutes and try again.
   footer:
     date: December 5, 2026
   dashboard:
@@ -77,6 +90,19 @@ en:
     order_instructions: Scan the QR Code on the smartphone. Stock is only reduced after Mercado Pago confirms the payment.
     reservation_note: Items are reserved while this payment is pending.
     cancel_back: Back to cashier
+    cancel_order: Cancel charge and return to cashier
+    confirm_cancel: Cancel this Pix charge and release the reserved products?
+    cancelled: Pix charge cancelled and stock released.
+    already_paid: Payment was confirmed before cancellation. The sale was recorded.
+    cannot_cancel: Mercado Pago cannot cancel this charge yet. Try again in a few seconds.
+    cannot_cancel_recovering: The charge is being recovered and cannot be safely cancelled yet.
+    new_order: Create a new order
+    terminal_instructions: This charge has ended and can no longer be paid.
+    terminal_note: Reserved items were released. Return to the cashier to create a new order.
+    statuses:
+      cancelled: Charge cancelled
+      expired: Charge expired
+      failed: Charge could not be created
     scan: Scan using your bank or digital wallet app.
     copy_code: Show Pix Copy and Paste
     recovering: Checking the charge
@@ -123,10 +149,18 @@ en:
     summary: Financial summary
     gross_sales: Gross sales
     confirmed_sales_only: Confirmed payments only
+    pix_sales: Pix sales
+    pix_sales_note: "Fees deducted: %{fees}"
+    pix_balance: Net Pix balance
+    pix_balance_note: Pix sales minus the Mercado Pago fee
+    cash_sales: Cash sales
+    cash_sales_note: Total physically received
     paid_expenses: Paid expenses
     paid_expenses_note: Completed cash outflows
     cash_result: Cash balance
     cash_result_note: Cash sales minus paid expenses
+    overall_balance: Net overall balance
+    overall_balance_note: Net Pix and cash minus paid expenses
     pending_expenses: Pending expenses
     pending_expenses_note: Not deducted from cash balance yet
     known_margin: Calculated gross margin
@@ -152,6 +186,8 @@ en:
     items: Items
     payment: Payment
     total: Total
+    fee_line: "Fee: %{fee}"
+    net_value: Net amount
     expense_history: Expense history
     no_expenses: No expenses recorded.
     mark_paid: Mark as paid
@@ -202,6 +238,13 @@ en:
     history: Recent movements
     balance: Balance
     updated: Product settings saved.
+  event_settings:
+    eyebrow: Payments
+    title: Mercado Pago fee
+    fee_explanation: The fee is saved with each new Pix sale and remains in its history even if this setting changes later.
+    mercado_pago_fee: Fee per Pix sale
+    save: Save fee
+    updated: Mercado Pago fee updated.
   inventory:
     updated: Stock updated.
     invalid_quantity: Enter a valid quantity.

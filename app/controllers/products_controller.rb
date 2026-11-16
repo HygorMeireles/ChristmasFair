@@ -1,6 +1,7 @@
 class ProductsController < ApplicationController
   def index
     @products = Product.display_order.includes(:stock_movements, :stock_batches)
+    @event_setting = EventSetting.current
   end
 
   def update
