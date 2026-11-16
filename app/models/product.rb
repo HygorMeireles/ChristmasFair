@@ -5,6 +5,7 @@ class Product < ApplicationRecord
   has_many :stock_movements, dependent: :restrict_with_error
   has_many :stock_batches, dependent: :restrict_with_error
   has_many :order_items, dependent: :restrict_with_error
+  has_many :stock_reservations, dependent: :restrict_with_error
 
   validates :code, inclusion: { in: CODES }, uniqueness: true
   validates :name_pt, :name_en, presence: true
@@ -33,7 +34,15 @@ class Product < ApplicationRecord
   end
 
   def available_servings
-    stock_quantity / serving_size
+    available_stock_quantity / serving_size
+  end
+
+  def reserved_quantity
+    stock_reservations.active.sum(:quantity)
+  end
+
+  def available_stock_quantity
+    [ stock_quantity - reserved_quantity, 0 ].max
   end
 
   def stock_percentage

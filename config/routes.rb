@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   root "dashboard#index"
   get "financial", to: "financial#index", as: :financial
   resources :cash_checkouts, only: :create
+  post "pix_checkouts", to: "pix_checkouts#create", as: :pix_checkouts
+  get "pix/:token", to: "pix_checkouts#show", as: :pix_checkout
+  get "pix/:token/status", to: "pix_checkouts#status", as: :status_pix_checkout
+  post "webhooks/mercado_pago", to: "webhooks/mercado_pago#create", as: :mercado_pago_webhook
   resources :expenses, only: :create do
     patch :mark_paid, on: :member
   end

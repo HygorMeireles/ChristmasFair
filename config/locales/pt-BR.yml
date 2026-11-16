@@ -27,6 +27,7 @@ pt-BR:
     choose_products: Monte o pedido
     clear: Limpar pedido
     in_stock: Em estoque
+    reserved_for_pix: "%{quantity} reservados por Pix pendente"
     cups_available:
       one: 1 copo de %{size} ml disponível
       other: "%{count} copos de %{size} ml disponíveis"
@@ -51,7 +52,10 @@ pt-BR:
     edit_order: Editar pedido
     payment_method: Forma de pagamento
     cash: Dinheiro
-    pix_soon: Pix em breve
+    pix: Pix
+    pix_ready: O pedido está congelado. Gere um QR Pix único com o valor exato da compra.
+    generate_pix: Gerar QR Pix
+    generating_pix: Gerando QR...
     amount_received: Valor recebido
     change: Troco
     enter_received: Informe um valor suficiente para habilitar a confirmação.
@@ -73,6 +77,28 @@ pt-BR:
     invalid_payment: Informe um valor recebido válido.
     insufficient_payment: O valor recebido é menor que o total do pedido.
     stock_note: "Venda #%{number}"
+  pix:
+    page_title: Pagamento Pix — Christmas Fair
+    order_eyebrow: Pedido confirmado
+    order_title: "Pedido #%{number}"
+    order_instructions: Escaneie o QR Code no smartphone ao lado. O estoque só será baixado depois da confirmação do Mercado Pago.
+    reservation_note: Os itens estão reservados enquanto este pagamento estiver pendente.
+    cancel_back: Voltar ao caixa
+    scan: Escaneie com o aplicativo do seu banco ou carteira digital.
+    copy_code: Mostrar Pix Copia e Cola
+    recovering: Verificando a cobrança
+    recovering_note: A comunicação foi interrompida e estamos consultando o Mercado Pago antes de gerar outra cobrança.
+    waiting: Preparando o QR Pix
+    waiting_confirmation: Aguardando a confirmação segura do Mercado Pago
+    not_configured: Configure o Access Token e o identificador do caixa do Mercado Pago no servidor.
+    network_error: "Não foi possível comunicar com o Mercado Pago: %{message}"
+    invalid_response: O Mercado Pago retornou uma resposta inválida.
+    missing_qr: O Mercado Pago não retornou os dados do QR Code.
+    missing_reservation: A reserva de estoque deste pedido não foi encontrada.
+    wrong_provider_order: A confirmação não corresponde à cobrança criada.
+    wrong_reference: A referência da confirmação não corresponde ao pedido.
+    not_approved: O pagamento ainda não foi aprovado.
+    wrong_amount: O valor confirmado pelo Mercado Pago é diferente do pedido.
   fishing_tickets:
     page_title: Ingressos da pescaria — Christmas Fair
     eyebrow: Controle de prêmios

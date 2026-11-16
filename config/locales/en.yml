@@ -20,6 +20,7 @@ en:
     choose_products: Build the order
     clear: Clear order
     in_stock: In stock
+    reserved_for_pix: "%{quantity} reserved by pending Pix payments"
     cups_available:
       one: 1 cup of %{size} ml available
       other: "%{count} cups of %{size} ml available"
@@ -44,7 +45,10 @@ en:
     edit_order: Edit order
     payment_method: Payment method
     cash: Cash
-    pix_soon: Pix coming soon
+    pix: Pix
+    pix_ready: The order is locked. Generate a unique Pix QR Code for its exact total.
+    generate_pix: Generate Pix QR
+    generating_pix: Generating QR...
     amount_received: Amount received
     change: Change
     enter_received: Enter enough cash to enable confirmation.
@@ -66,6 +70,28 @@ en:
     invalid_payment: Enter a valid amount received.
     insufficient_payment: The amount received is lower than the order total.
     stock_note: "Sale #%{number}"
+  pix:
+    page_title: Pix payment — Christmas Fair
+    order_eyebrow: Confirmed order
+    order_title: "Order #%{number}"
+    order_instructions: Scan the QR Code on the smartphone. Stock is only reduced after Mercado Pago confirms the payment.
+    reservation_note: Items are reserved while this payment is pending.
+    cancel_back: Back to cashier
+    scan: Scan using your bank or digital wallet app.
+    copy_code: Show Pix Copy and Paste
+    recovering: Checking the charge
+    recovering_note: Communication was interrupted, so we are checking Mercado Pago before creating another charge.
+    waiting: Preparing the Pix QR Code
+    waiting_confirmation: Waiting for secure confirmation from Mercado Pago
+    not_configured: Configure the Mercado Pago Access Token and external POS identifier on the server.
+    network_error: "Could not contact Mercado Pago: %{message}"
+    invalid_response: Mercado Pago returned an invalid response.
+    missing_qr: Mercado Pago did not return the QR Code data.
+    missing_reservation: This order's stock reservation was not found.
+    wrong_provider_order: The confirmation does not match the created charge.
+    wrong_reference: The confirmation reference does not match the order.
+    not_approved: The payment has not been approved yet.
+    wrong_amount: The amount confirmed by Mercado Pago differs from the order.
   fishing_tickets:
     page_title: Fishing tickets — Christmas Fair
     eyebrow: Prize control

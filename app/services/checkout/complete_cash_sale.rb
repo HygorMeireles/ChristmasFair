@@ -88,9 +88,11 @@ module Checkout
       products = Product.active.where(code: quantities.keys).order(:id).lock.to_a
       raise InvalidSale, I18n.t("checkout.unavailable_product") unless products.size == quantities.size
 
+      reserved = StockReservation.active.where(product_id: products.map(&:id)).group(:product_id).sum(:quantity)
       products.each do |product|
         requested_stock = quantities.fetch(product.code) * product.serving_size
-        raise InvalidSale, I18n.t("checkout.insufficient_stock", product: product.localized_name) if requested_stock > product.stock_quantity
+        available_stock = product.stock_quantity - reserved.fetch(product.id, 0)
+        raise InvalidSale, I18n.t("checkout.insufficient_stock", product: product.localized_name) if requested_stock > available_stock
       end
       products
     end

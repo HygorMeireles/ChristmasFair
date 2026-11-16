@@ -1,0 +1,41 @@
+<% content_for :title, t("pix.page_title") %>
+
+<section class="pix-page" data-controller="pix-status" data-pix-status-url-value="<%= status_pix_checkout_path(@attempt.public_token) %>">
+  <div class="pix-order-card">
+    <span class="eyebrow"><%= t("pix.order_eyebrow") %></span>
+    <h1><%= t("pix.order_title", number: @order.number) %></h1>
+    <p><%= t("pix.order_instructions") %></p>
+    <div class="pix-order-lines">
+      <% @order.order_items.each do |item| %>
+        <div><span><%= item.quantity %>× <%= current_locale == "en" ? item.product_name_en : item.product_name_pt %></span><strong><%= money(item.line_total_cents) %></strong></div>
+      <% end %>
+    </div>
+    <div class="pix-order-total"><span><%= t("dashboard.total") %></span><strong><%= money(@order.total_cents) %></strong></div>
+    <p class="reservation-note"><%= t("pix.reservation_note") %></p>
+    <%= link_to t("pix.cancel_back"), root_path, class: "button secondary pix-back-button" %>
+  </div>
+
+  <aside class="pix-phone-panel">
+    <div class="phone-frame pix-phone">
+      <div class="phone-speaker"></div>
+      <div class="phone-screen">
+        <div class="phone-status"><span>Christmas Fair</span><span>● ● ●</span></div>
+        <div class="phone-ready pix-phone-content">
+          <span class="phone-brand">MISTER WIZ</span><h3><%= t("dashboard.pix_payment") %></h3>
+          <% if @attempt.qr_data.present? %>
+            <div class="real-pix-qr"><%= pix_qr_svg(@attempt.qr_data) %></div>
+            <strong class="pix-amount"><%= money(@order.total_cents) %></strong>
+            <p><%= t("pix.scan") %></p>
+            <details class="pix-copy"><summary><%= t("pix.copy_code") %></summary><textarea readonly><%= @attempt.qr_data %></textarea></details>
+          <% elsif @attempt.status == "unknown" %>
+            <div class="pix-waiting"><span>↻</span><strong><%= t("pix.recovering") %></strong><p><%= t("pix.recovering_note") %></p></div>
+          <% else %>
+            <div class="pix-waiting"><span>⌛</span><strong><%= t("pix.waiting") %></strong></div>
+          <% end %>
+        </div>
+      </div>
+      <div class="phone-home"></div>
+    </div>
+    <p class="pix-live-status"><span></span><%= t("pix.waiting_confirmation") %></p>
+  </aside>
+</section>

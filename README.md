@@ -16,6 +16,7 @@ O estado atual contém:
 - despesas categorizadas entre ingredientes, embalagens, brinquedos, decoração e outros;
 - confirmação do pedido antes de liberar a etapa de pagamento;
 - lotes de estoque com custo, consumo por ordem de entrada e margem apurada somente para itens com custo conhecido;
+- pedido Pix pendente com reserva de estoque, QR dinâmico e confirmação idempotente por webhook;
 - identidade Mister Wiz combinada com elementos de Natal;
 - estrutura Rails preparada para pedidos e Mercado Pago em uma etapa posterior.
 
@@ -53,6 +54,16 @@ bin/brakeman --no-pager -q
 
 ## Credenciais
 
-Arquivos `.env*`, chaves Rails e segredos do Kamal não entram no Git. As credenciais do Mercado Pago serão configuradas no servidor quando a integração for implementada; nunca devem ser colocadas no JavaScript, nos commits ou em arquivos versionados.
+Arquivos `.env*`, chaves Rails e segredos do Kamal não entram no Git. As credenciais do Mercado Pago devem ser configuradas somente no servidor; nunca devem ser colocadas no JavaScript, nos commits ou em arquivos versionados.
+
+O fluxo Pix usa a Orders API para QR presencial dinâmico. Configure no ambiente do servidor:
+
+```text
+MERCADO_PAGO_ACCESS_TOKEN=
+MERCADO_PAGO_EXTERNAL_POS_ID=
+MERCADO_PAGO_WEBHOOK_SECRET=
+```
+
+O `external_pos_id` precisa corresponder a um caixa criado previamente na conta Mercado Pago. Configure o webhook de **Orders** para `https://SEU_DOMINIO/webhooks/mercado_pago`. Sem essas variáveis, a aplicação falha de forma explícita e não simula uma cobrança aprovada.
 
 O escopo completo e o cronograma estão em [PLANO_DE_IMPLEMENTACAO.md](PLANO_DE_IMPLEMENTACAO.md).

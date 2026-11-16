@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total", "quantityInput", "cashReceived", "change", "cashHint", "checkoutButton", "reviewState", "paymentState", "confirmOrderButton", "quantityButton", "clearButton"]
+  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total", "quantityInput", "cashReceived", "change", "cashHint", "checkoutButton", "reviewState", "paymentState", "confirmOrderButton", "quantityButton", "clearButton", "cashMethod", "pixMethod", "cashPayment", "pixPayment", "pixButton"]
   static values = { locale: String, currency: String }
 
   connect() {
@@ -9,6 +9,7 @@ export default class extends Controller {
     this.totalCents = 0
     this.itemCount = 0
     this.orderConfirmed = false
+    this.paymentMethod = "cash"
     this.render()
   }
 
@@ -61,6 +62,7 @@ export default class extends Controller {
   editOrder() {
     this.orderConfirmed = false
     this.cashReceivedTarget.value = ""
+    this.paymentMethod = "cash"
     this.renderConfirmationState()
     this.updateCashState()
   }
@@ -73,6 +75,26 @@ export default class extends Controller {
 
     this.checkoutButtonTarget.disabled = true
     this.checkoutButtonTarget.value = this.checkoutButtonTarget.dataset.submittingLabel
+  }
+
+  selectCash() {
+    this.paymentMethod = "cash"
+    this.renderPaymentMethod()
+  }
+
+  selectPix() {
+    this.paymentMethod = "pix"
+    this.renderPaymentMethod()
+  }
+
+  submitPix(event) {
+    if (!this.orderConfirmed) {
+      event.preventDefault()
+      return
+    }
+
+    this.pixButtonTarget.disabled = true
+    this.pixButtonTarget.textContent = this.pixButtonTarget.dataset.submittingLabel
   }
 
   render() {
@@ -117,10 +139,19 @@ export default class extends Controller {
     })
     this.clearButtonTarget.disabled = this.orderConfirmed
     this.confirmOrderButtonTarget.disabled = this.itemCount === 0
-    this.phoneTarget.classList.toggle("is-locked", !this.orderConfirmed)
-    this.lockStateTarget.hidden = this.orderConfirmed
-    this.readyStateTarget.hidden = !this.orderConfirmed
+    this.renderPaymentMethod()
     this.element.classList.toggle("order-confirmed", this.orderConfirmed)
+  }
+
+  renderPaymentMethod() {
+    const pixActive = this.orderConfirmed && this.paymentMethod === "pix"
+    this.cashPaymentTarget.hidden = this.paymentMethod !== "cash"
+    this.pixPaymentTarget.hidden = this.paymentMethod !== "pix"
+    this.cashMethodTarget.classList.toggle("selected", this.paymentMethod === "cash")
+    this.pixMethodTarget.classList.toggle("selected", this.paymentMethod === "pix")
+    this.phoneTarget.classList.toggle("is-locked", !pixActive)
+    this.lockStateTarget.hidden = pixActive
+    this.readyStateTarget.hidden = !pixActive
   }
 
   updateCashState() {
