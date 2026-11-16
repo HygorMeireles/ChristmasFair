@@ -90,6 +90,8 @@ production:
     database: christmas_fair_production
     username: christmas_fair
     password: <%= ENV["CHRISTMAS_FAIR_DATABASE_PASSWORD"] %>
+    host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
+    port: <%= ENV.fetch("DATABASE_PORT", 5432) %>
   cache:
     <<: *primary_production
     database: christmas_fair_production_cache

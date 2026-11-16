@@ -1,0 +1,41 @@
+name: christmasfair
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: christmasfair-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: christmas_fair
+      POSTGRES_PASSWORD: ${CHRISTMAS_FAIR_DATABASE_PASSWORD}
+      POSTGRES_DB: christmas_fair_production
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U christmas_fair -d christmas_fair_production"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - christmasfair_postgres:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: christmasfair-web:local
+    container_name: christmasfair-web
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: production
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      CHRISTMAS_FAIR_DATABASE_PASSWORD: ${CHRISTMAS_FAIR_DATABASE_PASSWORD}
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      SOLID_QUEUE_IN_PUMA: "true"
+    ports:
+      - "127.0.0.1:3004:80"
+
+volumes:
+  christmasfair_postgres:

@@ -96,11 +96,17 @@ module MercadoPago
     end
 
     def access_token
-      ENV["MERCADO_PAGO_ACCESS_TOKEN"].presence || Rails.application.credentials.dig(:mercado_pago, :access_token)
+      configuration_value("MERCADO_PAGO_ACCESS_TOKEN", :access_token)
     end
 
     def external_pos_id
-      ENV["MERCADO_PAGO_EXTERNAL_POS_ID"].presence || Rails.application.credentials.dig(:mercado_pago, :external_pos_id)
+      configuration_value("MERCADO_PAGO_EXTERNAL_POS_ID", :external_pos_id)
+    end
+
+    def configuration_value(environment_key, credential_key)
+      return ENV[environment_key].presence if ENV.key?(environment_key)
+
+      Rails.application.credentials.dig(:mercado_pago, credential_key)
     end
   end
 end

@@ -28,17 +28,34 @@ class PixCheckoutsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "fails closed when Mercado Pago is not configured" do
-    assert_no_difference "StockReservation.active.count" do
-      post pix_checkouts_url, params: {
-        checkout: {
-          checkout_token: SecureRandom.uuid,
-          quantities: { brownie: 1 }
+    with_environment(
+      "MERCADO_PAGO_ACCESS_TOKEN" => "",
+      "MERCADO_PAGO_EXTERNAL_POS_ID" => ""
+    ) do
+      assert_no_difference "StockReservation.active.count" do
+        post pix_checkouts_url, params: {
+          checkout: {
+            checkout_token: SecureRandom.uuid,
+            quantities: { brownie: 1 }
+          }
         }
-      }
+      end
     end
 
     assert_redirected_to root_url(locale: "pt-BR")
     assert_equal "cancelled", Order.last.status
     assert_equal "failed", Order.last.payment_attempts.first.status
+  end
+
+  private
+
+  def with_environment(values)
+    previous = values.to_h { |key, _value| [ key, ENV.key?(key) ? ENV[key] : :missing ] }
+    values.each { |key, value| ENV[key] = value }
+    yield
+  ensure
+    previous.each do |key, value|
+      value == :missing ? ENV.delete(key) : ENV[key] = value
+    end
   end
 end
