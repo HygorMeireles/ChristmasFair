@@ -21,9 +21,9 @@ O estado atual contém:
 - acesso protegido por senha para caixa, estoque e financeiro;
 - taxa configurável do Mercado Pago, saldo Pix líquido e saldo em dinheiro separados;
 - identidade Mister Wiz combinada com elementos de Natal;
-- estrutura Rails preparada para pedidos e Mercado Pago em uma etapa posterior.
+- integração de produção com QR Pix dinâmico do Mercado Pago, webhook, conciliação e cancelamento.
 
-Ao confirmar um recebimento em dinheiro, a venda é registrada e o estoque persistido é reduzido. O Pix continua identificado como indisponível até a integração segura com o Mercado Pago.
+Ao confirmar um recebimento em dinheiro ou Pix, a venda é registrada e o estoque persistido é reduzido. No Pix, isso ocorre somente depois da confirmação consultada no Mercado Pago.
 
 ## Tecnologias
 
@@ -34,7 +34,11 @@ Ao confirmar um recebimento em dinheiro, a venda é registrada e o estoque persi
 
 ## Preparar o ambiente
 
+Pré-requisitos: Ruby 3.4.1, PostgreSQL 16+ e Bundler.
+
 ```bash
+git clone https://github.com/HygorMeireles/ChristmasFair.git
+cd ChristmasFair
 bundle install
 bin/rails db:prepare db:seed
 bin/dev
@@ -44,6 +48,14 @@ Acesse:
 
 - Caixa: <http://localhost:3000>
 - Produtos e estoque: <http://localhost:3000/products>
+
+No ambiente local, entre com a senha de desenvolvimento:
+
+```text
+misterwiz-local
+```
+
+Essa senha existe somente em `development`. Produção exige a variável protegida `CHRISTMAS_FAIR_OPERATOR_PASSWORD` e não possui fallback.
 
 A carga inicial cria os três produtos com preço e estoque zerados. Cadastre os valores reais na tela **Configurar estoque**. Para não misturar demonstração e operação, dados fictícios devem permanecer apenas no banco local de desenvolvimento.
 
@@ -69,5 +81,21 @@ CHRISTMAS_FAIR_OPERATOR_PASSWORD=
 ```
 
 O `external_pos_id` precisa corresponder a um caixa criado previamente na conta Mercado Pago. Configure o webhook de **Orders** para `https://SEU_DOMINIO/webhooks/mercado_pago`. Sem essas variáveis, a aplicação falha de forma explícita e não simula uma cobrança aprovada.
+
+Seu colaborador não precisa — e não deve — receber o `config/master.key`, o Access Token de produção ou a senha de produção. Sem credenciais do Mercado Pago, ele consegue desenvolver toda a aplicação, usar dinheiro localmente e executar os testes; apenas uma cobrança Pix real não será criada.
+
+## Colaboração pelo GitHub
+
+Depois de aceitar o convite de colaborador, cada pessoa deve trabalhar em uma branch própria:
+
+```bash
+git pull origin main
+git switch -c nome-da-alteracao
+# desenvolver e verificar
+bin/rails test
+git push -u origin nome-da-alteracao
+```
+
+Em seguida, abra um Pull Request para revisar e unir a alteração na `main`. Não versione `.env`, `config/master.key`, tokens, senhas, logs ou bancos de dados.
 
 O escopo completo e o cronograma estão em [PLANO_DE_IMPLEMENTACAO.md](PLANO_DE_IMPLEMENTACAO.md).

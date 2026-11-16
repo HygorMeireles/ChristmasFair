@@ -24,7 +24,10 @@ class ApplicationController < ActionController::Base
   end
 
   def operator_password
-    ENV["CHRISTMAS_FAIR_OPERATOR_PASSWORD"].presence || Rails.application.credentials.dig(:authentication, :operator_password)
+    return ENV["CHRISTMAS_FAIR_OPERATOR_PASSWORD"] if ENV["CHRISTMAS_FAIR_OPERATOR_PASSWORD"].present?
+    return "misterwiz-local" if Rails.env.development?
+
+    Rails.application.credentials.dig(:authentication, :operator_password)
   end
 
   def set_locale
