@@ -41,9 +41,10 @@ pt-BR:
     step_two: Passo 2
     payment: Pagamento
     phone_locked: Aguardando o pedido
-    select_to_unlock: Adicione um produto para desbloquear a prévia do pagamento.
+    select_to_unlock: Monte e confirme o pedido para liberar o QR Pix.
     order_summary: Resumo do pedido
     total: Total
+    empty_order: Selecione os produtos acima para montar o pedido.
     review_order: Confira os itens e confirme o pedido antes de escolher o pagamento.
     confirm_order: Confirmar pedido
     order_confirmed: Pedido confirmado
@@ -58,6 +59,9 @@ pt-BR:
     confirm_cash: Confirmar recebimento
     confirming: Confirmando...
     payment_note: Ao confirmar o dinheiro, a venda será registrada e o estoque será atualizado imediatamente.
+    pix_payment: Pagamento Pix
+    pix_after_confirmation: O QR Code do valor confirmado aparecerá somente nesta tela.
+    phone_pix_note: O smartphone ficará reservado ao QR Pix depois da integração com o Mercado Pago.
   checkout:
     completed: "Venda #%{number} concluída. Troco: %{change}."
     empty_cart: Adicione pelo menos um produto ao pedido.

@@ -123,6 +123,15 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
 .lock-icon { display: grid; place-items: center; margin: auto; width: 62px; height: 62px; border-radius: 20px; background: white; color: var(--purple); font-size: 34px; box-shadow: 0 10px 25px rgba(66,16,79,.13); }
 .phone-ready { padding: 12px 17px 18px; }
 .cash-checkout-form { display: grid; gap: 0; }
+.order-checkout-card { margin-top: 22px; padding: 20px; border: 1px solid #dfd1df; border-radius: 20px; background: linear-gradient(145deg,#fff,#faf3fa); box-shadow: inset 0 1px 0 white,0 9px 22px rgba(66,16,79,.06); }
+.order-summary-heading { display: flex; justify-content: space-between; align-items: end; gap: 18px; }
+.order-summary-heading h3 { margin: 4px 0 0; color: var(--purple-deep); font-family: Georgia,serif; font-size: 23px; }
+.order-total { display: grid; justify-items: end; gap: 2px; }
+.order-total span { color: var(--muted); font-size: 9px; font-weight: 850; text-transform: uppercase; letter-spacing: .08em; }
+.order-total strong { color: var(--purple-deep); font-size: 25px; }
+.order-cart-lines { min-height: 48px; margin: 15px 0; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+.order-cart-lines > div { padding: 9px 11px; border: 1px dashed #d8c8d8; border-radius: 11px; background: white; }
+.order-cart-lines > p { grid-column: 1/-1; margin: 0; padding: 14px; color: var(--muted); text-align: center; font-size: 10px; }
 .phone-brand { font-size: 9px; letter-spacing: .12em; font-weight: 950; color: var(--purple); }
 .phone-ready h3 { font-family: Georgia,serif; color: var(--purple-deep); margin: 7px 0 14px; font-size: 20px; }
 .cart-lines { display: grid; gap: 8px; min-height: 80px; }
@@ -130,10 +139,12 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
 .phone-total { display: flex; justify-content: space-between; align-items: end; margin: 15px 0; }
 .phone-total span { font-size: 10px; color: var(--muted); }
 .phone-total strong { font-size: 21px; color: var(--purple-deep); }
-.order-review-step { display: grid; gap: 10px; padding: 14px; border-radius: 15px; background: #f5edf6; }
+.order-review-step { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 16px; padding: 14px; border-radius: 15px; background: #f5edf6; }
 .order-review-step p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.45; }
-.confirm-order-button { min-height: 40px; border: 0; border-radius: 11px; cursor: pointer; color: white; background: linear-gradient(135deg,var(--purple),var(--purple-deep)); font-size: 10px; font-weight: 900; box-shadow: inset 0 -3px 0 rgba(0,0,0,.15),0 7px 15px rgba(66,16,79,.18); }
-.payment-step { display: grid; }
+.confirm-order-button { min-width: 170px; min-height: 40px; border: 0; border-radius: 11px; cursor: pointer; color: white; background: linear-gradient(135deg,var(--purple),var(--purple-deep)); font-size: 10px; font-weight: 900; box-shadow: inset 0 -3px 0 rgba(0,0,0,.15),0 7px 15px rgba(66,16,79,.18); }
+.confirm-order-button:disabled { cursor: not-allowed; opacity: .4; box-shadow: none; }
+.payment-step { display: grid; padding: 14px; border-radius: 15px; background: #f5edf6; }
+.payment-step[hidden] { display: none; }
 .confirmed-order { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--green); font-size: 9px; font-weight: 850; }
 .confirmed-order button { padding: 0; border: 0; cursor: pointer; color: var(--purple); background: transparent; font-size: 9px; font-weight: 850; text-decoration: underline; }
 .order-confirmed .product-card { opacity: .72; }
@@ -154,6 +165,10 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
 .cash-hint.is-ready { color: var(--green); font-weight: 750; }
 .confirm-sale-button { width: 100%; min-height: 40px; border: 0; border-radius: 11px; cursor: pointer; color: white; background: linear-gradient(135deg,var(--green-light),var(--green)); font-size: 10px; font-weight: 900; box-shadow: inset 0 -3px 0 rgba(0,0,0,.14),0 6px 14px rgba(23,76,54,.18); }
 .confirm-sale-button:disabled { cursor: not-allowed; opacity: .42; filter: grayscale(.5); box-shadow: none; }
+.cash-payment-grid { display: grid; grid-template-columns: minmax(180px,1fr) 140px minmax(180px,1fr) auto; gap: 14px; align-items: end; }
+.cash-payment-grid .change-line { display: grid; align-content: center; justify-items: start; margin: 0; min-height: 40px; }
+.cash-payment-grid .cash-hint { align-self: center; margin: 0; }
+.cash-payment-grid .confirm-sale-button { min-width: 170px; }
 .pix-placeholder { min-height: 132px; padding: 18px; display: grid; place-items: center; text-align: center; border-radius: 17px; color: white; background: linear-gradient(145deg,var(--purple),var(--purple-deep)); box-shadow: inset 0 0 0 1px rgba(255,255,255,.15); }
 .pix-placeholder p { margin: 5px 0 0; font-size: 10px; line-height: 1.4; }
 .pix-diamond { font-size: 30px; color: var(--gold); }
@@ -305,6 +320,7 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
   .financial-metrics { grid-template-columns: repeat(2,1fr); }
   .batch-form { grid-template-columns: repeat(2,1fr); }
   .batch-expense-check { grid-column: 1/-1; }
+  .cash-payment-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width:850px) {
   .site-header { align-items: flex-start; flex-direction: column; }
@@ -348,6 +364,10 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
   .batch-form { grid-template-columns: 1fr; }
   .batch-expense-check { grid-column: auto; }
   .batch-button { justify-self: stretch; }
+  .order-summary-heading { align-items: flex-start; }
+  .order-cart-lines { grid-template-columns: 1fr; }
+  .order-review-step, .cash-payment-grid { grid-template-columns: 1fr; }
+  .confirm-order-button, .cash-payment-grid .confirm-sale-button { width: 100%; min-width: 0; }
 }
 @media (prefers-reduced-motion:reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

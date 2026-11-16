@@ -34,9 +34,10 @@ en:
     step_two: Step 2
     payment: Payment
     phone_locked: Waiting for the order
-    select_to_unlock: Add a product to unlock the payment preview.
+    select_to_unlock: Build and confirm the order to unlock the Pix QR Code.
     order_summary: Order summary
     total: Total
+    empty_order: Select the products above to build the order.
     review_order: Review the items and confirm the order before choosing payment.
     confirm_order: Confirm order
     order_confirmed: Order confirmed
@@ -51,6 +52,9 @@ en:
     confirm_cash: Confirm payment
     confirming: Confirming...
     payment_note: Confirming the cash payment records the sale and updates stock immediately.
+    pix_payment: Pix payment
+    pix_after_confirmation: The QR Code for the confirmed amount will appear only on this screen.
+    phone_pix_note: The smartphone will be reserved for Pix after the Mercado Pago integration.
   checkout:
     completed: "Sale #%{number} completed. Change: %{change}."
     empty_cart: Add at least one product to the order.

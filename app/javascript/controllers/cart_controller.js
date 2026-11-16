@@ -93,12 +93,14 @@ export default class extends Controller {
       if (quantity > 0) this.appendLine(product, quantity)
     })
 
+    if (itemCount === 0) this.appendEmptyLine()
+
     this.totalCents = total
     this.itemCount = itemCount
     if (itemCount === 0) this.orderConfirmed = false
     this.quantityInputTargets.forEach((input) => { input.value = this.cart.get(input.dataset.code) || 0 })
 
-    const unlocked = itemCount > 0
+    const unlocked = this.orderConfirmed
     this.phoneTarget.classList.toggle("is-locked", !unlocked)
     this.lockStateTarget.hidden = unlocked
     this.readyStateTarget.hidden = !unlocked
@@ -114,6 +116,10 @@ export default class extends Controller {
       button.disabled = this.orderConfirmed || (button.dataset.action.includes("#add") && Number(this.cart.get(button.dataset.code) || 0) >= this.productFor(button.dataset.code).available)
     })
     this.clearButtonTarget.disabled = this.orderConfirmed
+    this.confirmOrderButtonTarget.disabled = this.itemCount === 0
+    this.phoneTarget.classList.toggle("is-locked", !this.orderConfirmed)
+    this.lockStateTarget.hidden = this.orderConfirmed
+    this.readyStateTarget.hidden = !this.orderConfirmed
     this.element.classList.toggle("order-confirmed", this.orderConfirmed)
   }
 
@@ -153,6 +159,12 @@ export default class extends Controller {
     price.textContent = this.money(product.price * quantity)
     row.append(label, price)
     this.cartLinesTarget.append(row)
+  }
+
+  appendEmptyLine() {
+    const message = document.createElement("p")
+    message.textContent = this.cartLinesTarget.dataset.emptyMessage
+    this.cartLinesTarget.append(message)
   }
 
   productFor(code) {

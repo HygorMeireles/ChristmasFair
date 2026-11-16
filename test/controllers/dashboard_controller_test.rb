@@ -10,6 +10,9 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_select "link[rel='icon'][href*='mister-wiz-symbol']", 1
     assert_select "h2", text: "Monte o pedido"
     assert_select "form.cash-checkout-form[action=?]", cash_checkouts_path(locale: "pt-BR")
+    assert_select ".product-stage > form.order-checkout-card", 1
+    assert_select ".checkout-panel .phone-ready form", 0
+    assert_select ".checkout-panel .phone-ready h3", text: "Pagamento Pix"
     assert_select "input[data-cart-target='checkoutButton'][disabled]", 1
     assert_select "button[data-action='cart#confirmOrder']", text: "Confirmar pedido"
     assert_select "[data-cart-target='paymentState'][hidden]", 1
