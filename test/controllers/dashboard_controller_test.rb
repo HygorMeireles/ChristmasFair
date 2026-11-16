@@ -28,4 +28,13 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h2", text: "Build the order"
   end
+
+  test "shows a dismissible payment result modal" do
+    get root_url(payment: "approved")
+
+    assert_response :success
+    assert_select "dialog.payment-result-modal.approved[data-controller='payment-modal']", 1
+    assert_select ".payment-result-modal h2", text: "Venda concluída!"
+    assert_select "button[data-action='payment-modal#close']", 1
+  end
 end

@@ -1,5 +1,15 @@
 <% content_for :title, t("dashboard.page_title") %>
 
+<% if @payment_result %>
+  <dialog class="payment-result-modal <%= @payment_result %>" data-controller="payment-modal" data-action="click->payment-modal#closeFromBackdrop">
+    <div class="payment-result-icon" aria-hidden="true"><%= @payment_result == "approved" ? "✓" : "!" %></div>
+    <span class="eyebrow"><%= t("payment_results.#{@payment_result}.eyebrow") %></span>
+    <h2><%= t("payment_results.#{@payment_result}.title") %></h2>
+    <p><%= t("payment_results.#{@payment_result}.message") %></p>
+    <button type="button" class="button primary" data-action="payment-modal#close"><%= t("payment_results.close") %></button>
+  </dialog>
+<% end %>
+
 <section class="hero-banner">
   <div class="event-logo-card">
     <%= image_tag "branding/originals/christmas-fair.jpeg", class: "event-logo", alt: "Mister Wiz Christmas Fair" %>

@@ -79,6 +79,24 @@ pt-BR:
     pix_payment: Pagamento Pix
     pix_after_confirmation: O QR Code do valor confirmado aparecerá somente nesta tela.
     phone_pix_note: O smartphone ficará reservado ao QR Pix depois da integração com o Mercado Pago.
+  payment_results:
+    close: Fechar e iniciar novo pedido
+    approved:
+      eyebrow: Pagamento confirmado
+      title: Venda concluída!
+      message: O Mercado Pago confirmou o recebimento e o estoque já foi atualizado.
+    failed:
+      eyebrow: Pagamento não concluído
+      title: Não foi possível confirmar
+      message: A cobrança apresentou um erro e nenhum item foi vendido. Monte um novo pedido para tentar novamente.
+    expired:
+      eyebrow: Tempo encerrado
+      title: O QR Pix expirou
+      message: O pagamento não foi recebido e os produtos reservados foram liberados.
+    cancelled:
+      eyebrow: Cobrança encerrada
+      title: Pagamento cancelado
+      message: Nenhum pagamento foi confirmado e os produtos reservados foram liberados.
   checkout:
     completed: "Venda #%{number} concluída. Troco: %{change}."
     empty_cart: Adicione pelo menos um produto ao pedido.
@@ -168,6 +186,11 @@ pt-BR:
     cash_result_note: Vendas em dinheiro menos despesas pagas
     overall_balance: Saldo geral líquido
     overall_balance_note: Pix líquido e dinheiro menos despesas pagas
+    pending_summary: "Pendentes: %{amount}"
+    show_details: Ver composição dos valores
+    show_details_note: Vendas brutas, taxas, pendências e margem
+    manage_expenses: Gerenciar despesas
+    expense_summary: "Pagas: %{paid} · Pendentes: %{pending}"
     pending_expenses: Despesas pendentes
     pending_expenses_note: Ainda não descontadas do saldo de caixa
     known_margin: Margem bruta apurada
@@ -242,6 +265,13 @@ pt-BR:
     note: Observação
     note_placeholder: "Exemplo: primeiro lote"
     apply: Aplicar movimentação
+    quick_stock: Atualizar estoque
+    quick_stock_help: Informe a quantidade e escolha se ela entrou ou saiu.
+    note_optional: Observação opcional
+    edit_product: Editar produto, preço e medidas
+    last_movements:
+      one: Última movimentação
+      other: "%{count} movimentações recentes"
     history: Movimentações recentes
     balance: Saldo
     updated: Configurações do produto salvas.
@@ -267,6 +297,7 @@ pt-BR:
       sale: Venda
   stock_batches:
     add_batch: Adicionar lote com custo
+    with_cost: Estoque com custo para calcular a margem
     explanation: O lote aumenta o estoque e permite calcular o custo real dos itens vendidos por ordem de entrada.
     description: Identificação do lote
     description_placeholder: "Exemplo: brownies da primeira fornada"

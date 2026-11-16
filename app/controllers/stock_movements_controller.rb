@@ -2,12 +2,14 @@ class StockMovementsController < ApplicationController
   def create
     product = Product.find(params[:product_id])
     amount = Integer(params[:amount], exception: false)
-    direction = params[:direction] == "remove" ? -1 : 1
+    removing = params[:stock_action] == "remove" || params[:direction] == "remove"
+    direction = removing ? -1 : 1
+    movement_type = params[:movement_type].presence || (removing ? "loss" : "restock")
 
     Inventory::AdjustStock.call(
       product:,
       quantity_delta: amount.to_i * direction,
-      movement_type: params[:movement_type],
+      movement_type:,
       note: params[:note]
     )
     redirect_to products_path, notice: t("inventory.updated")

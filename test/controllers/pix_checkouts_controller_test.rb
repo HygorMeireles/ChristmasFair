@@ -47,6 +47,28 @@ class PixCheckoutsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "failed", Order.last.payment_attempts.first.status
   end
 
+  test "redirects terminal payment states to a result modal" do
+    order = Order.create!(
+      checkout_token: SecureRandom.uuid,
+      status: "cancelled",
+      payment_method: "pix",
+      total_cents: 500,
+      amount_received_cents: 0,
+      change_cents: 0
+    )
+    attempt = order.payment_attempts.create!(
+      public_token: SecureRandom.urlsafe_base64(24),
+      status: "expired",
+      idempotency_key: SecureRandom.uuid,
+      expires_at: 1.minute.ago
+    )
+
+    get status_pix_checkout_url(attempt.public_token)
+
+    assert_response :success
+    assert_equal root_path(payment: "expired", locale: "pt-BR"), response.parsed_body["redirect_url"]
+  end
+
   private
 
   def with_environment(values)

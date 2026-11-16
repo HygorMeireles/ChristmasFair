@@ -20,13 +20,6 @@ export default class extends Controller {
           window.location.assign(data.redirect_url)
           return
         }
-        if (["failed", "cancelled", "expired"].includes(data.status)) {
-          if (!this.terminalStatus) {
-            this.terminalStatus = data.status
-            window.location.reload()
-          }
-          return
-        }
       }
     } catch (_error) {
       // A próxima consulta tenta novamente após uma falha temporária de rede.

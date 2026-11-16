@@ -72,6 +72,24 @@ en:
     pix_payment: Pix payment
     pix_after_confirmation: The QR Code for the confirmed amount will appear only on this screen.
     phone_pix_note: The smartphone will be reserved for Pix after the Mercado Pago integration.
+  payment_results:
+    close: Close and start a new order
+    approved:
+      eyebrow: Payment confirmed
+      title: Sale completed!
+      message: Mercado Pago confirmed the payment and stock has already been updated.
+    failed:
+      eyebrow: Payment not completed
+      title: Confirmation failed
+      message: The charge failed and no items were sold. Create a new order to try again.
+    expired:
+      eyebrow: Time expired
+      title: The Pix QR expired
+      message: Payment was not received and reserved products were released.
+    cancelled:
+      eyebrow: Charge ended
+      title: Payment cancelled
+      message: No payment was confirmed and reserved products were released.
   checkout:
     completed: "Sale #%{number} completed. Change: %{change}."
     empty_cart: Add at least one product to the order.
@@ -161,6 +179,11 @@ en:
     cash_result_note: Cash sales minus paid expenses
     overall_balance: Net overall balance
     overall_balance_note: Net Pix and cash minus paid expenses
+    pending_summary: "Pending: %{amount}"
+    show_details: View value breakdown
+    show_details_note: Gross sales, fees, pending expenses and margin
+    manage_expenses: Manage expenses
+    expense_summary: "Paid: %{paid} · Pending: %{pending}"
     pending_expenses: Pending expenses
     pending_expenses_note: Not deducted from cash balance yet
     known_margin: Calculated gross margin
@@ -235,6 +258,13 @@ en:
     note: Note
     note_placeholder: "Example: first batch"
     apply: Apply movement
+    quick_stock: Update stock
+    quick_stock_help: Enter the quantity and choose whether it came in or went out.
+    note_optional: Optional note
+    edit_product: Edit product, price and measurements
+    last_movements:
+      one: Last movement
+      other: "%{count} recent movements"
     history: Recent movements
     balance: Balance
     updated: Product settings saved.
@@ -260,6 +290,7 @@ en:
       sale: Sale
   stock_batches:
     add_batch: Add costed batch
+    with_cost: Costed stock used to calculate margin
     explanation: A batch increases stock and calculates the actual cost of sold items in entry order.
     description: Batch identification
     description_placeholder: "Example: first brownie tray"

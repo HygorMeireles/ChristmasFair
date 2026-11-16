@@ -1,6 +1,18 @@
 require "test_helper"
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
+  test "shows compact stock controls and a usable Mercado Pago fee field" do
+    get products_url
+
+    assert_response :success
+    assert_select ".event-settings-form .fee-input input[value='1.00']", 1
+    assert_select ".quick-stock-form", 3
+    assert_select ".quick-stock-form select", 0
+    assert_select "button[name='stock_action'][value='add']", 3
+    assert_select "button[name='stock_action'][value='remove']", 3
+    assert_select "details.product-config-panel", 3
+  end
+
   test "updates configurable price and serving size" do
     chocolate = products(:hot_chocolate)
     patch product_url(chocolate), params: { product: {

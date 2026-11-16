@@ -24,10 +24,11 @@ class PixCheckoutsController < ApplicationController
       end
     end
 
+    status = attempt.reload.status
     render json: {
-      status: attempt.reload.status,
+      status:,
       order_status: attempt.order.reload.status,
-      redirect_url: attempt.approved? ? root_path(payment: "approved") : nil
+      redirect_url: payment_result_path(status)
     }
   end
 
@@ -48,5 +49,12 @@ class PixCheckoutsController < ApplicationController
 
   def find_attempt
     PaymentAttempt.includes(order: :order_items).find_by!(public_token: params[:token])
+  end
+
+  def payment_result_path(status)
+    return root_path(payment: "approved") if status == "approved"
+    return root_path(payment: status) if status.in?(%w[failed expired cancelled])
+
+    nil
   end
 end
