@@ -1,17 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total", "quantityInput", "cashReceived", "change", "cashHint", "checkoutButton"]
+  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total", "quantityInput", "cashReceived", "change", "cashHint", "checkoutButton", "reviewState", "paymentState", "confirmOrderButton", "quantityButton", "clearButton"]
   static values = { locale: String, currency: String }
 
   connect() {
     this.cart = new Map()
     this.totalCents = 0
     this.itemCount = 0
+    this.orderConfirmed = false
     this.render()
   }
 
   add(event) {
+    if (this.orderConfirmed) return
+
     const product = this.productFor(event.currentTarget.dataset.code)
     if (!product) return
 
@@ -26,6 +29,8 @@ export default class extends Controller {
   }
 
   remove(event) {
+    if (this.orderConfirmed) return
+
     const code = event.currentTarget.dataset.code
     const current = this.cart.get(code) || 0
     if (current <= 1) this.cart.delete(code)
@@ -34,6 +39,8 @@ export default class extends Controller {
   }
 
   clear() {
+    if (this.orderConfirmed) return
+
     this.cart.clear()
     this.cashReceivedTarget.value = ""
     this.render()
@@ -43,8 +50,23 @@ export default class extends Controller {
     this.updateCashState()
   }
 
+  confirmOrder() {
+    if (this.itemCount === 0) return
+
+    this.orderConfirmed = true
+    this.renderConfirmationState()
+    this.cashReceivedTarget.focus()
+  }
+
+  editOrder() {
+    this.orderConfirmed = false
+    this.cashReceivedTarget.value = ""
+    this.renderConfirmationState()
+    this.updateCashState()
+  }
+
   submitCash(event) {
-    if (this.checkoutButtonTarget.disabled) {
+    if (!this.orderConfirmed || this.checkoutButtonTarget.disabled) {
       event.preventDefault()
       return
     }
@@ -73,6 +95,7 @@ export default class extends Controller {
 
     this.totalCents = total
     this.itemCount = itemCount
+    if (itemCount === 0) this.orderConfirmed = false
     this.quantityInputTargets.forEach((input) => { input.value = this.cart.get(input.dataset.code) || 0 })
 
     const unlocked = itemCount > 0
@@ -80,13 +103,24 @@ export default class extends Controller {
     this.lockStateTarget.hidden = unlocked
     this.readyStateTarget.hidden = !unlocked
     this.totalTarget.textContent = this.money(total)
+    this.renderConfirmationState()
     this.updateCashState()
+  }
+
+  renderConfirmationState() {
+    this.reviewStateTarget.hidden = this.orderConfirmed
+    this.paymentStateTarget.hidden = !this.orderConfirmed
+    this.quantityButtonTargets.forEach((button) => {
+      button.disabled = this.orderConfirmed || (button.dataset.action.includes("#add") && Number(this.cart.get(button.dataset.code) || 0) >= this.productFor(button.dataset.code).available)
+    })
+    this.clearButtonTarget.disabled = this.orderConfirmed
+    this.element.classList.toggle("order-confirmed", this.orderConfirmed)
   }
 
   updateCashState() {
     const normalized = this.cashReceivedTarget.value.replace(",", ".")
     const receivedCents = Math.round((Number(normalized) || 0) * 100)
-    const enough = this.itemCount > 0 && receivedCents >= this.totalCents
+    const enough = this.orderConfirmed && this.itemCount > 0 && receivedCents >= this.totalCents
     const change = enough ? receivedCents - this.totalCents : 0
 
     this.changeTarget.textContent = this.money(change)

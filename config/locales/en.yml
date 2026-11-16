@@ -37,6 +37,10 @@ en:
     select_to_unlock: Add a product to unlock the payment preview.
     order_summary: Order summary
     total: Total
+    review_order: Review the items and confirm the order before choosing payment.
+    confirm_order: Confirm order
+    order_confirmed: Order confirmed
+    edit_order: Edit order
     payment_method: Payment method
     cash: Cash
     pix_soon: Pix coming soon
@@ -95,6 +99,8 @@ en:
     cash_result_note: Cash sales minus paid expenses
     pending_expenses: Pending expenses
     pending_expenses_note: Not deducted from cash balance yet
+    known_margin: Calculated gross margin
+    known_margin_note: "Costed revenue: %{revenue} · sold cost: %{cost} · uncosted items: %{count}"
     expenses_eyebrow: Expense control
     new_expense: New expense
     description: Description
@@ -179,6 +185,22 @@ en:
       loss: Loss
       correction: Correction
       sale: Sale
+  stock_batches:
+    add_batch: Add costed batch
+    explanation: A batch increases stock and calculates the actual cost of sold items in entry order.
+    description: Batch identification
+    description_placeholder: "Example: first brownie tray"
+    quantity: Quantity produced or purchased
+    total_cost: Total batch cost
+    received_on: Batch date
+    register_expense: Also record this cost as a paid expense
+    create: Create batch
+    created: Batch created and stock updated.
+    recent: Recent batches
+    remaining: "%{remaining} of %{initial} %{unit} remaining"
+    invalid_values: Enter a valid quantity, cost, description and date for the batch.
+    movement_note: "Batch: %{description}"
+    expense_note: "Batch cost for %{product}"
   activerecord:
     attributes:
       product:

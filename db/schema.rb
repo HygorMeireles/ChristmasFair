@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_140001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "cost_allocations", force: :cascade do |t|
+    t.bigint "order_item_id", null: false
+    t.bigint "stock_batch_id", null: false
+    t.integer "quantity", null: false
+    t.integer "cost_cents", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_item_id", "stock_batch_id"], name: "index_cost_allocations_on_order_item_id_and_stock_batch_id", unique: true
+    t.index ["order_item_id"], name: "index_cost_allocations_on_order_item_id"
+    t.index ["stock_batch_id"], name: "index_cost_allocations_on_stock_batch_id"
+    t.check_constraint "cost_cents >= 0", name: "cost_allocations_cost_nonnegative"
+    t.check_constraint "quantity > 0", name: "cost_allocations_quantity_positive"
+  end
 
   create_table "expenses", force: :cascade do |t|
     t.string "description", null: false
@@ -55,9 +69,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
     t.integer "line_total_cents", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "cost_cents", default: 0, null: false
+    t.boolean "cost_complete", default: false, null: false
     t.index ["order_id", "product_id"], name: "index_order_items_on_order_id_and_product_id", unique: true
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
+    t.check_constraint "cost_cents >= 0", name: "order_items_cost_nonnegative"
     t.check_constraint "line_total_cents >= 0", name: "order_items_total_nonnegative"
     t.check_constraint "quantity > 0", name: "order_items_quantity_positive"
     t.check_constraint "stock_quantity_per_item > 0", name: "order_items_stock_usage_positive"
@@ -102,6 +119,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
     t.check_constraint "stock_quantity >= 0", name: "products_stock_nonnegative"
   end
 
+  create_table "stock_batches", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "expense_id"
+    t.string "description", null: false
+    t.integer "initial_quantity", null: false
+    t.integer "remaining_quantity", null: false
+    t.integer "total_cost_cents", null: false
+    t.integer "allocated_cost_cents", default: 0, null: false
+    t.date "received_on", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expense_id"], name: "index_stock_batches_on_expense_id"
+    t.index ["product_id", "received_on"], name: "index_stock_batches_on_product_id_and_received_on"
+    t.index ["product_id"], name: "index_stock_batches_on_product_id"
+    t.check_constraint "allocated_cost_cents >= 0 AND allocated_cost_cents <= total_cost_cents", name: "stock_batches_allocated_cost_valid"
+    t.check_constraint "initial_quantity > 0", name: "stock_batches_initial_positive"
+    t.check_constraint "remaining_quantity >= 0 AND remaining_quantity <= initial_quantity", name: "stock_batches_remaining_valid"
+    t.check_constraint "total_cost_cents > 0", name: "stock_batches_cost_positive"
+  end
+
   create_table "stock_movements", force: :cascade do |t|
     t.bigint "product_id", null: false
     t.string "movement_type", null: false
@@ -115,8 +152,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
     t.check_constraint "stock_after >= 0", name: "stock_movements_result_nonnegative"
   end
 
+  add_foreign_key "cost_allocations", "order_items"
+  add_foreign_key "cost_allocations", "stock_batches"
   add_foreign_key "fishing_tickets", "order_items"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products", on_delete: :restrict
+  add_foreign_key "stock_batches", "expenses", on_delete: :nullify
+  add_foreign_key "stock_batches", "products"
   add_foreign_key "stock_movements", "products"
 end

@@ -10,6 +10,7 @@
   <article><span><%= t("financial.paid_expenses") %></span><strong><%= money(@paid_expenses_cents) %></strong><small><%= t("financial.paid_expenses_note") %></small></article>
   <article class="<%= @cash_result_cents.negative? ? 'negative' : 'positive' %>"><span><%= t("financial.cash_result") %></span><strong><%= money(@cash_result_cents) %></strong><small><%= t("financial.cash_result_note") %></small></article>
   <article><span><%= t("financial.pending_expenses") %></span><strong><%= money(@pending_expenses_cents) %></strong><small><%= t("financial.pending_expenses_note") %></small></article>
+  <article class="margin-metric"><span><%= t("financial.known_margin") %></span><strong><%= money(@gross_margin_cents) %></strong><small><%= t("financial.known_margin_note", revenue: money(@costed_revenue_cents), cost: money(@cost_of_goods_cents), count: @uncosted_items_count) %></small></article>
 </section>
 
 <div class="financial-layout">

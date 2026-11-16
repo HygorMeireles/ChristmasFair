@@ -14,6 +14,8 @@ O estado atual contém:
 - ingressos individuais da pescaria, com controle de retirada e bloqueio de resgate duplicado;
 - painel financeiro com vendas confirmadas, despesas pagas ou pendentes e saldo de caixa;
 - despesas categorizadas entre ingredientes, embalagens, brinquedos, decoração e outros;
+- confirmação do pedido antes de liberar a etapa de pagamento;
+- lotes de estoque com custo, consumo por ordem de entrada e margem apurada somente para itens com custo conhecido;
 - identidade Mister Wiz combinada com elementos de Natal;
 - estrutura Rails preparada para pedidos e Mercado Pago em uma etapa posterior.
 

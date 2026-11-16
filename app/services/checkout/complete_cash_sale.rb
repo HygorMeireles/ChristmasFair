@@ -50,6 +50,7 @@ module Checkout
             line_total_cents: product.price_cents * quantity
           )
           quantity.times { order_item.fishing_tickets.create! } if product.code == "fishing"
+          Inventory::AllocateCost.call(order_item:, quantity: -stock_delta)
           product.update!(stock_quantity: new_stock)
           product.stock_movements.create!(
             movement_type: "sale",

@@ -28,7 +28,7 @@
     <section class="product-stage" aria-label="<%= t('dashboard.products') %>">
       <div class="section-heading">
         <div><span class="eyebrow"><%= t("dashboard.step_one") %></span><h2><%= t("dashboard.choose_products") %></h2></div>
-        <button class="text-button" type="button" data-action="cart#clear"><%= t("dashboard.clear") %></button>
+        <button class="text-button" type="button" data-cart-target="clearButton" data-action="cart#clear"><%= t("dashboard.clear") %></button>
       </div>
 
       <div class="product-grid">
@@ -82,9 +82,9 @@
             </div>
 
             <div class="quantity-picker">
-              <button type="button" data-action="cart#remove" data-code="<%= product.code %>" aria-label="<%= t('dashboard.remove_one', product: product.localized_name) %>">−</button>
+              <button type="button" data-cart-target="quantityButton" data-action="cart#remove" data-code="<%= product.code %>" aria-label="<%= t('dashboard.remove_one', product: product.localized_name) %>">−</button>
               <output data-cart-target="quantity" data-code="<%= product.code %>">0</output>
-              <button type="button" data-action="cart#add" data-code="<%= product.code %>" <%= "disabled" if product.available_servings.zero? %> aria-label="<%= t('dashboard.add_one', product: product.localized_name) %>">+</button>
+              <button type="button" data-cart-target="quantityButton" data-action="cart#add" data-code="<%= product.code %>" <%= "disabled" if product.available_servings.zero? %> aria-label="<%= t('dashboard.add_one', product: product.localized_name) %>">+</button>
             </div>
           </article>
         <% end %>
@@ -109,17 +109,25 @@
               <div class="cart-lines" data-cart-target="cartLines"></div>
               <div class="phone-total"><span><%= t("dashboard.total") %></span><strong data-cart-target="total">R$ 0,00</strong></div>
 
-              <div class="payment-methods" aria-label="<%= t('dashboard.payment_method') %>">
-                <span class="selected"><%= t("dashboard.cash") %></span>
-                <span class="coming-soon"><%= t("dashboard.pix_soon") %></span>
+              <div class="order-review-step" data-cart-target="reviewState">
+                <p><%= t("dashboard.review_order") %></p>
+                <button type="button" class="confirm-order-button" data-cart-target="confirmOrderButton" data-action="cart#confirmOrder"><%= t("dashboard.confirm_order") %></button>
               </div>
-              <label class="cash-field">
-                <span><%= t("dashboard.amount_received") %></span>
-                <div class="cash-input"><b>R$</b><%= form.number_field :amount_received_brl, min: 0, step: "0.01", inputmode: "decimal", data: { cart_target: "cashReceived", action: "input->cart#cashChanged" } %></div>
-              </label>
-              <div class="change-line"><span><%= t("dashboard.change") %></span><strong data-cart-target="change"><%= money(0) %></strong></div>
-              <p class="cash-hint" data-cart-target="cashHint" data-waiting="<%= t('dashboard.enter_received') %>" data-ready="<%= t('dashboard.ready_to_confirm') %>"><%= t("dashboard.enter_received") %></p>
-              <%= form.submit t("dashboard.confirm_cash"), class: "confirm-sale-button", disabled: true, data: { cart_target: "checkoutButton", submitting_label: t("dashboard.confirming") } %>
+
+              <div class="payment-step" data-cart-target="paymentState" hidden>
+                <div class="confirmed-order"><span>✓ <%= t("dashboard.order_confirmed") %></span><button type="button" data-action="cart#editOrder"><%= t("dashboard.edit_order") %></button></div>
+                <div class="payment-methods" aria-label="<%= t('dashboard.payment_method') %>">
+                  <span class="selected"><%= t("dashboard.cash") %></span>
+                  <span class="coming-soon"><%= t("dashboard.pix_soon") %></span>
+                </div>
+                <label class="cash-field">
+                  <span><%= t("dashboard.amount_received") %></span>
+                  <div class="cash-input"><b>R$</b><%= form.number_field :amount_received_brl, min: 0, step: "0.01", inputmode: "decimal", data: { cart_target: "cashReceived", action: "input->cart#cashChanged" } %></div>
+                </label>
+                <div class="change-line"><span><%= t("dashboard.change") %></span><strong data-cart-target="change"><%= money(0) %></strong></div>
+                <p class="cash-hint" data-cart-target="cashHint" data-waiting="<%= t('dashboard.enter_received') %>" data-ready="<%= t('dashboard.ready_to_confirm') %>"><%= t("dashboard.enter_received") %></p>
+                <%= form.submit t("dashboard.confirm_cash"), class: "confirm-sale-button", disabled: true, data: { cart_target: "checkoutButton", submitting_label: t("dashboard.confirming") } %>
+              </div>
             <% end %>
           </div>
         </div>

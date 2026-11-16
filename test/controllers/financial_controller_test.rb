@@ -2,6 +2,16 @@ require "test_helper"
 
 class FinancialControllerTest < ActionDispatch::IntegrationTest
   setup do
+    brownie = products(:brownie)
+    brownie.update!(stock_quantity: 0)
+    Inventory::CreateStockBatch.call(
+      product: brownie,
+      description: "Costed tray",
+      quantity: 10,
+      total_cost_brl: "4.00",
+      received_on: Date.current.to_s,
+      register_expense: false
+    )
     Checkout::CompleteCashSale.call(
       quantities: { brownie: 2 },
       amount_received_brl: "10.00",
@@ -28,11 +38,12 @@ class FinancialControllerTest < ActionDispatch::IntegrationTest
     get financial_url
 
     assert_response :success
-    assert_select ".financial-metrics article", 4
+    assert_select ".financial-metrics article", 5
     assert_select ".financial-metrics strong", text: "R$10,00"
     assert_select ".financial-metrics strong", text: "R$4,00"
     assert_select ".financial-metrics strong", text: "R$6,00"
     assert_select ".financial-metrics strong", text: "R$2,00"
+    assert_select ".financial-metrics strong", text: "R$9,20"
     assert_select ".performance-list", /2 itens vendidos/
     assert_select ".finance-table tbody tr", 1
     assert_select ".expense-list article", 2

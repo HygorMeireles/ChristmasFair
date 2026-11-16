@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
   resources :products, only: %i[index update] do
     resources :stock_movements, only: :create
+    resources :stock_batches, only: :create
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

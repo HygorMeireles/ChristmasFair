@@ -14,6 +14,8 @@ class Expense < ApplicationRecord
   scope :pending, -> { where(status: "pending") }
   scope :recent_first, -> { order(incurred_on: :desc, created_at: :desc) }
 
+  has_one :stock_batch, dependent: :nullify
+
   def amount_brl
     format("%.2f", amount_cents.to_i / 100.0)
   end

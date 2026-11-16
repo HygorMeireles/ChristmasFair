@@ -2,6 +2,8 @@ class OrderItem < ApplicationRecord
   belongs_to :order
   belongs_to :product
   has_many :fishing_tickets, dependent: :restrict_with_error
+  has_many :cost_allocations, dependent: :restrict_with_error
+  has_many :stock_batches, through: :cost_allocations
 
   validates :product_code, :product_name_pt, :product_name_en, :stock_unit, presence: true
   validates :unit_price_cents, :line_total_cents,

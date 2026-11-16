@@ -44,6 +44,10 @@ pt-BR:
     select_to_unlock: Adicione um produto para desbloquear a prévia do pagamento.
     order_summary: Resumo do pedido
     total: Total
+    review_order: Confira os itens e confirme o pedido antes de escolher o pagamento.
+    confirm_order: Confirmar pedido
+    order_confirmed: Pedido confirmado
+    edit_order: Editar pedido
     payment_method: Forma de pagamento
     cash: Dinheiro
     pix_soon: Pix em breve
@@ -102,6 +106,8 @@ pt-BR:
     cash_result_note: Vendas em dinheiro menos despesas pagas
     pending_expenses: Despesas pendentes
     pending_expenses_note: Ainda não descontadas do saldo de caixa
+    known_margin: Margem bruta apurada
+    known_margin_note: "Receita com custo: %{revenue} · custo vendido: %{cost} · itens sem custo: %{count}"
     expenses_eyebrow: Controle de gastos
     new_expense: Nova despesa
     description: Descrição
@@ -186,6 +192,22 @@ pt-BR:
       loss: Perda
       correction: Correção
       sale: Venda
+  stock_batches:
+    add_batch: Adicionar lote com custo
+    explanation: O lote aumenta o estoque e permite calcular o custo real dos itens vendidos por ordem de entrada.
+    description: Identificação do lote
+    description_placeholder: "Exemplo: brownies da primeira fornada"
+    quantity: Quantidade produzida ou comprada
+    total_cost: Custo total do lote
+    received_on: Data do lote
+    register_expense: Registrar este custo também como despesa paga
+    create: Cadastrar lote
+    created: Lote cadastrado e estoque atualizado.
+    recent: Lotes recentes
+    remaining: "%{remaining} de %{initial} %{unit} restantes"
+    invalid_values: Preencha quantidade, custo, descrição e data válidos para o lote.
+    movement_note: "Lote: %{description}"
+    expense_note: "Custo de lote de %{product}"
   errors:
     format: "%{attribute} %{message}"
     messages:
@@ -210,3 +232,9 @@ pt-BR:
         status: Situação
         paid_on: Data do pagamento
         notes: Observações
+      stock_batch:
+        description: Identificação do lote
+        initial_quantity: Quantidade inicial
+        remaining_quantity: Quantidade restante
+        total_cost_cents: Custo total
+        received_on: Data do lote

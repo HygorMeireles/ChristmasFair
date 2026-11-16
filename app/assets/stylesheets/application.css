@@ -130,6 +130,15 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
 .phone-total { display: flex; justify-content: space-between; align-items: end; margin: 15px 0; }
 .phone-total span { font-size: 10px; color: var(--muted); }
 .phone-total strong { font-size: 21px; color: var(--purple-deep); }
+.order-review-step { display: grid; gap: 10px; padding: 14px; border-radius: 15px; background: #f5edf6; }
+.order-review-step p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.45; }
+.confirm-order-button { min-height: 40px; border: 0; border-radius: 11px; cursor: pointer; color: white; background: linear-gradient(135deg,var(--purple),var(--purple-deep)); font-size: 10px; font-weight: 900; box-shadow: inset 0 -3px 0 rgba(0,0,0,.15),0 7px 15px rgba(66,16,79,.18); }
+.payment-step { display: grid; }
+.confirmed-order { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--green); font-size: 9px; font-weight: 850; }
+.confirmed-order button { padding: 0; border: 0; cursor: pointer; color: var(--purple); background: transparent; font-size: 9px; font-weight: 850; text-decoration: underline; }
+.order-confirmed .product-card { opacity: .72; }
+.order-confirmed .product-card.has-selection { opacity: 1; border-color: var(--green-light); }
+.text-button:disabled { cursor: not-allowed; opacity: .4; text-decoration: none; }
 .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 4px; margin-bottom: 13px; border-radius: 12px; background: #eee5ef; }
 .payment-methods span { padding: 8px 5px; border-radius: 9px; text-align: center; font-size: 9px; font-weight: 850; }
 .payment-methods .selected { color: white; background: var(--purple); box-shadow: 0 4px 10px rgba(66,16,79,.18); }
@@ -194,6 +203,22 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
 .movement-delta { display: grid; place-items: center; min-width: 50px; padding: 6px; border-radius: 9px; font-weight: 900; }
 .movement-delta.positive { color: var(--green); background: #e0f1e7; }
 .movement-delta.negative { color: var(--wine); background: #f8e2e4; }
+.batch-panel { margin-top: 16px; padding: 15px; border: 1px solid #e3d7e3; border-radius: 17px; background: #fdf9fd; }
+.batch-panel summary { cursor: pointer; color: var(--purple); font-size: 12px; font-weight: 850; }
+.batch-panel > p { margin: 9px 0 14px; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.batch-form { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 11px; align-items: end; }
+.batch-form label { display: grid; gap: 6px; color: var(--muted); font-size: 10px; font-weight: 800; }
+.batch-form input { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid #ddcedd; border-radius: 10px; outline: 0; background: white; }
+.batch-form .input-prefix input, .batch-form .input-suffix input { border: 0; border-radius: 0; }
+.batch-expense-check { grid-column: 1/-2; }
+.batch-button { justify-self: end; color: white; background: var(--purple); }
+.batch-list { margin-top: 16px; }
+.batch-list h3 { margin: 0 0 8px; color: var(--purple-deep); font-size: 11px; }
+.batch-list > div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 10px; border-top: 1px solid #f0e7ef; }
+.batch-list p { display: grid; gap: 2px; margin: 0; }
+.batch-list strong { color: var(--ink); font-size: 10px; }
+.batch-list small { color: var(--muted); font-size: 8px; }
+.batch-list > div > span { color: var(--purple-deep); font-size: 10px; font-weight: 850; white-space: nowrap; }
 .fishing-hero { background: linear-gradient(120deg,#123b31,var(--green-light) 58%,var(--purple)); }
 .ticket-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 24px; }
 .ticket-stats article { display: grid; gap: 5px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 20px; background: white; box-shadow: 0 10px 25px rgba(66,16,79,.07); }
@@ -216,11 +241,12 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
 .status-pill.done { color: var(--green); background: #dbefe5; }
 .redeem-button { color: white; background: var(--green); }
 .financial-hero { background: linear-gradient(120deg,var(--purple-deep),#5c236a 55%,var(--green)); }
-.financial-metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 15px; margin-top: 24px; }
+.financial-metrics { display: grid; grid-template-columns: repeat(5,1fr); gap: 15px; margin-top: 24px; }
 .financial-metrics article { display: grid; gap: 5px; min-width: 0; padding: 19px; border: 1px solid var(--line); border-top: 4px solid var(--purple); border-radius: 19px; background: white; box-shadow: 0 10px 24px rgba(66,16,79,.07); }
 .financial-metrics article:nth-child(2) { border-top-color: var(--wine); }
 .financial-metrics article.positive { border-top-color: var(--green); }
 .financial-metrics article.negative { border-top-color: var(--red); }
+.financial-metrics article.margin-metric { border-top-color: var(--gold); }
 .financial-metrics span { color: var(--muted); font-size: 9px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
 .financial-metrics strong { overflow: hidden; color: var(--purple-deep); font-family: Georgia,serif; font-size: clamp(22px,2vw,31px); text-overflow: ellipsis; }
 .financial-metrics .negative strong { color: var(--wine); }
@@ -277,6 +303,8 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
   .stock-form { grid-template-columns: repeat(3,1fr); }
   .stock-form .wide { grid-column: span 2; }
   .financial-metrics { grid-template-columns: repeat(2,1fr); }
+  .batch-form { grid-template-columns: repeat(2,1fr); }
+  .batch-expense-check { grid-column: 1/-1; }
 }
 @media (max-width:850px) {
   .site-header { align-items: flex-start; flex-direction: column; }
@@ -317,6 +345,9 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
   .expense-form .button { justify-self: stretch; }
   .expense-list article { grid-template-columns: 1fr; }
   .expense-value { grid-template-columns: auto auto; align-items: center; justify-items: start; }
+  .batch-form { grid-template-columns: 1fr; }
+  .batch-expense-check { grid-column: auto; }
+  .batch-button { justify-self: stretch; }
 }
 @media (prefers-reduced-motion:reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

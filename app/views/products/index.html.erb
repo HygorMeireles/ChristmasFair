@@ -46,6 +46,28 @@
           <%= form.submit t("products.apply"), class: "button inventory-button" %>
         <% end %>
 
+        <details class="batch-panel">
+          <summary><%= t("stock_batches.add_batch") %></summary>
+          <p><%= t("stock_batches.explanation") %></p>
+          <%= form_with url: product_stock_batches_path(product), scope: :stock_batch, class: "batch-form" do |form| %>
+            <label><span><%= t("stock_batches.description") %></span><%= form.text_field :description, required: true, maxlength: 120, placeholder: t("stock_batches.description_placeholder") %></label>
+            <label><span><%= t("stock_batches.quantity") %></span><div class="input-suffix"><%= form.number_field :quantity, min: 1, required: true %><b><%= product.stock_unit %></b></div></label>
+            <label><span><%= t("stock_batches.total_cost") %></span><div class="input-prefix"><b>R$</b><%= form.text_field :total_cost_brl, inputmode: "decimal", required: true, placeholder: "0,00" %></div></label>
+            <label><span><%= t("stock_batches.received_on") %></span><%= form.date_field :received_on, value: Date.current, required: true %></label>
+            <label class="checkbox-field batch-expense-check"><%= form.check_box :register_expense, checked: true %><span><%= t("stock_batches.register_expense") %></span></label>
+            <%= form.submit t("stock_batches.create"), class: "button batch-button" %>
+          <% end %>
+        </details>
+
+        <% if product.stock_batches.any? %>
+          <div class="batch-list">
+            <h3><%= t("stock_batches.recent") %></h3>
+            <% product.stock_batches.sort_by { |batch| [batch.received_on, batch.id] }.reverse.first(4).each do |batch| %>
+              <div><p><strong><%= batch.description %></strong><small><%= l(batch.received_on) %> · <%= t("stock_batches.remaining", remaining: batch.remaining_quantity, initial: batch.initial_quantity, unit: product.stock_unit) %></small></p><span><%= money(batch.total_cost_cents) %></span></div>
+            <% end %>
+          </div>
+        <% end %>
+
         <% if product.stock_movements.any? %>
           <details class="movement-history">
             <summary><%= t("products.history") %></summary>

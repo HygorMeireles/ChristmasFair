@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   def index
-    @products = Product.display_order.includes(:stock_movements)
+    @products = Product.display_order.includes(:stock_movements, :stock_batches)
   end
 
   def update
@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
     if @product.update(product_params)
       redirect_to products_path, notice: t("products.updated")
     else
-      @products = Product.display_order.includes(:stock_movements)
+      @products = Product.display_order.includes(:stock_movements, :stock_batches)
       flash.now[:alert] = @product.errors.full_messages.to_sentence
       render :index, status: :unprocessable_entity
     end
