@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root "dashboard#index"
+  get "financial", to: "financial#index", as: :financial
   resources :cash_checkouts, only: :create
+  resources :expenses, only: :create do
+    patch :mark_paid, on: :member
+  end
   resources :fishing_tickets, only: :index do
     patch :redeem, on: :member
   end

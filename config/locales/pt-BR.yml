@@ -10,6 +10,7 @@ pt-BR:
     label: Navegação principal
     cashier: Caixa
     fishing: Pescaria
+    financial: Financeiro
     settings: Configurar estoque
     language: Idioma
   footer:
@@ -86,6 +87,60 @@ pt-BR:
     statuses:
       pending: Aguardando retirada
       redeemed: Entregue
+  financial:
+    page_title: Financeiro — Christmas Fair
+    eyebrow: Gestão da feira
+    title: Painel financeiro
+    subtitle: Acompanhe vendas recebidas, despesas e o saldo de caixa da Christmas Fair.
+    back_to_cashier: Voltar ao caixa
+    summary: Resumo financeiro
+    gross_sales: Vendas brutas
+    confirmed_sales_only: Somente pedidos com pagamento confirmado
+    paid_expenses: Despesas pagas
+    paid_expenses_note: Saídas já efetivadas
+    cash_result: Saldo de caixa
+    cash_result_note: Vendas em dinheiro menos despesas pagas
+    pending_expenses: Despesas pendentes
+    pending_expenses_note: Ainda não descontadas do saldo de caixa
+    expenses_eyebrow: Controle de gastos
+    new_expense: Nova despesa
+    description: Descrição
+    category: Categoria
+    amount: Valor
+    date: Data da despesa
+    status: Situação
+    notes: Observações
+    save_expense: Salvar despesa
+    sales_eyebrow: Desempenho
+    by_product: Vendas por produto
+    items_sold:
+      one: 1 item vendido
+      other: "%{count} itens vendidos"
+    no_sales: Nenhuma venda confirmada até agora.
+    history_eyebrow: Histórico
+    recent_sales: Vendas recentes
+    order: Pedido
+    items: Itens
+    payment: Pagamento
+    total: Total
+    expense_history: Histórico de despesas
+    no_expenses: Nenhuma despesa cadastrada.
+    mark_paid: Marcar como paga
+    categories:
+      ingredients: Ingredientes
+      packaging: Embalagens e copos
+      toys: Brinquedos
+      decoration: Decoração
+      other: Outros
+    statuses:
+      pending: Pendente
+      paid: Paga
+    payment_methods:
+      cash: Dinheiro
+      pix: Pix
+  expenses:
+    created: Despesa cadastrada.
+    marked_paid: Despesa marcada como paga.
   products:
     page_title: Configuração de estoque — Christmas Fair
     eyebrow: Central de controle
@@ -131,7 +186,27 @@ pt-BR:
       loss: Perda
       correction: Correção
       sale: Venda
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: não pode ficar em branco
+      inclusion: não está incluído na lista
+      invalid: não é válido
+      not_a_number: não é um número
+      greater_than: "deve ser maior que %{count}"
+      greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+      less_than_or_equal_to: "deve ser menor ou igual a %{count}"
+      too_long: "é muito longo (máximo de %{count} caracteres)"
+      taken: já está em uso
   activerecord:
     attributes:
       product:
         stock_quantity: Estoque
+      expense:
+        description: Descrição
+        category: Categoria
+        amount_cents: Valor
+        incurred_on: Data da despesa
+        status: Situação
+        paid_on: Data do pagamento
+        notes: Observações

@@ -10,9 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_120002) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "expenses", force: :cascade do |t|
+    t.string "description", null: false
+    t.string "category", null: false
+    t.integer "amount_cents", null: false
+    t.date "incurred_on", null: false
+    t.string "status", default: "pending", null: false
+    t.date "paid_on"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_expenses_on_category"
+    t.index ["incurred_on"], name: "index_expenses_on_incurred_on"
+    t.index ["status"], name: "index_expenses_on_status"
+    t.check_constraint "amount_cents > 0", name: "expenses_amount_positive"
+  end
 
   create_table "fishing_tickets", force: :cascade do |t|
     t.bigint "order_item_id", null: false

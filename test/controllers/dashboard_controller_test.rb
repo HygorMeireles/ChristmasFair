@@ -12,6 +12,7 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_select "form.cash-checkout-form[action=?]", cash_checkouts_path(locale: "pt-BR")
     assert_select "input[data-cart-target='checkoutButton'][disabled]", 1
     assert_select "a[href=?]", fishing_tickets_path(locale: "pt-BR"), text: "Pescaria"
+    assert_select "a[href=?]", financial_path(locale: "pt-BR"), text: "Financeiro"
   end
 
   test "renders the English interface" do

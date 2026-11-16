@@ -3,6 +3,7 @@ en:
     label: Main navigation
     cashier: Cashier
     fishing: Fishing game
+    financial: Financial
     settings: Stock setup
     language: Language
   footer:
@@ -79,6 +80,60 @@ en:
     statuses:
       pending: Awaiting pickup
       redeemed: Delivered
+  financial:
+    page_title: Financial — Christmas Fair
+    eyebrow: Fair management
+    title: Financial dashboard
+    subtitle: Track received sales, expenses and the Christmas Fair cash balance.
+    back_to_cashier: Back to cashier
+    summary: Financial summary
+    gross_sales: Gross sales
+    confirmed_sales_only: Confirmed payments only
+    paid_expenses: Paid expenses
+    paid_expenses_note: Completed cash outflows
+    cash_result: Cash balance
+    cash_result_note: Cash sales minus paid expenses
+    pending_expenses: Pending expenses
+    pending_expenses_note: Not deducted from cash balance yet
+    expenses_eyebrow: Expense control
+    new_expense: New expense
+    description: Description
+    category: Category
+    amount: Amount
+    date: Expense date
+    status: Status
+    notes: Notes
+    save_expense: Save expense
+    sales_eyebrow: Performance
+    by_product: Sales by product
+    items_sold:
+      one: 1 item sold
+      other: "%{count} items sold"
+    no_sales: No confirmed sales yet.
+    history_eyebrow: History
+    recent_sales: Recent sales
+    order: Order
+    items: Items
+    payment: Payment
+    total: Total
+    expense_history: Expense history
+    no_expenses: No expenses recorded.
+    mark_paid: Mark as paid
+    categories:
+      ingredients: Ingredients
+      packaging: Packaging and cups
+      toys: Toys
+      decoration: Decoration
+      other: Other
+    statuses:
+      pending: Pending
+      paid: Paid
+    payment_methods:
+      cash: Cash
+      pix: Pix
+  expenses:
+    created: Expense recorded.
+    marked_paid: Expense marked as paid.
   products:
     page_title: Stock setup — Christmas Fair
     eyebrow: Control center

@@ -1,0 +1,74 @@
+<% content_for :title, t("financial.page_title") %>
+
+<section class="settings-hero financial-hero">
+  <div><span class="eyebrow"><%= t("financial.eyebrow") %></span><h1><%= t("financial.title") %></h1><p><%= t("financial.subtitle") %></p></div>
+  <%= link_to t("financial.back_to_cashier"), root_path, class: "button secondary" %>
+</section>
+
+<section class="financial-metrics" aria-label="<%= t('financial.summary') %>">
+  <article><span><%= t("financial.gross_sales") %></span><strong><%= money(@gross_sales_cents) %></strong><small><%= t("financial.confirmed_sales_only") %></small></article>
+  <article><span><%= t("financial.paid_expenses") %></span><strong><%= money(@paid_expenses_cents) %></strong><small><%= t("financial.paid_expenses_note") %></small></article>
+  <article class="<%= @cash_result_cents.negative? ? 'negative' : 'positive' %>"><span><%= t("financial.cash_result") %></span><strong><%= money(@cash_result_cents) %></strong><small><%= t("financial.cash_result_note") %></small></article>
+  <article><span><%= t("financial.pending_expenses") %></span><strong><%= money(@pending_expenses_cents) %></strong><small><%= t("financial.pending_expenses_note") %></small></article>
+</section>
+
+<div class="financial-layout">
+  <section class="finance-card expense-form-card">
+    <div class="section-heading compact"><div><span class="eyebrow"><%= t("financial.expenses_eyebrow") %></span><h2><%= t("financial.new_expense") %></h2></div></div>
+    <%= form_with model: @expense, class: "expense-form" do |form| %>
+      <label class="wide"><span><%= t("financial.description") %></span><%= form.text_field :description, required: true, maxlength: 120 %></label>
+      <label><span><%= t("financial.category") %></span><%= form.select :category, Expense::CATEGORIES.map { |category| [t("financial.categories.#{category}"), category] }, required: true %></label>
+      <label><span><%= t("financial.amount") %></span><div class="input-prefix"><b>R$</b><%= form.text_field :amount_brl, required: true, inputmode: "decimal", placeholder: "0,00" %></div></label>
+      <label><span><%= t("financial.date") %></span><%= form.date_field :incurred_on, required: true %></label>
+      <label><span><%= t("financial.status") %></span><%= form.select :status, Expense::STATUSES.map { |status| [t("financial.statuses.#{status}"), status] } %></label>
+      <label class="wide"><span><%= t("financial.notes") %></span><%= form.text_area :notes, maxlength: 500, rows: 3 %></label>
+      <%= form.submit t("financial.save_expense"), class: "button primary" %>
+    <% end %>
+  </section>
+
+  <section class="finance-card product-performance-card">
+    <div class="section-heading compact"><div><span class="eyebrow"><%= t("financial.sales_eyebrow") %></span><h2><%= t("financial.by_product") %></h2></div></div>
+    <% if @sales_by_product.empty? %>
+      <p class="finance-empty"><%= t("financial.no_sales") %></p>
+    <% else %>
+      <div class="performance-list">
+        <% @sales_by_product.each do |entry| %>
+          <div>
+            <span class="performance-icon <%= entry[:code] %>"><%= entry[:code] == "brownie" ? "▦" : entry[:code] == "hot_chocolate" ? "♨" : "◇" %></span>
+            <p><strong><%= entry[:product]&.localized_name || entry[:code].humanize %></strong><small><%= t("financial.items_sold", count: entry[:quantity]) %></small></p>
+            <b><%= money(entry[:revenue_cents]) %></b>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+</div>
+
+<div class="financial-history-grid">
+  <section class="finance-card">
+    <div class="section-heading compact"><div><span class="eyebrow"><%= t("financial.history_eyebrow") %></span><h2><%= t("financial.recent_sales") %></h2></div></div>
+    <% if @recent_orders.empty? %>
+      <p class="finance-empty"><%= t("financial.no_sales") %></p>
+    <% else %>
+      <div class="finance-table-wrap"><table class="finance-table"><thead><tr><th><%= t("financial.order") %></th><th><%= t("financial.items") %></th><th><%= t("financial.payment") %></th><th><%= t("financial.total") %></th></tr></thead><tbody>
+        <% @recent_orders.each do |order| %><tr><td><strong>#<%= order.number %></strong><small><%= l(order.paid_at, format: :short) %></small></td><td><%= order.order_items.sum(&:quantity) %></td><td><%= t("financial.payment_methods.#{order.payment_method}") %></td><td><strong><%= money(order.total_cents) %></strong></td></tr><% end %>
+      </tbody></table></div>
+    <% end %>
+  </section>
+
+  <section class="finance-card">
+    <div class="section-heading compact"><div><span class="eyebrow"><%= t("financial.expenses_eyebrow") %></span><h2><%= t("financial.expense_history") %></h2></div></div>
+    <% if @expenses.empty? %>
+      <p class="finance-empty"><%= t("financial.no_expenses") %></p>
+    <% else %>
+      <div class="expense-list">
+        <% @expenses.each do |expense| %>
+          <article>
+            <div><span class="expense-category"><%= t("financial.categories.#{expense.category}") %></span><strong><%= expense.description %></strong><small><%= l(expense.incurred_on) %><%= " · #{expense.notes}" if expense.notes.present? %></small></div>
+            <div class="expense-value"><strong><%= money(expense.amount_cents) %></strong><span class="status-pill <%= expense.paid? ? 'done' : 'waiting' %>"><%= t("financial.statuses.#{expense.status}") %></span><% unless expense.paid? %><%= button_to t("financial.mark_paid"), mark_paid_expense_path(expense), method: :patch, class: "text-button" %><% end %></div>
+          </article>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+</div>
