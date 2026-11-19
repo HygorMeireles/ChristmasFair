@@ -2,7 +2,7 @@
 
 <% if @payment_result %>
   <dialog class="payment-result-modal <%= @payment_result %>" data-controller="payment-modal" data-action="click->payment-modal#closeFromBackdrop">
-    <div class="payment-result-icon" aria-hidden="true"><%= @payment_result == "approved" ? "✓" : "!" %></div>
+    <div class="payment-result-icon" aria-hidden="true"><%= @payment_result.in?(%w[approved card_approved]) ? "✓" : "!" %></div>
     <span class="eyebrow"><%= t("payment_results.#{@payment_result}.eyebrow") %></span>
     <h2><%= t("payment_results.#{@payment_result}.title") %></h2>
     <p><%= t("payment_results.#{@payment_result}.message") %></p>
@@ -34,7 +34,7 @@
     <p><%= t("dashboard.run_seeds") %></p>
   </section>
 <% else %>
-  <div class="cashier-layout" data-controller="cart" data-cart-locale-value="<%= current_locale %>" data-cart-currency-value="BRL">
+  <div class="cashier-layout" data-controller="cart" data-cart-locale-value="<%= current_locale %>" data-cart-currency-value="BRL" data-cart-display-only-value="<%= customer_display? %>">
     <section class="product-stage" aria-label="<%= t('dashboard.products') %>">
       <div class="section-heading">
         <div><span class="eyebrow"><%= t("dashboard.step_one") %></span><h2><%= t("dashboard.choose_products") %></h2></div>
@@ -54,7 +54,7 @@
                    data-available="<%= product.available_servings %>">
             <div class="product-card-top">
               <span class="product-badge"><%= t("products.codes.#{product.code}") %></span>
-              <strong><%= money(product.price_cents) %></strong>
+              <strong class="customer-price"><span><%= t("dashboard.unit_price") %></span><%= money(product.price_cents) %></strong>
             </div>
 
             <div class="product-visual" aria-hidden="true">
@@ -103,6 +103,7 @@
 
       <%= form_with url: cash_checkouts_path, scope: :checkout, class: "cash-checkout-form order-checkout-card", data: { cart_target: "checkoutForm", action: "submit->cart#submitCheckout" } do |form| %>
         <%= form.hidden_field :checkout_token, value: @checkout_token %>
+        <%= form.hidden_field :payment_method, value: "pix", data: { cart_target: "paymentMethodInput" } %>
         <% @products.each do |product| %>
           <%= hidden_field_tag "checkout[quantities][#{product.code}]", 0, data: { cart_target: "quantityInput", code: product.code } %>
         <% end %>
@@ -121,8 +122,10 @@
         <div class="payment-step" data-cart-target="paymentState" hidden>
           <div class="confirmed-order"><span>✓ <%= t("dashboard.order_confirmed") %></span><button type="button" data-action="cart#editOrder"><%= t("dashboard.edit_order") %></button></div>
           <div class="payment-methods" aria-label="<%= t('dashboard.payment_method') %>">
-            <button type="button" data-cart-target="cashMethod" data-action="cart#selectCash"><%= t("dashboard.cash") %></button>
             <button type="button" class="selected" data-cart-target="pixMethod" data-action="cart#selectPix"><%= t("dashboard.pix") %></button>
+            <button type="button" data-cart-target="cashMethod" data-action="cart#selectCash"><%= t("dashboard.cash") %></button>
+            <button type="button" data-cart-target="debitMethod" data-action="cart#selectDebit"><%= t("dashboard.debit") %></button>
+            <button type="button" data-cart-target="creditMethod" data-action="cart#selectCredit"><%= t("dashboard.credit") %></button>
           </div>
           <div class="cash-payment-grid" data-cart-target="cashPayment" hidden>
             <label class="cash-field">
@@ -137,6 +140,18 @@
             <p><%= t("dashboard.pix_ready") %></p>
             <%= button_tag t("dashboard.generate_pix"), type: "submit", formaction: pix_checkouts_path, formmethod: "post", class: "generate-pix-button", data: { cart_target: "pixButton", submitting_label: t("dashboard.generating_pix") } %>
           </div>
+          <div class="card-payment-choice" data-cart-target="cardPayment" hidden>
+            <div class="card-charge-copy">
+              <span class="card-step-label"><%= t("dashboard.card_step") %></span>
+              <p data-cart-target="cardInstructions"><%= t("dashboard.card_instructions") %></p>
+              <strong data-cart-target="cardChargeTotal">R$ 0,00</strong>
+            </div>
+            <button type="button" class="start-card-button" data-cart-target="cardStartButton" data-action="cart#startCardPayment"><%= t("dashboard.start_card") %></button>
+            <div class="card-confirmation" data-cart-target="cardConfirmation" hidden>
+              <p><%= t("dashboard.card_confirm_warning") %></p>
+              <%= button_tag t("dashboard.confirm_card"), type: "submit", formaction: card_checkouts_path, formmethod: "post", class: "confirm-card-button", data: { cart_target: "cardConfirmButton", submitting_label: t("dashboard.confirming") } %>
+            </div>
+          </div>
         </div>
       <% end %>
     </section>
@@ -148,9 +163,16 @@
         <div class="phone-screen">
           <div class="phone-status"><span>Christmas Fair</span><span>● ● ●</span></div>
           <div class="phone-lock" data-cart-target="lockState"><span class="lock-icon">⌁</span><strong><%= t("dashboard.phone_locked") %></strong><p><%= t("dashboard.select_to_unlock") %></p></div>
-          <div class="phone-ready" data-cart-target="readyState" hidden>
-            <span class="phone-brand">MISTER WIZ</span><h3><%= t("dashboard.pix_payment") %></h3>
-            <div class="pix-placeholder"><span class="pix-diamond">◇</span><p><%= t("dashboard.pix_after_confirmation") %></p></div>
+          <div class="phone-ready" data-cart-target="readyState" hidden
+               data-pix-title="<%= t('dashboard.pix_payment') %>"
+               data-pix-message="<%= t('dashboard.customer_pix_message') %>"
+               data-cash-title="<%= t('dashboard.customer_cash_title') %>"
+               data-cash-message="<%= t('dashboard.customer_cash_message') %>"
+               data-debit-title="<%= t('dashboard.customer_debit_title') %>"
+               data-credit-title="<%= t('dashboard.customer_credit_title') %>"
+               data-card-message="<%= t('dashboard.customer_card_message') %>">
+            <span class="phone-brand">MISTER WIZ</span><h3 data-cart-target="customerPaymentTitle"><%= t("dashboard.pix_payment") %></h3>
+            <div class="pix-placeholder"><span class="pix-diamond" data-cart-target="customerPaymentIcon">◇</span><strong class="customer-phone-total" data-cart-target="customerPaymentTotal">R$ 0,00</strong><p data-cart-target="customerPaymentMessage"><%= t("dashboard.pix_after_confirmation") %></p></div>
           </div>
         </div>
         <div class="phone-home"></div>

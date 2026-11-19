@@ -13,6 +13,8 @@
   </div>
   <%= form_with model: @event_setting, url: event_setting_path, method: :patch, class: "event-settings-form" do |form| %>
     <label><span><%= t("event_settings.mercado_pago_fee") %></span><div class="input-suffix fee-input"><%= form.text_field :mercado_pago_fee_percent, inputmode: "decimal", required: true %><b>%</b></div></label>
+    <label><span><%= t("event_settings.debit_card_fee") %></span><div class="input-suffix fee-input"><%= form.text_field :debit_card_fee_percent, inputmode: "decimal", required: true %><b>%</b></div></label>
+    <label><span><%= t("event_settings.credit_card_fee") %></span><div class="input-suffix fee-input"><%= form.text_field :credit_card_fee_percent, inputmode: "decimal", required: true %><b>%</b></div></label>
     <%= form.submit t("event_settings.save"), class: "button primary" %>
   <% end %>
 </section>

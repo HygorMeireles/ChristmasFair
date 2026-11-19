@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total", "quantityInput", "cashReceived", "change", "cashHint", "checkoutButton", "reviewState", "paymentState", "confirmOrderButton", "quantityButton", "clearButton", "cashMethod", "pixMethod", "cashPayment", "pixPayment", "pixButton"]
-  static values = { locale: String, currency: String }
+  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total", "quantityInput", "cashReceived", "change", "cashHint", "checkoutButton", "reviewState", "paymentState", "confirmOrderButton", "quantityButton", "clearButton", "cashMethod", "pixMethod", "debitMethod", "creditMethod", "cashPayment", "pixPayment", "cardPayment", "pixButton", "paymentMethodInput", "cardStartButton", "cardConfirmation", "cardConfirmButton", "cardChargeTotal", "cardInstructions", "customerPaymentTitle", "customerPaymentIcon", "customerPaymentTotal", "customerPaymentMessage"]
+  static values = { locale: String, currency: String, displayOnly: Boolean }
 
   connect() {
     this.cart = new Map()
@@ -10,8 +10,16 @@ export default class extends Controller {
     this.itemCount = 0
     this.orderConfirmed = false
     this.paymentMethod = "pix"
+    this.cardChargeStarted = false
     this.submitting = false
+    this.displayChannel = new BroadcastChannel("christmas-fair-cart")
+    this.displayChannel.onmessage = ({ data }) => this.receiveDisplayMessage(data)
     this.render()
+    if (this.displayOnlyValue) this.displayChannel.postMessage({ type: "request_state" })
+  }
+
+  disconnect() {
+    this.displayChannel?.close()
   }
 
   add(event) {
@@ -50,6 +58,34 @@ export default class extends Controller {
 
   cashChanged() {
     this.updateCashState()
+    this.broadcastState()
+  }
+
+  receiveDisplayMessage(data) {
+    if (!this.displayOnlyValue && data.type === "request_state") {
+      this.broadcastState()
+      return
+    }
+    if (!this.displayOnlyValue || data.type !== "cart_state") return
+
+    this.cart = new Map(Object.entries(data.cart).map(([code, quantity]) => [code, Number(quantity)]))
+    this.orderConfirmed = data.orderConfirmed
+    this.paymentMethod = data.paymentMethod
+    this.cardChargeStarted = data.cardChargeStarted
+    this.submitting = false
+    this.render()
+  }
+
+  broadcastState() {
+    if (this.displayOnlyValue || !this.displayChannel) return
+
+    this.displayChannel.postMessage({
+      type: "cart_state",
+      cart: Object.fromEntries(this.cart),
+      orderConfirmed: this.orderConfirmed,
+      paymentMethod: this.paymentMethod,
+      cardChargeStarted: this.cardChargeStarted
+    })
   }
 
   confirmOrder() {
@@ -58,15 +94,18 @@ export default class extends Controller {
     this.orderConfirmed = true
     this.renderConfirmationState()
     if (this.paymentMethod === "cash") this.cashReceivedTarget.focus()
+    this.broadcastState()
   }
 
   editOrder() {
     this.orderConfirmed = false
     this.cashReceivedTarget.value = ""
     this.paymentMethod = "pix"
+    this.cardChargeStarted = false
     this.submitting = false
     this.renderConfirmationState()
     this.updateCashState()
+    this.broadcastState()
   }
 
   submitCheckout(event) {
@@ -82,6 +121,18 @@ export default class extends Controller {
       return
     }
 
+    if (this.paymentMethod.startsWith("card_")) {
+      if (!this.cardChargeStarted) {
+        event.preventDefault()
+        return
+      }
+
+      this.submitting = true
+      this.cardConfirmButtonTarget.disabled = true
+      this.cardConfirmButtonTarget.textContent = this.cardConfirmButtonTarget.dataset.submittingLabel
+      return
+    }
+
     if (this.checkoutButtonTarget.disabled) {
       event.preventDefault()
       return
@@ -94,13 +145,40 @@ export default class extends Controller {
 
   selectCash() {
     this.paymentMethod = "cash"
+    this.cardChargeStarted = false
     this.renderPaymentMethod()
     this.cashReceivedTarget.focus()
+    this.broadcastState()
   }
 
   selectPix() {
     this.paymentMethod = "pix"
+    this.cardChargeStarted = false
     this.renderPaymentMethod()
+    this.broadcastState()
+  }
+
+  selectDebit() {
+    this.selectCard("card_debit")
+  }
+
+  selectCredit() {
+    this.selectCard("card_credit")
+  }
+
+  selectCard(method) {
+    this.paymentMethod = method
+    this.cardChargeStarted = false
+    this.renderPaymentMethod()
+    this.broadcastState()
+  }
+
+  startCardPayment() {
+    if (!this.orderConfirmed || !this.paymentMethod.startsWith("card_")) return
+
+    this.cardChargeStarted = true
+    this.renderPaymentMethod()
+    this.broadcastState()
   }
 
   render() {
@@ -133,8 +211,11 @@ export default class extends Controller {
     this.lockStateTarget.hidden = unlocked
     this.readyStateTarget.hidden = !unlocked
     this.totalTarget.textContent = this.money(total)
+    this.cardChargeTotalTarget.textContent = this.money(total)
+    this.customerPaymentTotalTarget.textContent = this.money(total)
     this.renderConfirmationState()
     this.updateCashState()
+    this.broadcastState()
   }
 
   renderConfirmationState() {
@@ -150,14 +231,36 @@ export default class extends Controller {
   }
 
   renderPaymentMethod() {
-    const pixActive = this.orderConfirmed && this.paymentMethod === "pix"
+    const cardActive = this.paymentMethod.startsWith("card_")
     this.cashPaymentTarget.hidden = this.paymentMethod !== "cash"
     this.pixPaymentTarget.hidden = this.paymentMethod !== "pix"
+    this.cardPaymentTarget.hidden = !cardActive
     this.cashMethodTarget.classList.toggle("selected", this.paymentMethod === "cash")
     this.pixMethodTarget.classList.toggle("selected", this.paymentMethod === "pix")
-    this.phoneTarget.classList.toggle("is-locked", !pixActive)
-    this.lockStateTarget.hidden = pixActive
-    this.readyStateTarget.hidden = !pixActive
+    this.debitMethodTarget.classList.toggle("selected", this.paymentMethod === "card_debit")
+    this.creditMethodTarget.classList.toggle("selected", this.paymentMethod === "card_credit")
+    this.paymentMethodInputTarget.value = this.paymentMethod
+    this.cardStartButtonTarget.hidden = this.cardChargeStarted
+    this.cardConfirmationTarget.hidden = !this.cardChargeStarted
+    const customerReady = this.orderConfirmed
+    this.phoneTarget.classList.toggle("is-locked", !customerReady)
+    this.lockStateTarget.hidden = customerReady
+    this.readyStateTarget.hidden = !customerReady
+    this.renderCustomerPayment()
+  }
+
+  renderCustomerPayment() {
+    const content = this.readyStateTarget.dataset
+    const labels = {
+      pix: [content.pixTitle, "◇", content.pixMessage],
+      cash: [content.cashTitle, "R$", content.cashMessage],
+      card_debit: [content.debitTitle, ")))", content.cardMessage],
+      card_credit: [content.creditTitle, ")))", content.cardMessage]
+    }
+    const [title, icon, message] = labels[this.paymentMethod] || labels.pix
+    this.customerPaymentTitleTarget.textContent = title
+    this.customerPaymentIconTarget.textContent = icon
+    this.customerPaymentMessageTarget.textContent = message
   }
 
   updateCashState() {

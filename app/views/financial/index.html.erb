@@ -8,6 +8,7 @@
 <section class="financial-overview" aria-label="<%= t('financial.summary') %>">
   <article class="overall"><span><%= t("financial.overall_balance") %></span><strong><%= money(@overall_balance_cents) %></strong><small><%= t("financial.overall_balance_note") %></small></article>
   <article class="pix"><span><%= t("financial.pix_balance") %></span><strong><%= money(@pix_net_cents) %></strong><small><%= t("financial.pix_sales_note", fees: money(@pix_fees_cents)) %></small></article>
+  <article class="cards"><span><%= t("financial.card_balance") %></span><strong><%= money(@card_net_cents) %></strong><small><%= t("financial.card_sales_note", fees: money(@card_fees_cents)) %></small></article>
   <article class="cash"><span><%= t("financial.cash_result") %></span><strong><%= money(@cash_result_cents) %></strong><small><%= t("financial.cash_result_note") %></small></article>
   <article class="expenses"><span><%= t("financial.paid_expenses") %></span><strong><%= money(@paid_expenses_cents) %></strong><small><%= t("financial.pending_summary", amount: money(@pending_expenses_cents)) %></small></article>
 </section>
@@ -17,6 +18,7 @@
   <div class="financial-metrics secondary-metrics">
     <article><span><%= t("financial.gross_sales") %></span><strong><%= money(@gross_sales_cents) %></strong></article>
     <article><span><%= t("financial.pix_sales") %></span><strong><%= money(@pix_sales_cents) %></strong><small><%= t("financial.fee_line", fee: money(@pix_fees_cents)) %></small></article>
+    <article><span><%= t("financial.card_sales") %></span><strong><%= money(@card_sales_cents) %></strong><small><%= t("financial.fee_line", fee: money(@card_fees_cents)) %></small></article>
     <article><span><%= t("financial.cash_sales") %></span><strong><%= money(@cash_sales_cents) %></strong></article>
     <article><span><%= t("financial.pending_expenses") %></span><strong><%= money(@pending_expenses_cents) %></strong></article>
     <article class="margin-metric"><span><%= t("financial.known_margin") %></span><strong><%= money(@gross_margin_cents) %></strong><small><%= t("financial.known_margin_note", revenue: money(@costed_revenue_cents), cost: money(@cost_of_goods_cents), count: @uncosted_items_count) %></small></article>

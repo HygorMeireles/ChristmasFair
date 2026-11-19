@@ -6,6 +6,8 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select ".event-settings-form .fee-input input[value='1.00']", 1
+    assert_select ".event-settings-form .fee-input input[value='0.89']", 1
+    assert_select ".event-settings-form .fee-input input[value='3.09']", 1
     assert_select ".quick-stock-form", 3
     assert_select ".quick-stock-form select", 0
     assert_select "button[name='stock_action'][value='add']", 3

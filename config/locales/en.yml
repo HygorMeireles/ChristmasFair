@@ -5,6 +5,9 @@ en:
     fishing: Fishing game
     financial: Financial
     settings: Stock setup
+    customer_display: Customer display
+    freeze_display: Freeze display
+    unfreeze_display: Resume display
     language: Language
     logout: Sign out
   authentication:
@@ -21,6 +24,10 @@ en:
     too_many_attempts: Too many attempts. Wait a few minutes and try again.
   footer:
     date: December 5, 2026
+  display:
+    frozen_eyebrow: Christmas Fair
+    frozen_title: Just a moment…
+    frozen_message: We are preparing the next order. The Christmas magic will continue shortly!
   dashboard:
     page_title: Mister Wiz Christmas Fair
     eyebrow: A magical Christmas experience
@@ -59,6 +66,9 @@ en:
     payment_method: Payment method
     cash: Cash
     pix: Pix
+    debit: Debit
+    credit: Credit
+    unit_price: Price
     pix_ready: The order is locked. Generate a unique Pix QR Code for its exact total.
     generate_pix: Generate Pix QR
     generating_pix: Generating QR...
@@ -72,12 +82,27 @@ en:
     pix_payment: Pix payment
     pix_after_confirmation: The QR Code for the confirmed amount will appear only on this screen.
     phone_pix_note: The smartphone will be reserved for Pix after the Mercado Pago integration.
+    card_step: Contactless charge
+    card_instructions: Open Mercado Pago on the iPhone, choose Tap to Pay and charge this exact amount.
+    start_card: Start charge on iPhone
+    card_confirm_warning: Confirm only after “Payment approved” appears on the iPhone. This records the sale and updates stock.
+    confirm_card: Payment approved
+    customer_pix_message: The QR Code will be generated for the exact amount of this order.
+    customer_cash_title: Cash payment
+    customer_cash_message: Give the amount to the attendant and wait for confirmation.
+    customer_debit_title: Debit card
+    customer_credit_title: Credit card
+    customer_card_message: Tap the card on the iPhone when the attendant asks.
   payment_results:
     close: Close and start a new order
     approved:
       eyebrow: Payment confirmed
       title: Sale completed!
       message: Mercado Pago confirmed the payment and stock has already been updated.
+    card_approved:
+      eyebrow: Payment confirmed
+      title: Sale completed!
+      message: The contactless payment was recorded and stock has already been updated.
     failed:
       eyebrow: Payment not completed
       title: Confirmation failed
@@ -100,6 +125,7 @@ en:
     invalid_total: The order total must be greater than zero.
     invalid_payment: Enter a valid amount received.
     insufficient_payment: The amount received is lower than the order total.
+    invalid_card_method: Select debit or credit to record the payment.
     stock_note: "Sale #%{number}"
   pix:
     page_title: Pix payment — Christmas Fair
@@ -173,12 +199,16 @@ en:
     pix_balance_note: Pix sales minus the Mercado Pago fee
     cash_sales: Cash sales
     cash_sales_note: Total physically received
+    card_sales: Card sales
+    card_sales_note: "Fees deducted: %{fees}"
+    card_balance: Net card balance
+    card_balance_note: Debit and credit sales minus Mercado Pago fees
     paid_expenses: Paid expenses
     paid_expenses_note: Completed cash outflows
     cash_result: Cash balance
     cash_result_note: Cash sales minus paid expenses
     overall_balance: Net overall balance
-    overall_balance_note: Net Pix and cash minus paid expenses
+    overall_balance_note: Net Pix, cards and cash minus paid expenses
     pending_summary: "Pending: %{amount}"
     show_details: View value breakdown
     show_details_note: Gross sales, fees, pending expenses and margin
@@ -226,6 +256,8 @@ en:
     payment_methods:
       cash: Cash
       pix: Pix
+      card_debit: Debit card
+      card_credit: Credit card
   expenses:
     created: Expense recorded.
     marked_paid: Expense marked as paid.
@@ -271,10 +303,12 @@ en:
   event_settings:
     eyebrow: Payments
     title: Mercado Pago fee
-    fee_explanation: The fee is saved with each new Pix sale and remains in its history even if this setting changes later.
+    fee_explanation: Each fee is saved with its sale and remains in history even if this setting changes later.
     mercado_pago_fee: Fee per Pix sale
-    save: Save fee
-    updated: Mercado Pago fee updated.
+    debit_card_fee: Debit fee
+    credit_card_fee: Credit fee (single payment)
+    save: Save fees
+    updated: Mercado Pago fees updated.
   inventory:
     updated: Stock updated.
     invalid_quantity: Enter a valid quantity.

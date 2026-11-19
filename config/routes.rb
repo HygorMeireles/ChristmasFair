@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   delete "logout", to: "sessions#destroy", as: :logout
   get "financial", to: "financial#index", as: :financial
   resources :cash_checkouts, only: :create
+  resources :card_checkouts, only: :create
   post "pix_checkouts", to: "pix_checkouts#create", as: :pix_checkouts
   get "pix/:token", to: "pix_checkouts#show", as: :pix_checkout
   get "pix/:token/status", to: "pix_checkouts#status", as: :status_pix_checkout

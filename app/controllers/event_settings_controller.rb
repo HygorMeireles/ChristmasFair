@@ -11,6 +11,10 @@ class EventSettingsController < ApplicationController
   private
 
   def setting_params
-    params.require(:event_setting).permit(:mercado_pago_fee_percent)
+    params.require(:event_setting).permit(
+      :mercado_pago_fee_percent,
+      :debit_card_fee_percent,
+      :credit_card_fee_percent
+    )
   end
 end

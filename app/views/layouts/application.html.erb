@@ -22,7 +22,10 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="christmas-shell">
+  <body class="christmas-shell <%= 'customer-display-mode' if customer_display? %>"
+        data-controller="display"
+        data-display-customer-value="<%= customer_display? %>"
+        data-display-sync-url-value="<%= request.fullpath if controller_name.in?(%w[dashboard pix_checkouts]) %>">
     <div class="ambient-snow" aria-hidden="true"></div>
     <header class="site-header">
       <%= link_to root_path, class: "brand-lockup", aria: { label: "Mister Wiz Christmas Fair" } do %>
@@ -36,6 +39,8 @@
         <%= link_to t("navigation.fishing"), fishing_tickets_path, class: "nav-link #{'active' if controller_name == 'fishing_tickets'}" %>
         <%= link_to t("navigation.financial"), financial_path, class: "nav-link #{'active' if controller_name.in?(%w[financial expenses])}" %>
         <%= link_to t("navigation.settings"), products_path, class: "nav-link #{'active' if controller_name == 'products'}" %>
+        <%= link_to t("navigation.customer_display"), root_path(customer_display: 1), class: "nav-link customer-display-link", target: "_blank", rel: "noopener" %>
+        <button type="button" class="nav-link freeze-display-button" data-display-target="toggleButton" data-action="display#toggle" data-freeze-label="<%= t('navigation.freeze_display') %>" data-unfreeze-label="<%= t('navigation.unfreeze_display') %>"><%= t("navigation.freeze_display") %></button>
         <div class="locale-switch" aria-label="<%= t('navigation.language') %>">
           <%= link_to "PT", locale_switch_path("pt-BR"), class: current_locale == "pt-BR" ? "selected" : nil %>
           <%= link_to "EN", locale_switch_path("en"), class: current_locale == "en" ? "selected" : nil %>
@@ -53,5 +58,12 @@
       <span>✦ Mister Wiz</span>
       <span><%= t("footer.date") %></span>
     </footer>
+    <div class="customer-freeze-overlay" data-display-target="overlay" hidden>
+      <div class="freeze-logo-card"><%= image_tag "branding/originals/christmas-fair.jpeg", alt: "Mister Wiz Christmas Fair" %></div>
+      <span class="eyebrow"><%= t("display.frozen_eyebrow") %></span>
+      <h1><%= t("display.frozen_title") %></h1>
+      <p><%= t("display.frozen_message") %></p>
+      <div class="freeze-lights" aria-hidden="true">●　●　●　●　●</div>
+    </div>
   </body>
 </html>

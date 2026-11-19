@@ -12,6 +12,9 @@ pt-BR:
     fishing: Pescaria
     financial: Financeiro
     settings: Configurar estoque
+    customer_display: Tela do cliente
+    freeze_display: Congelar tela
+    unfreeze_display: Liberar tela
     language: Idioma
     logout: Sair
   authentication:
@@ -28,6 +31,10 @@ pt-BR:
     too_many_attempts: Muitas tentativas. Aguarde alguns minutos e tente novamente.
   footer:
     date: 5 de dezembro de 2026
+  display:
+    frozen_eyebrow: Christmas Fair
+    frozen_title: Só um momento…
+    frozen_message: Estamos preparando o próximo pedido. A magia do Natal continua já já!
   dashboard:
     page_title: Mister Wiz Christmas Fair
     eyebrow: Uma experiência mágica de Natal
@@ -66,6 +73,9 @@ pt-BR:
     payment_method: Forma de pagamento
     cash: Dinheiro
     pix: Pix
+    debit: Débito
+    credit: Crédito
+    unit_price: Preço
     pix_ready: O pedido está congelado. Gere um QR Pix único com o valor exato da compra.
     generate_pix: Gerar QR Pix
     generating_pix: Gerando QR...
@@ -79,12 +89,27 @@ pt-BR:
     pix_payment: Pagamento Pix
     pix_after_confirmation: O QR Code do valor confirmado aparecerá somente nesta tela.
     phone_pix_note: O smartphone ficará reservado ao QR Pix depois da integração com o Mercado Pago.
+    card_step: Cobrança por aproximação
+    card_instructions: Abra o Mercado Pago no iPhone, escolha Tap to Pay e cobre exatamente este valor.
+    start_card: Iniciar cobrança no iPhone
+    card_confirm_warning: Confirme somente depois de aparecer “Pagamento aprovado” no iPhone. Esta ação registra a venda e baixa o estoque.
+    confirm_card: Pagamento aprovado
+    customer_pix_message: O QR Code será gerado com o valor exato deste pedido.
+    customer_cash_title: Pagamento em dinheiro
+    customer_cash_message: Entregue o valor ao atendente e aguarde a confirmação.
+    customer_debit_title: Cartão de débito
+    customer_credit_title: Cartão de crédito
+    customer_card_message: Aproxime o cartão no iPhone quando o atendente solicitar.
   payment_results:
     close: Fechar e iniciar novo pedido
     approved:
       eyebrow: Pagamento confirmado
       title: Venda concluída!
       message: O Mercado Pago confirmou o recebimento e o estoque já foi atualizado.
+    card_approved:
+      eyebrow: Pagamento confirmado
+      title: Venda concluída!
+      message: O pagamento por aproximação foi registrado e o estoque já foi atualizado.
     failed:
       eyebrow: Pagamento não concluído
       title: Não foi possível confirmar
@@ -107,6 +132,7 @@ pt-BR:
     invalid_total: O pedido precisa ter um valor maior que zero.
     invalid_payment: Informe um valor recebido válido.
     insufficient_payment: O valor recebido é menor que o total do pedido.
+    invalid_card_method: Selecione débito ou crédito para registrar o pagamento.
     stock_note: "Venda #%{number}"
   pix:
     page_title: Pagamento Pix — Christmas Fair
@@ -180,12 +206,16 @@ pt-BR:
     pix_balance_note: Vendas Pix menos a taxa do Mercado Pago
     cash_sales: Vendas em dinheiro
     cash_sales_note: Total recebido fisicamente
+    card_sales: Vendas em cartão
+    card_sales_note: "Taxas descontadas: %{fees}"
+    card_balance: Saldo líquido em cartões
+    card_balance_note: Débito e crédito menos as taxas do Mercado Pago
     paid_expenses: Despesas pagas
     paid_expenses_note: Saídas já efetivadas
     cash_result: Saldo de caixa
     cash_result_note: Vendas em dinheiro menos despesas pagas
     overall_balance: Saldo geral líquido
-    overall_balance_note: Pix líquido e dinheiro menos despesas pagas
+    overall_balance_note: Pix, cartões e dinheiro líquidos menos despesas pagas
     pending_summary: "Pendentes: %{amount}"
     show_details: Ver composição dos valores
     show_details_note: Vendas brutas, taxas, pendências e margem
@@ -233,6 +263,8 @@ pt-BR:
     payment_methods:
       cash: Dinheiro
       pix: Pix
+      card_debit: Cartão de débito
+      card_credit: Cartão de crédito
   expenses:
     created: Despesa cadastrada.
     marked_paid: Despesa marcada como paga.
@@ -278,10 +310,12 @@ pt-BR:
   event_settings:
     eyebrow: Pagamentos
     title: Taxa do Mercado Pago
-    fee_explanation: A taxa é registrada em cada nova venda Pix e preservada no histórico, mesmo se esta configuração mudar depois.
+    fee_explanation: Cada taxa é registrada na venda correspondente e preservada no histórico, mesmo se a configuração mudar depois.
     mercado_pago_fee: Taxa por venda Pix
-    save: Salvar taxa
-    updated: Taxa do Mercado Pago atualizada.
+    debit_card_fee: Taxa do débito
+    credit_card_fee: Taxa do crédito à vista
+    save: Salvar taxas
+    updated: Taxas do Mercado Pago atualizadas.
   inventory:
     updated: Estoque atualizado.
     invalid_quantity: Informe uma quantidade válida.

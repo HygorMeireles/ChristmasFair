@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   STATUSES = %w[pending paid cancelled refunded].freeze
-  PAYMENT_METHODS = %w[cash pix].freeze
+  PAYMENT_METHODS = %w[cash pix card_debit card_credit].freeze
 
   has_many :order_items, dependent: :restrict_with_error
   has_many :payment_attempts, dependent: :restrict_with_error

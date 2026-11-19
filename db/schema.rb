@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_16_220000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_18_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -32,6 +32,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_16_220000) do
     t.integer "mercado_pago_fee_basis_points", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "debit_card_fee_basis_points", default: 89, null: false
+    t.integer "credit_card_fee_basis_points", default: 309, null: false
+    t.check_constraint "credit_card_fee_basis_points >= 0 AND credit_card_fee_basis_points <= 10000", name: "event_settings_credit_card_fee_valid"
+    t.check_constraint "debit_card_fee_basis_points >= 0 AND debit_card_fee_basis_points <= 10000", name: "event_settings_debit_card_fee_valid"
     t.check_constraint "mercado_pago_fee_basis_points >= 0 AND mercado_pago_fee_basis_points <= 10000", name: "event_settings_mercado_pago_fee_valid"
   end
 

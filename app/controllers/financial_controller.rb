@@ -6,7 +6,11 @@ class FinancialController < ApplicationController
     @pix_sales_cents = paid_orders.where(payment_method: "pix").sum(:total_cents)
     @pix_fees_cents = paid_orders.where(payment_method: "pix").sum(:provider_fee_cents)
     @pix_net_cents = @pix_sales_cents - @pix_fees_cents
-    @net_sales_cents = @gross_sales_cents - @pix_fees_cents
+    card_orders = paid_orders.where(payment_method: %w[card_debit card_credit])
+    @card_sales_cents = card_orders.sum(:total_cents)
+    @card_fees_cents = card_orders.sum(:provider_fee_cents)
+    @card_net_cents = @card_sales_cents - @card_fees_cents
+    @net_sales_cents = @gross_sales_cents - @pix_fees_cents - @card_fees_cents
     @paid_expenses_cents = Expense.paid.sum(:amount_cents)
     @pending_expenses_cents = Expense.pending.sum(:amount_cents)
     @cash_result_cents = @cash_sales_cents - @paid_expenses_cents
