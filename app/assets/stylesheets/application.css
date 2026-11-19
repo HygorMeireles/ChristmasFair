@@ -265,7 +265,7 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
 .event-settings-form .button { width: 130px; white-space: nowrap; }
 .login-page { min-height: calc(100vh - 230px); display: grid; place-items: center; padding: 30px 0; }
 .login-card { width: min(440px,100%); padding: 30px; text-align: center; border: 1px solid var(--line); border-radius: 28px; background: rgba(255,254,250,.97); box-shadow: var(--shadow); }
-.login-event-logo { width: 150px; height: 150px; margin-bottom: 18px; border-radius: 22px; object-fit: cover; box-shadow: 0 10px 25px rgba(66,16,79,.15); }
+.login-event-logo { display: block; width: 150px; height: 150px; margin: 0 auto 18px; border-radius: 22px; object-fit: cover; box-shadow: 0 10px 25px rgba(66,16,79,.15); }
 .login-card h1 { margin: 7px 0; color: var(--purple-deep); font-family: Georgia,serif; font-size: 34px; }
 .login-card > p { color: var(--muted); line-height: 1.5; }
 .login-form { display: grid; gap: 16px; margin-top: 22px; text-align: left; }
