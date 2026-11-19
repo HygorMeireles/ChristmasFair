@@ -7,7 +7,7 @@ image: christmas_fair
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - fishrecord
   # job:
   #   hosts:
   #     - 192.168.0.1
