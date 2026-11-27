@@ -8,7 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 products = [
-  { code: "brownie", name_pt: "Brownie", name_en: "Brownie", stock_unit: "unit", serving_size: 1 },
+  { code: "brownie", name_pt: "Brownie", name_en: "Brownie", stock_unit: "unit", serving_size: 1, price_cents: 600 },
   { code: "hot_chocolate", name_pt: "Chocolate quente", name_en: "Hot chocolate", stock_unit: "ml", serving_size: 250 },
   { code: "fishing", name_pt: "Pescaria", name_en: "Fishing game", stock_unit: "unit", serving_size: 1 }
 ]
@@ -16,7 +16,7 @@ products = [
 products.each do |attributes|
   product = Product.find_or_initialize_by(code: attributes[:code])
   product.assign_attributes(attributes) if product.new_record?
-  product.price_cents ||= 0
+  product.price_cents ||= attributes[:price_cents] || 0
   product.stock_quantity ||= 0
   product.capacity_quantity ||= 0
   product.active = true if product.active.nil?

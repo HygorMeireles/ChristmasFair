@@ -6,8 +6,8 @@ en:
     financial: Financial
     settings: Stock setup
     customer_display: Customer display
-    freeze_display: Freeze display
-    unfreeze_display: Resume display
+    freeze_display: Showcase mode
+    unfreeze_display: Return to order
     language: Language
     logout: Sign out
   authentication:
@@ -28,6 +28,12 @@ en:
     frozen_eyebrow: Christmas Fair
     frozen_title: Just a moment…
     frozen_message: We are preparing the next order. The Christmas magic will continue shortly!
+    showcase_eyebrow: Fair menu
+    showcase_title: Choose your favorite
+    showcase_message: Brownies, hot chocolate and fishing game in a magical Christmas experience.
+    showcase_stock: "Available: %{stock}"
+    price_pending: To be defined
+    stock_pending: Stock will be configured soon
   dashboard:
     page_title: Mister Wiz Christmas Fair
     eyebrow: A magical Christmas experience
@@ -223,6 +229,11 @@ en:
     description: Description
     category: Category
     amount: Amount
+    quantity: Quantity
+    unit_amount: Unit amount
+    discount: Discount
+    calculated_total: Calculated total
+    expense_calculation: "%{quantity} × %{unit} · discount %{discount}"
     date: Expense date
     status: Status
     notes: Notes
@@ -309,6 +320,31 @@ en:
     credit_card_fee: Credit fee (single payment)
     save: Save fees
     updated: Mercado Pago fees updated.
+    team_eyebrow: Team
+    team_title: Participants and responsibilities
+    team_explanation: Enter the names used in the internal profit distribution note.
+    save_team: Save team
+  profit_distribution:
+    eyebrow: Internal note
+    title: Estimated profit distribution
+    explanation: 70% of net profit is divided equally among the six members. The other 30% rewards those who prepared the brownies, hot chocolate and fishing game before the fair.
+    negative_balance: The event does not have a positive net profit yet. Values remain at zero until sales exceed expenses and fees.
+    equal_pool: "Equal pool — 70%: %{amount}"
+    preparation_pool: "Preparation bonus — 30%: %{amount}"
+    internal_note: Internal team note. The calculation uses confirmed sales minus Mercado Pago fees and expenses marked as paid. Reimbursements must be recorded as expenses before the final distribution.
+    unnamed: Name not provided yet
+    roles:
+      brownie_lead_name: Brownie lead
+      hot_chocolate_lead_name: Hot chocolate lead
+      fishing_lead_name: Fishing game lead
+      member_four_name: Member 4
+      member_five_name: Member 5
+      member_six_name: Member 6
+    role_descriptions:
+      brownie_lead: Brownie production · equal share + bonus
+      hot_chocolate_lead: Hot chocolate production · equal share + bonus
+      fishing_lead: Toy purchasing and setup · equal share + bonus
+      team_member: Fair shift · equal share
   inventory:
     updated: Stock updated.
     invalid_quantity: Enter a valid quantity.

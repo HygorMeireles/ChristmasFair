@@ -49,5 +49,8 @@ class FinancialControllerTest < ActionDispatch::IntegrationTest
     assert_select ".finance-table tbody tr", 1
     assert_select ".expense-list article", 2
     assert_select "details.expense-management", 1
+    assert_select ".profit-distribution-card", 1
+    assert_select ".distribution-list article", 6
+    assert_select ".distribution-total", text: "R$6,00"
   end
 end

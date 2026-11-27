@@ -19,6 +19,23 @@
   <% end %>
 </section>
 
+<section class="event-settings-card team-settings-card">
+  <div class="event-fee-copy">
+    <span class="eyebrow"><%= t("event_settings.team_eyebrow") %></span>
+    <h2><%= t("event_settings.team_title") %></h2>
+    <p><%= t("event_settings.team_explanation") %></p>
+  </div>
+  <%= form_with model: @event_setting, url: event_setting_path, method: :patch, class: "team-settings-form" do |form| %>
+    <% EventSetting::TEAM_NAME_FIELDS.each do |field| %>
+      <label>
+        <span><%= t("profit_distribution.roles.#{field}") %></span>
+        <%= form.text_field field, maxlength: 80, placeholder: t("profit_distribution.unnamed") %>
+      </label>
+    <% end %>
+    <%= form.submit t("event_settings.save_team"), class: "button primary" %>
+  <% end %>
+</section>
+
 <section class="settings-grid">
   <% @products.each do |product| %>
     <article class="settings-card" id="<%= dom_id(product) %>">

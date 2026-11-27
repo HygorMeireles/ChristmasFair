@@ -15,6 +15,8 @@ class FinancialController < ApplicationController
     @pending_expenses_cents = Expense.pending.sum(:amount_cents)
     @cash_result_cents = @cash_sales_cents - @paid_expenses_cents
     @overall_balance_cents = @net_sales_cents - @paid_expenses_cents
+    @event_setting = EventSetting.current
+    @profit_distribution = Financial::ProfitDistribution.new(profit_cents: @overall_balance_cents)
     costed_items = OrderItem.joins(:order).where(orders: { status: "paid" }, cost_complete: true)
     @costed_revenue_cents = costed_items.sum(:line_total_cents)
     @cost_of_goods_cents = costed_items.sum(:cost_cents)
@@ -23,7 +25,7 @@ class FinancialController < ApplicationController
     @sales_by_product = sales_by_product
     @recent_orders = paid_orders.includes(:order_items).order(paid_at: :desc).limit(10)
     @expenses = Expense.recent_first
-    @expense = Expense.new(incurred_on: Date.current, status: "paid", paid_on: Date.current)
+    @expense = Expense.new(quantity: 1, discount_cents: 0, incurred_on: Date.current, status: "paid", paid_on: Date.current)
   end
 
   private

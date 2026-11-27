@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total", "quantityInput", "cashReceived", "change", "cashHint", "checkoutButton", "reviewState", "paymentState", "confirmOrderButton", "quantityButton", "clearButton", "cashMethod", "pixMethod", "debitMethod", "creditMethod", "cashPayment", "pixPayment", "cardPayment", "pixButton", "paymentMethodInput", "cardStartButton", "cardConfirmation", "cardConfirmButton", "cardChargeTotal", "cardInstructions", "customerPaymentTitle", "customerPaymentIcon", "customerPaymentTotal", "customerPaymentMessage"]
+  static targets = ["product", "quantity", "phone", "lockState", "readyState", "cartLines", "total", "quantityInput", "cashReceived", "change", "cashHint", "checkoutButton", "reviewState", "paymentState", "confirmOrderButton", "quantityButton", "clearButton", "cashMethod", "pixMethod", "debitMethod", "creditMethod", "cashPayment", "pixPayment", "cardPayment", "pixButton", "paymentMethodInput", "cardStartButton", "cardConfirmation", "cardConfirmButton", "cardChargeTotal", "cardInstructions", "customerPaymentTitle", "customerPaymentIcon", "customerPaymentTotal", "customerPaymentMessage", "showcase", "productStage", "checkoutPanel"]
   static values = { locale: String, currency: String, displayOnly: Boolean }
 
   connect() {
@@ -12,6 +12,7 @@ export default class extends Controller {
     this.paymentMethod = "pix"
     this.cardChargeStarted = false
     this.submitting = false
+    this.showcaseActive = this.displayOnlyValue
     this.displayChannel = new BroadcastChannel("christmas-fair-cart")
     this.displayChannel.onmessage = ({ data }) => this.receiveDisplayMessage(data)
     this.render()
@@ -20,6 +21,7 @@ export default class extends Controller {
 
   disconnect() {
     this.displayChannel?.close()
+    window.clearTimeout(this.showcaseTimer)
   }
 
   add(event) {
@@ -73,6 +75,12 @@ export default class extends Controller {
     this.paymentMethod = data.paymentMethod
     this.cardChargeStarted = data.cardChargeStarted
     this.submitting = false
+    if (Array.from(this.cart.values()).some((quantity) => quantity > 0)) {
+      window.clearTimeout(this.showcaseTimer)
+      this.showcaseActive = false
+    } else if (!this.showcaseActive) {
+      this.scheduleShowcase()
+    }
     this.render()
   }
 
@@ -106,6 +114,23 @@ export default class extends Controller {
     this.renderConfirmationState()
     this.updateCashState()
     this.broadcastState()
+  }
+
+  scheduleShowcase() {
+    window.clearTimeout(this.showcaseTimer)
+    this.showcaseTimer = window.setTimeout(() => {
+      this.showcaseActive = true
+      this.renderShowcaseMode()
+    }, 45000)
+  }
+
+  renderShowcaseMode() {
+    if (!this.displayOnlyValue || !this.hasShowcaseTarget) return
+
+    this.showcaseTarget.hidden = !this.showcaseActive
+    this.productStageTarget.hidden = this.showcaseActive
+    this.checkoutPanelTarget.hidden = this.showcaseActive
+    this.element.classList.toggle("showcase-active", this.showcaseActive)
   }
 
   submitCheckout(event) {
@@ -215,6 +240,7 @@ export default class extends Controller {
     this.customerPaymentTotalTarget.textContent = this.money(total)
     this.renderConfirmationState()
     this.updateCashState()
+    this.renderShowcaseMode()
     this.broadcastState()
   }
 

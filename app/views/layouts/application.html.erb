@@ -59,11 +59,7 @@
       <span><%= t("footer.date") %></span>
     </footer>
     <div class="customer-freeze-overlay" data-display-target="overlay" hidden>
-      <div class="freeze-logo-card"><%= image_tag "branding/originals/christmas-fair.jpeg", alt: "Mister Wiz Christmas Fair" %></div>
-      <span class="eyebrow"><%= t("display.frozen_eyebrow") %></span>
-      <h1><%= t("display.frozen_title") %></h1>
-      <p><%= t("display.frozen_message") %></p>
-      <div class="freeze-lights" aria-hidden="true">●　●　●　●　●</div>
+      <%= render "shared/product_showcase", products: display_products, overlay: true %>
     </div>
   </body>
 </html>

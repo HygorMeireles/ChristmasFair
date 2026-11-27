@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_18_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_27_090001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -34,6 +34,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_090000) do
     t.datetime "updated_at", null: false
     t.integer "debit_card_fee_basis_points", default: 89, null: false
     t.integer "credit_card_fee_basis_points", default: 309, null: false
+    t.string "brownie_lead_name"
+    t.string "hot_chocolate_lead_name"
+    t.string "fishing_lead_name"
+    t.string "member_four_name"
+    t.string "member_five_name"
+    t.string "member_six_name"
     t.check_constraint "credit_card_fee_basis_points >= 0 AND credit_card_fee_basis_points <= 10000", name: "event_settings_credit_card_fee_valid"
     t.check_constraint "debit_card_fee_basis_points >= 0 AND debit_card_fee_basis_points <= 10000", name: "event_settings_debit_card_fee_valid"
     t.check_constraint "mercado_pago_fee_basis_points >= 0 AND mercado_pago_fee_basis_points <= 10000", name: "event_settings_mercado_pago_fee_valid"
@@ -49,10 +55,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_090000) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "quantity", default: 1, null: false
+    t.integer "unit_amount_cents", null: false
+    t.integer "discount_cents", default: 0, null: false
     t.index ["category"], name: "index_expenses_on_category"
     t.index ["incurred_on"], name: "index_expenses_on_incurred_on"
     t.index ["status"], name: "index_expenses_on_status"
     t.check_constraint "amount_cents > 0", name: "expenses_amount_positive"
+    t.check_constraint "discount_cents >= 0", name: "expenses_discount_nonnegative"
+    t.check_constraint "quantity > 0", name: "expenses_quantity_positive"
+    t.check_constraint "unit_amount_cents > 0", name: "expenses_unit_amount_positive"
   end
 
   create_table "fishing_tickets", force: :cascade do |t|

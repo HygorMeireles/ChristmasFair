@@ -27,4 +27,20 @@ class ExpenseTest < ActiveSupport::TestCase
     assert_not expense.valid?
     assert expense.errors.of_kind?(:paid_on, :blank)
   end
+
+  test "calculates the total from quantity, unit amount and discount" do
+    expense = Expense.new(
+      description: "Nescau 330 g",
+      category: "ingredients",
+      quantity: 3,
+      unit_amount_brl: "9,35",
+      discount_brl: "1,38",
+      incurred_on: Date.current,
+      status: "paid",
+      paid_on: Date.current
+    )
+
+    assert_predicate expense, :valid?
+    assert_equal 2_667, expense.amount_cents
+  end
 end

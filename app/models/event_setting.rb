@@ -1,6 +1,12 @@
 class EventSetting < ApplicationRecord
+  TEAM_NAME_FIELDS = %i[
+    brownie_lead_name hot_chocolate_lead_name fishing_lead_name
+    member_four_name member_five_name member_six_name
+  ].freeze
+
   validates :mercado_pago_fee_basis_points, :debit_card_fee_basis_points, :credit_card_fee_basis_points,
     numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 10_000 }
+  validates(*TEAM_NAME_FIELDS, length: { maximum: 80 }, allow_blank: true)
 
   def self.current
     first_or_create!(mercado_pago_fee_basis_points: 100)

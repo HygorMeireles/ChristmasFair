@@ -55,6 +55,10 @@ class Product < ApplicationRecord
     code == "hot_chocolate"
   end
 
+  def configured_for_sale?
+    active? && price_cents > 1
+  end
+
   private
 
   def stock_does_not_exceed_capacity

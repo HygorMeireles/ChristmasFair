@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
   before_action :require_authentication
 
-  helper_method :current_locale, :authenticated?, :customer_display?
+  helper_method :current_locale, :authenticated?, :customer_display?, :display_products
 
   private
 
@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
 
   def customer_display?
     params[:customer_display] == "1"
+  end
+
+  def display_products
+    @display_products ||= Product.active.display_order
   end
 
   def operator_password

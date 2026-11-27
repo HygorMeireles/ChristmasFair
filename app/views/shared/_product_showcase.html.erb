@@ -1,0 +1,21 @@
+<section class="customer-showcase <%= local_assigns[:overlay] ? 'overlay-showcase' : '' %>" <%= 'data-cart-target="showcase"'.html_safe unless local_assigns[:overlay] %>>
+  <div class="showcase-heading">
+    <%= image_tag "branding/originals/christmas-fair.jpeg", alt: "Mister Wiz Christmas Fair" %>
+    <div><span><%= t("display.showcase_eyebrow") %></span><h1><%= t("display.showcase_title") %></h1><p><%= t("display.showcase_message") %></p></div>
+  </div>
+  <div class="showcase-products">
+    <% products.each do |product| %>
+      <article class="showcase-product <%= product.code.dasherize %>">
+        <span class="showcase-icon" aria-hidden="true"><%= product.code == "brownie" ? "▦" : product.code == "hot_chocolate" ? "♨" : "◇" %></span>
+        <h2><%= product.localized_name %></h2>
+        <% if product.configured_for_sale? %>
+          <strong><%= money(product.price_cents) %></strong>
+          <small><%= t("display.showcase_stock", stock: stock_label(product)) %></small>
+        <% else %>
+          <strong class="price-pending"><%= t("display.price_pending") %></strong>
+          <small><%= t("display.stock_pending") %></small>
+        <% end %>
+      </article>
+    <% end %>
+  </div>
+</section>

@@ -13,8 +13,8 @@ pt-BR:
     financial: Financeiro
     settings: Configurar estoque
     customer_display: Tela do cliente
-    freeze_display: Congelar tela
-    unfreeze_display: Liberar tela
+    freeze_display: Modo vitrine
+    unfreeze_display: Voltar ao pedido
     language: Idioma
     logout: Sair
   authentication:
@@ -35,6 +35,12 @@ pt-BR:
     frozen_eyebrow: Christmas Fair
     frozen_title: Só um momento…
     frozen_message: Estamos preparando o próximo pedido. A magia do Natal continua já já!
+    showcase_eyebrow: Cardápio da feira
+    showcase_title: Escolha o seu favorito
+    showcase_message: Brownie, chocolate quente e pescaria em uma experiência mágica de Natal.
+    showcase_stock: "Disponível: %{stock}"
+    price_pending: A definir
+    stock_pending: Estoque será configurado em breve
   dashboard:
     page_title: Mister Wiz Christmas Fair
     eyebrow: Uma experiência mágica de Natal
@@ -230,6 +236,11 @@ pt-BR:
     description: Descrição
     category: Categoria
     amount: Valor
+    quantity: Quantidade
+    unit_amount: Valor unitário
+    discount: Desconto
+    calculated_total: Total calculado
+    expense_calculation: "%{quantity} × %{unit} · desconto %{discount}"
     date: Data da despesa
     status: Situação
     notes: Observações
@@ -316,6 +327,31 @@ pt-BR:
     credit_card_fee: Taxa do crédito à vista
     save: Salvar taxas
     updated: Taxas do Mercado Pago atualizadas.
+    team_eyebrow: Equipe
+    team_title: Participantes e responsáveis
+    team_explanation: Cadastre os nomes usados na nota interna de divisão dos lucros.
+    save_team: Salvar equipe
+  profit_distribution:
+    eyebrow: Nota interna
+    title: Divisão estimada dos lucros
+    explanation: 70% do saldo líquido é dividido igualmente entre as seis pessoas. Os outros 30% remuneram quem preparou os brownies, o chocolate quente e a pescaria antes da feira.
+    negative_balance: O evento ainda não possui lucro líquido positivo. Os valores abaixo permanecem zerados até que as vendas superem as despesas e taxas.
+    equal_pool: "Parcela igualitária — 70%: %{amount}"
+    preparation_pool: "Bônus de preparação — 30%: %{amount}"
+    internal_note: Nota interna da equipe. O cálculo usa vendas confirmadas menos taxas do Mercado Pago e despesas marcadas como pagas. Reembolsos devem ser cadastrados como despesas antes da divisão final.
+    unnamed: Nome ainda não informado
+    roles:
+      brownie_lead_name: Responsável pelo brownie
+      hot_chocolate_lead_name: Responsável pelo chocolate quente
+      fishing_lead_name: Responsável pela pescaria
+      member_four_name: Integrante 4
+      member_five_name: Integrante 5
+      member_six_name: Integrante 6
+    role_descriptions:
+      brownie_lead: Produção dos brownies · parcela igual + bônus
+      hot_chocolate_lead: Produção do chocolate quente · parcela igual + bônus
+      fishing_lead: Compra e organização dos brinquedos · parcela igual + bônus
+      team_member: Trabalho durante a feira · parcela igual
   inventory:
     updated: Estoque atualizado.
     invalid_quantity: Informe uma quantidade válida.

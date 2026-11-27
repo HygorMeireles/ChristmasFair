@@ -35,7 +35,8 @@
   </section>
 <% else %>
   <div class="cashier-layout" data-controller="cart" data-cart-locale-value="<%= current_locale %>" data-cart-currency-value="BRL" data-cart-display-only-value="<%= customer_display? %>">
-    <section class="product-stage" aria-label="<%= t('dashboard.products') %>">
+    <% if customer_display? %><%= render "shared/product_showcase", products: @products %><% end %>
+    <section class="product-stage" data-cart-target="productStage" aria-label="<%= t('dashboard.products') %>">
       <div class="section-heading">
         <div><span class="eyebrow"><%= t("dashboard.step_one") %></span><h2><%= t("dashboard.choose_products") %></h2></div>
         <button class="text-button" type="button" data-cart-target="clearButton" data-action="cart#clear"><%= t("dashboard.clear") %></button>
@@ -51,10 +52,10 @@
                    data-stock="<%= product.available_stock_quantity %>"
                    data-capacity="<%= product.capacity_quantity %>"
                    data-serving="<%= product.serving_size %>"
-                   data-available="<%= product.available_servings %>">
+                   data-available="<%= product.configured_for_sale? ? product.available_servings : 0 %>">
             <div class="product-card-top">
               <span class="product-badge"><%= t("products.codes.#{product.code}") %></span>
-              <strong class="customer-price"><span><%= t("dashboard.unit_price") %></span><%= money(product.price_cents) %></strong>
+              <strong class="customer-price"><span><%= t("dashboard.unit_price") %></span><%= product.configured_for_sale? ? money(product.price_cents) : t("display.price_pending") %></strong>
             </div>
 
             <div class="product-visual" aria-hidden="true">
@@ -69,7 +70,7 @@
                 </div>
                 <div class="steam"><i></i><i></i><i></i></div>
               <% when "brownie" %>
-                <div class="brownie-tray" data-cart-pieces>
+                <div class="brownie-tray columns-<%= brownie_grid_columns(product.available_servings) %> rows-<%= brownie_grid_rows(product.available_servings) %>" data-cart-pieces>
                   <% product.available_servings.times do %><span class="brownie-piece stock-piece"><i></i></span><% end %>
                   <% if product.available_servings.zero? %><span class="visual-empty">0</span><% end %>
                 </div>
@@ -95,7 +96,7 @@
             <div class="quantity-picker">
               <button type="button" data-cart-target="quantityButton" data-action="cart#remove" data-code="<%= product.code %>" aria-label="<%= t('dashboard.remove_one', product: product.localized_name) %>">−</button>
               <output data-cart-target="quantity" data-code="<%= product.code %>">0</output>
-              <button type="button" data-cart-target="quantityButton" data-action="cart#add" data-code="<%= product.code %>" <%= "disabled" if product.available_servings.zero? %> aria-label="<%= t('dashboard.add_one', product: product.localized_name) %>">+</button>
+              <button type="button" data-cart-target="quantityButton" data-action="cart#add" data-code="<%= product.code %>" <%= "disabled" unless product.configured_for_sale? && product.available_servings.positive? %> aria-label="<%= t('dashboard.add_one', product: product.localized_name) %>">+</button>
             </div>
           </article>
         <% end %>
@@ -156,7 +157,7 @@
       <% end %>
     </section>
 
-    <aside class="checkout-panel">
+    <aside class="checkout-panel" data-cart-target="checkoutPanel">
       <div class="section-heading compact"><div><span class="eyebrow"><%= t("dashboard.step_two") %></span><h2><%= t("dashboard.payment") %></h2></div></div>
       <div class="phone-frame is-locked" data-cart-target="phone">
         <div class="phone-speaker"></div>

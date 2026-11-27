@@ -25,7 +25,7 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", fishing_tickets_path(locale: "pt-BR"), text: "Pescaria"
     assert_select "a[href=?]", financial_path(locale: "pt-BR"), text: "Financeiro"
     assert_select "a[href=?][target='_blank']", root_path(customer_display: 1, locale: "pt-BR"), text: "Tela do cliente"
-    assert_select "button[data-action='display#toggle']", text: "Congelar tela"
+    assert_select "button[data-action='display#toggle']", text: "Modo vitrine"
   end
 
   test "renders the English interface" do
@@ -40,6 +40,8 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "body.customer-display-mode[data-display-customer-value='true']", 1
     assert_select "[data-controller='cart'][data-cart-display-only-value='true']", 1
+    assert_select ".customer-showcase[data-cart-target='showcase']", 1
+    assert_select ".customer-showcase[data-cart-target='showcase'] .showcase-product", 3
   end
 
   test "shows a dismissible payment result modal" do

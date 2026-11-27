@@ -25,6 +25,30 @@
   </div>
 </details>
 
+<section class="finance-card profit-distribution-card">
+  <div class="section-heading compact">
+    <div><span class="eyebrow"><%= t("profit_distribution.eyebrow") %></span><h2><%= t("profit_distribution.title") %></h2></div>
+    <strong class="distribution-total"><%= money(@profit_distribution.profit_cents) %></strong>
+  </div>
+  <p class="distribution-explanation"><%= t("profit_distribution.explanation") %></p>
+  <% if @overall_balance_cents.negative? %><p class="distribution-warning"><%= t("profit_distribution.negative_balance") %></p><% end %>
+  <div class="distribution-pools">
+    <span><%= t("profit_distribution.equal_pool", amount: money(@profit_distribution.base_pool_cents)) %></span>
+    <span><%= t("profit_distribution.preparation_pool", amount: money(@profit_distribution.preparation_pool_cents)) %></span>
+  </div>
+  <div class="distribution-list">
+    <% @profit_distribution.entries.each do |entry| %>
+      <% name = @event_setting.public_send(entry.name_field).presence || t("profit_distribution.roles.#{entry.name_field}") %>
+      <article>
+        <div><strong><%= name %></strong><small><%= t("profit_distribution.role_descriptions.#{entry.role}") %></small></div>
+        <span class="distribution-percentage"><%= entry.preparation_lead ? "21,67%" : "11,67%" %></span>
+        <b><%= money(entry.amount_cents) %></b>
+      </article>
+    <% end %>
+  </div>
+  <small class="distribution-note"><%= t("profit_distribution.internal_note") %></small>
+</section>
+
 <div class="financial-content-grid">
   <section class="finance-card product-performance-card">
     <div class="section-heading compact"><div><span class="eyebrow"><%= t("financial.sales_eyebrow") %></span><h2><%= t("financial.by_product") %></h2></div></div>
@@ -52,10 +76,13 @@
   <div class="expense-management-grid">
     <div>
       <h2><%= t("financial.new_expense") %></h2>
-      <%= form_with model: @expense, class: "expense-form" do |form| %>
+      <%= form_with model: @expense, class: "expense-form", data: { controller: "expense-calculator", action: "input->expense-calculator#calculate" } do |form| %>
         <label class="wide"><span><%= t("financial.description") %></span><%= form.text_field :description, required: true, maxlength: 120 %></label>
         <label><span><%= t("financial.category") %></span><%= form.select :category, Expense::CATEGORIES.map { |category| [t("financial.categories.#{category}"), category] }, required: true %></label>
-        <label><span><%= t("financial.amount") %></span><div class="input-prefix"><b>R$</b><%= form.text_field :amount_brl, required: true, inputmode: "decimal", placeholder: "0,00" %></div></label>
+        <label><span><%= t("financial.quantity") %></span><%= form.number_field :quantity, min: 1, required: true, data: { expense_calculator_target: "quantity" } %></label>
+        <label><span><%= t("financial.unit_amount") %></span><div class="input-prefix"><b>R$</b><%= form.text_field :unit_amount_brl, required: true, inputmode: "decimal", placeholder: "0,00", data: { expense_calculator_target: "unitAmount" } %></div></label>
+        <label><span><%= t("financial.discount") %></span><div class="input-prefix"><b>R$</b><%= form.text_field :discount_brl, inputmode: "decimal", placeholder: "0,00", data: { expense_calculator_target: "discount" } %></div></label>
+        <div class="expense-calculated-total"><span><%= t("financial.calculated_total") %></span><strong data-expense-calculator-target="total"><%= money(0) %></strong></div>
         <label><span><%= t("financial.date") %></span><%= form.date_field :incurred_on, required: true %></label>
         <label><span><%= t("financial.status") %></span><%= form.select :status, Expense::STATUSES.map { |status| [t("financial.statuses.#{status}"), status] } %></label>
         <label class="wide"><span><%= t("financial.notes") %></span><%= form.text_area :notes, maxlength: 500, rows: 2 %></label>
@@ -67,7 +94,7 @@
       <% if @expenses.empty? %><p class="finance-empty"><%= t("financial.no_expenses") %></p><% else %>
         <div class="expense-list">
           <% @expenses.each do |expense| %>
-            <article><div><span class="expense-category"><%= t("financial.categories.#{expense.category}") %></span><strong><%= expense.description %></strong><small><%= l(expense.incurred_on) %><%= " · #{expense.notes}" if expense.notes.present? %></small></div><div class="expense-value"><strong><%= money(expense.amount_cents) %></strong><span class="status-pill <%= expense.paid? ? 'done' : 'waiting' %>"><%= t("financial.statuses.#{expense.status}") %></span><% unless expense.paid? %><%= button_to t("financial.mark_paid"), mark_paid_expense_path(expense), method: :patch, class: "text-button" %><% end %></div></article>
+            <article><div><span class="expense-category"><%= t("financial.categories.#{expense.category}") %></span><strong><%= expense.description %></strong><small><%= l(expense.incurred_on) %> · <%= t("financial.expense_calculation", quantity: expense.quantity, unit: money(expense.unit_amount_cents), discount: money(expense.discount_cents)) %><%= " · #{expense.notes}" if expense.notes.present? %></small></div><div class="expense-value"><strong><%= money(expense.amount_cents) %></strong><span class="status-pill <%= expense.paid? ? 'done' : 'waiting' %>"><%= t("financial.statuses.#{expense.status}") %></span><% unless expense.paid? %><%= button_to t("financial.mark_paid"), mark_paid_expense_path(expense), method: :patch, class: "text-button" %><% end %></div></article>
           <% end %>
         </div>
       <% end %>

@@ -22,7 +22,10 @@ class ExpensesController < ApplicationController
   private
 
   def expense_params
-    params.require(:expense).permit(:description, :category, :amount_brl, :incurred_on, :status, :paid_on, :notes)
+    params.require(:expense).permit(
+      :description, :category, :quantity, :unit_amount_brl, :discount_brl,
+      :amount_brl, :incurred_on, :status, :paid_on, :notes
+    )
   end
 
   def normalize_paid_on(expense)
