@@ -42,6 +42,10 @@ class DashboardControllerTest < ActionDispatch::IntegrationTest
     assert_select "[data-controller='cart'][data-cart-display-only-value='true']", 1
     assert_select ".customer-showcase[data-cart-target='showcase']", 1
     assert_select ".customer-showcase[data-cart-target='showcase'] .showcase-product", 3
+    assert_select ".customer-showcase[data-cart-target='showcase'] .product-visual", 3
+    assert_select ".customer-showcase[data-cart-target='showcase'] .brownie-tray", 1
+    assert_select ".customer-showcase[data-cart-target='showcase'] .thermos", 1
+    assert_select ".customer-showcase[data-cart-target='showcase'] .fishing-pond", 1
   end
 
   test "shows a dismissible payment result modal" do

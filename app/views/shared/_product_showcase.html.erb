@@ -6,7 +6,7 @@
   <div class="showcase-products">
     <% products.each do |product| %>
       <article class="showcase-product <%= product.code.dasherize %>">
-        <span class="showcase-icon" aria-hidden="true"><%= product.code == "brownie" ? "▦" : product.code == "hot_chocolate" ? "♨" : "◇" %></span>
+        <%= render "shared/product_visual", product: %>
         <h2><%= product.localized_name %></h2>
         <% if product.configured_for_sale? %>
           <strong><%= money(product.price_cents) %></strong>

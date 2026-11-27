@@ -453,9 +453,8 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
 .showcase-product::before { content: ""; width: 52px; height: 5px; border-radius: 999px; background: var(--purple); }
 .showcase-product.hot-chocolate::before { background: var(--red); }
 .showcase-product.fishing::before { background: var(--green); }
-.showcase-icon { font-size: clamp(35px,5vw,62px); color: var(--purple); }
-.showcase-product.hot-chocolate .showcase-icon { color: var(--red); }
-.showcase-product.fishing .showcase-icon { color: var(--green); }
+.showcase-product .product-visual { width: 100%; height: 205px; margin: 0; }
+.showcase-product .brownie-tray, .showcase-product .fishing-pond { max-width: 330px; }
 .showcase-product h2 { margin: 0; color: var(--purple-deep); font: 800 clamp(23px,3vw,38px)/1.1 Georgia,serif; }
 .showcase-product strong { color: var(--wine); font-size: clamp(30px,4vw,52px); }
 .showcase-product strong.price-pending { color: var(--muted); font-size: clamp(22px,3vw,36px); }
@@ -490,6 +489,8 @@ main { width: min(1440px,calc(100% - 40px)); margin: 0 auto; padding: 28px 0 56p
 .customer-display-mode .header-actions, .customer-display-mode .flash, .customer-display-mode .site-footer { display: none; }
 .customer-display-mode main { width: min(1580px,calc(100% - 32px)); padding-top: 18px; }
 .customer-display-mode .hero-banner { min-height: 155px; }
+.customer-display-mode:has(.cashier-layout.showcase-active) .hero-banner { display: none; }
+.customer-display-mode .cashier-layout.showcase-active { margin-top: 0; }
 .customer-display-mode .text-button, .customer-display-mode .quantity-picker button, .customer-display-mode .confirmed-order button { display: none; }
 .customer-display-mode .quantity-picker { display: block; padding: 11px; text-align: center; }
 .customer-display-mode .quantity-picker output::before { content: "Quantidade: "; color: var(--muted); font-size: 11px; font-weight: 750; }

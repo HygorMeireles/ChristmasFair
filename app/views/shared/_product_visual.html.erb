@@ -1,0 +1,24 @@
+<% track_cart = local_assigns.fetch(:track_cart, false) %>
+<div class="product-visual" aria-hidden="true">
+  <% case product.code %>
+  <% when "hot_chocolate" %>
+    <div class="thermos">
+      <div class="thermos-cap"></div><div class="thermos-handle"></div>
+      <div class="thermos-body">
+        <div class="chocolate-fill" <%= "data-cart-fill".html_safe if track_cart %> style="height: <%= product.stock_percentage %>%"></div>
+        <span class="thermos-shine"></span>
+      </div>
+    </div>
+    <div class="steam"><i></i><i></i><i></i></div>
+  <% when "brownie" %>
+    <div class="brownie-tray columns-<%= brownie_grid_columns(product.available_servings) %> rows-<%= brownie_grid_rows(product.available_servings) %>" <%= "data-cart-pieces".html_safe if track_cart %>>
+      <% product.available_servings.times do %><span class="brownie-piece stock-piece"><i></i></span><% end %>
+      <% if product.available_servings.zero? %><span class="visual-empty">0</span><% end %>
+    </div>
+  <% else %>
+    <div class="fishing-pond" <%= "data-cart-pieces".html_safe if track_cart %>>
+      <% product.available_servings.times do |index| %><span class="prize-fish stock-piece fish-<%= index % 3 %>"><i></i></span><% end %>
+      <% if product.available_servings.zero? %><span class="visual-empty">0</span><% end %>
+    </div>
+  <% end %>
+</div>

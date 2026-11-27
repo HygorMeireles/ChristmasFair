@@ -58,29 +58,7 @@
               <strong class="customer-price"><span><%= t("dashboard.unit_price") %></span><%= product.configured_for_sale? ? money(product.price_cents) : t("display.price_pending") %></strong>
             </div>
 
-            <div class="product-visual" aria-hidden="true">
-              <% case product.code %>
-              <% when "hot_chocolate" %>
-                <div class="thermos">
-                  <div class="thermos-cap"></div><div class="thermos-handle"></div>
-                  <div class="thermos-body">
-                    <div class="chocolate-fill" data-cart-fill style="height: <%= product.stock_percentage %>%"></div>
-                    <span class="thermos-shine"></span>
-                  </div>
-                </div>
-                <div class="steam"><i></i><i></i><i></i></div>
-              <% when "brownie" %>
-                <div class="brownie-tray columns-<%= brownie_grid_columns(product.available_servings) %> rows-<%= brownie_grid_rows(product.available_servings) %>" data-cart-pieces>
-                  <% product.available_servings.times do %><span class="brownie-piece stock-piece"><i></i></span><% end %>
-                  <% if product.available_servings.zero? %><span class="visual-empty">0</span><% end %>
-                </div>
-              <% else %>
-                <div class="fishing-pond" data-cart-pieces>
-                  <% product.available_servings.times do |index| %><span class="prize-fish stock-piece fish-<%= index % 3 %>"><i></i></span><% end %>
-                  <% if product.available_servings.zero? %><span class="visual-empty">0</span><% end %>
-                </div>
-              <% end %>
-            </div>
+            <%= render "shared/product_visual", product:, track_cart: true %>
 
             <div class="product-info">
               <h3><%= product.localized_name %></h3>
